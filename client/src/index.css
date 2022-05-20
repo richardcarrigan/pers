@@ -1,0 +1,42 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  background-color: #eeeeee;
+  justify-content: space-between;
+  padding: 15px;
+}
+header ul li {
+  list-style-type: none;
+}
+
+hr {
+  margin: 15px 0;
+}
+
+footer {
+  width: 100%;
+  text-align: center;
+  background-color: #eeeeee;
+  height: 25px;
+  position: fixed;
+  bottom: 0;
+}
+
+div.MuiFormControl-root {
+  padding: 15px 0;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.tableContainer {
+  overflow-x: auto;
+}

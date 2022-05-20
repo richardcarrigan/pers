@@ -1,0 +1,28 @@
+{
+  "name": "pers-api",
+  "version": "1.0.0",
+  "description": "API for Pers mobile and web apps",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nihonjinboy85/pers-api.git"
+  },
+  "author": "Richard Carrigan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nihonjinboy85/pers-api/issues"
+  },
+  "homepage": "https://github.com/nihonjinboy85/pers-api#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "express-graphql": "^0.12.0",
+    "lodash": "^4.17.21",
+    "mongodb": "^4.2.2",
+    "mongoose": "^6.1.2"
+  }
+}
