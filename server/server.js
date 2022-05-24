@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const app = express();
 app.use(cors());
 
-const uri = `mongodb+srv://richard:${process.env.DB_PASSWORD}@cluster0.y4xwj.mongodb.net/pers?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://richard:${process.env.DB_PASSWORD}@cluster0.9cc2omr.mongodb.net/?retryWrites=true&w=majority`;
 mongoose.connect(uri);
 mongoose.connection.once('open', () => {
   console.log('connected to database');
