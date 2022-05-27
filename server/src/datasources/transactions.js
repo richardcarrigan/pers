@@ -1,0 +1,13 @@
+const { MongoDataSource } = require('apollo-datasource-mongodb');
+
+class Transactions extends MongoDataSource {
+  getTransactions() {
+    return this.find();
+  }
+
+  getTransaction(transactionId) {
+    return this.findOneById(transactionId);
+  }
+}
+
+module.exports = Transactions;

@@ -2,27 +2,29 @@
   "name": "pers-api",
   "version": "1.0.0",
   "description": "API for Pers mobile and web apps",
-  "main": "server.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index",
+    "dev": "nodemon src/index"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nihonjinboy85/pers-api.git"
+    "url": "git+https://github.com/nihonjinboy85/pers.git"
   },
-  "author": "Richard Carrigan",
+  "author": "Richard Carrigan <me@richardcarrigan.dev> (https://www.richardcarrigan.dev)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nihonjinboy85/pers-api/issues"
+    "url": "https://github.com/nihonjinboy85/pers/issues"
   },
-  "homepage": "https://github.com/nihonjinboy85/pers-api#readme",
+  "homepage": "https://github.com/nihonjinboy85/pers#readme",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.2",
-    "express-graphql": "^0.12.0",
-    "lodash": "^4.17.21",
-    "mongodb": "^4.2.2",
-    "mongoose": "^6.1.2"
+    "apollo-datasource-mongodb": "^0.5.4",
+    "apollo-server": "^3.8.1",
+    "graphql": "^16.5.0",
+    "mongodb": "^4.2.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.1",
+    "nodemon": "^2.0.16"
   }
 }
