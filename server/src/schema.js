@@ -13,19 +13,17 @@ const typeDefs = gql`
   }
 
   type Transaction {
-    id: ID!
+    _id: ID!
     description: String!
-    amount: Int!
-    type: String!
     recurrence: String
+    amount: Float!
+    type: String!
     startDate: String!
-    account: Account!
   }
 
   type Account {
-    id: ID!
+    _id: ID!
     name: String!
-    transactions: [Transaction!]!
   }
 `;
 

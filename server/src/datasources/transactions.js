@@ -2,7 +2,7 @@ const { MongoDataSource } = require('apollo-datasource-mongodb');
 
 class Transactions extends MongoDataSource {
   getTransactions() {
-    return this.find();
+    return this.findByFields({});
   }
 
   getTransaction(transactionId) {
