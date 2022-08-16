@@ -1,6 +1,19 @@
 import { List } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useQuery, gql } from '@apollo/client';
 import Transaction from '../components/Transaction';
+
+const GET_TRANSACTIONS = gql`
+  query getTransactions {
+    transactions {
+      _id
+      description
+      type
+      amount
+      startDate
+    }
+  }
+`;
 
 function Transactions({ transactions, deleteHandler, editHandler }) {
   let balance = 0;
@@ -13,11 +26,21 @@ function Transactions({ transactions, deleteHandler, editHandler }) {
     editHandler(transaction);
   };
 
+  const { loading, error, data } = useQuery(GET_TRANSACTIONS);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error :(</p>;
+  }
+
   return (
     <>
       <div className='tableContainer'>
         <List>
-          {transactions.map(transaction => {
+          {data.transactions.map(transaction => {
             balance =
               transaction.type === 'income'
                 ? balance + transaction.amount
@@ -29,7 +52,7 @@ function Transactions({ transactions, deleteHandler, editHandler }) {
                 balance={balance}
                 deleteHandler={handleDelete}
                 editHandler={handleEdit}
-                key={transaction.id}
+                key={transaction._id}
               />
             );
           })}
