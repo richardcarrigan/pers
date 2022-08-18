@@ -2,10 +2,10 @@ export default function Transaction({ transaction }) {
   const { startDate, description, amount } = transaction;
 
   return (
-    <li>
+    <div className='transactionCard'>
       {startDate}
       {description}
       {amount}
-    </li>
+    </div>
   );
 }

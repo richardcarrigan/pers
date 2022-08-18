@@ -5,38 +5,39 @@
 }
 
 header {
-  width: 100%;
-  display: flex;
-  background-color: #eeeeee;
-  justify-content: space-between;
+  border: 1px solid black;
+  height: 50px;
   padding: 15px;
-}
-header ul li {
-  list-style-type: none;
+  width: 100%;
 }
 
-hr {
-  margin: 15px 0;
+main {
+  background-color: gray;
+  display: block;
+  min-height: calc(100vh - 100px);
+  padding: 15px;
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 footer {
-  width: 100%;
-  text-align: center;
-  background-color: #eeeeee;
-  height: 25px;
-  position: fixed;
+  border: 1px solid black;
   bottom: 0;
+  height: 50px;
+  padding: 15px;
+  position: fixed;
+  width: 100%;
 }
 
-div.MuiFormControl-root {
-  padding: 15px 0;
-}
-
-.container {
-  width: 80%;
-  margin: 0 auto;
-}
-
-.tableContainer {
-  overflow-x: auto;
+.accountCard,
+.transactionCard {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 10px black;
+  margin: 25px 0;
+  padding: 15px;
 }

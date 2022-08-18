@@ -20,18 +20,18 @@ export default function Home() {
 
   return (
     <>
-      <h1>Home</h1>
-      {data.accounts.map(account => {
-        return (
-          <div key={account._id}>
-            <h2>{account.name}</h2>
-            <p>{account._id}</p>
+      <h1>Your Accounts</h1>
+      <div className='accounts'>
+        {data.accounts.map(account => {
+          return (
             <Link to={`/accounts/${account._id}`} element={<Account />}>
-              See transactions
+              <div key={account._id} className='accountCard'>
+                <h2>{account.name}</h2>
+              </div>
             </Link>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </>
   );
 }
