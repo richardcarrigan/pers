@@ -1,6 +1,22 @@
 const { gql } = require('apollo-server');
 
 const typeDefs = gql`
+  type Account {
+    _id: ID!
+    name: String!
+    transactions: [Transaction]!
+  }
+
+  type Transaction {
+    _id: ID!
+    description: String!
+    recurrence: String!
+    amount: Float!
+    type: String!
+    startDate: String!
+    account: Account!
+  }
+
   type Query {
     "Query to get transactions array"
     transactions: [Transaction]
@@ -10,20 +26,6 @@ const typeDefs = gql`
     accounts: [Account]
     "Get a single account, provided the account's ID"
     account(id: ID!): Account
-  }
-
-  type Transaction {
-    _id: ID!
-    description: String!
-    recurrence: String
-    amount: Float!
-    type: String!
-    startDate: String!
-  }
-
-  type Account {
-    _id: ID!
-    name: String!
   }
 `;
 
