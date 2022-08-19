@@ -29,9 +29,9 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addAccount(accountName: String): Account
-    updateAccount(accountId: ID, updatedAccountName: String): Account
-    deleteAccount(accountId: ID): ID
+    addAccount(accountName: String!): Account
+    updateAccount(accountId: ID!, updatedAccountName: String!): Account
+    deleteAccount(accountId: ID!): ID
   }
 `;
 
