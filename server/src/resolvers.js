@@ -26,6 +26,17 @@ const resolvers = {
     account(parent, __, { dataSources }) {
       return dataSources.accounts.getAccount(parent.account);
     }
+  },
+  Mutation: {
+    addAccount: (_, { accountName }, { dataSources }) => {
+      return dataSources.accounts.addAccount(accountName);
+    },
+    updateAccount: (_, { accountId, updatedAccountName }, { dataSources }) => {
+      return dataSources.accounts.updateAccount(accountId, updatedAccountName);
+    },
+    deleteAccount: (_, { accountId }, { dataSources }) => {
+      return dataSources.accounts.deleteAccount(accountId);
+    }
   }
 };
 

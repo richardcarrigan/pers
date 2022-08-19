@@ -27,6 +27,12 @@ const typeDefs = gql`
     "Get a single account, provided the account's ID"
     account(id: ID!): Account
   }
+
+  type Mutation {
+    addAccount(accountName: String): Account
+    updateAccount(accountId: ID, updatedAccountName: String): Account
+    deleteAccount(accountId: ID): ID
+  }
 `;
 
 module.exports = typeDefs;
