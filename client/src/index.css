@@ -1,22 +1,24 @@
 * {
   box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
 }
 
 header {
-  border: 1px solid black;
+  background-color: white;
   height: 50px;
   padding: 15px;
-  width: 100%;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
 }
 
 main {
-  background-color: gray;
-  display: block;
+  background-color: #e6e6e6;
   min-height: calc(100vh - 100px);
+  margin-bottom: 50px;
   padding: 15px;
-  width: 100%;
 }
 
 a {
@@ -24,8 +26,36 @@ a {
   color: inherit;
 }
 
+button {
+  padding: 12px 32px;
+  background-color: #078df4;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
+
+button:hover,
+.accountCard:hover,
+.transactionCard:hover {
+  cursor: pointer;
+  box-shadow: 0 0 10px black;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form * {
+  margin-top: 15px;
+}
+
+input {
+  padding: 15px;
+}
+
 footer {
-  border: 1px solid black;
+  background-color: white;
   bottom: 0;
   height: 50px;
   padding: 15px;
@@ -33,11 +63,68 @@ footer {
   width: 100%;
 }
 
-.accountCard,
+.accounts {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.accountCard {
+  background-color: white;
+  border: 3px solid rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  height: 250px;
+  margin: 0 25px 25px 0;
+  padding: 15px;
+  width: 250px;
+}
+
+.transactions {
+  display: flex;
+  flex-direction: column;
+  margin: 25px 0;
+}
+
 .transactionCard {
   background-color: white;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.5);
+  padding: 15px;
+}
+
+.hidden {
+  display: none;
+}
+
+.overlay {
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#addAccountBtn {
+  background-color: transparent;
+  border: 5px dashed rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 2em;
+  height: 250px;
+  margin: 0 25px 25px 0;
+  padding: 15px;
+  width: 250px;
+}
+
+#newAccountForm {
+  background-color: white;
+  border: 1px solid black;
   border-radius: 5px;
   box-shadow: 0 0 10px black;
-  margin: 25px 0;
+  left: 25%;
   padding: 15px;
+  position: absolute;
+  top: 100px;
+  width: 50%;
+  z-index: 9999;
 }

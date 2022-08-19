@@ -28,14 +28,18 @@ export default function Account() {
   if (error) return <p>Error 😢</p>;
 
   return (
-    <div>
+    <>
       <h1>{`${data.account.name} Transactions`}</h1>
-      {data.account.transactions.map(transaction => {
-        return <Transaction key={transaction._id} transaction={transaction} />;
-      })}
+      <div className='transactions'>
+        {data.account.transactions.map(transaction => {
+          return (
+            <Transaction key={transaction._id} transaction={transaction} />
+          );
+        })}
+      </div>
       <Link to='/'>
         <button>Go Back</button>
       </Link>
-    </div>
+    </>
   );
 }
