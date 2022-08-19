@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { Link } from 'react-router-dom';
 
+import Card from '../components/Card';
 import NewAccountForm from '../components/NewAccountForm';
 
 import Account from './Account';
@@ -37,9 +38,7 @@ export default function Home() {
               to={`/accounts/${account._id}`}
               element={<Account />}
             >
-              <div className='accountCard'>
-                <h2>{account.name}</h2>
-              </div>
+              <Card heading={account.name} />
             </Link>
           );
         })}

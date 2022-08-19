@@ -3,9 +3,9 @@ export default function Transaction({ transaction }) {
 
   return (
     <div className='transactionCard'>
-      {startDate}
-      {description}
-      {amount}
+      <span>{startDate}</span>
+      <span>{description}</span>
+      <span>{amount}</span>
     </div>
   );
 }

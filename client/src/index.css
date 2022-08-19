@@ -1,3 +1,11 @@
+/* Theme colors */
+:root {
+  --light-bg: #f5f4ee;
+  --primary: #8722ed;
+  --dark-accent: #8c6797;
+  --dark-bg: #1d284e;
+}
+
 * {
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
@@ -6,7 +14,8 @@
 }
 
 header {
-  background-color: white;
+  background-color: var(--light-bg);
+  color: var(--primary);
   height: 50px;
   padding: 15px;
   position: sticky;
@@ -15,10 +24,14 @@ header {
 }
 
 main {
-  background-color: #e6e6e6;
+  background-color: var(--dark-bg);
   min-height: calc(100vh - 100px);
   margin-bottom: 50px;
   padding: 15px;
+}
+
+main h1 {
+  color: var(--primary);
 }
 
 a {
@@ -28,17 +41,21 @@ a {
 
 button {
   padding: 12px 32px;
-  background-color: #078df4;
+  background-color: var(--primary);
   border: none;
   border-radius: 5px;
   color: white;
+  transition: all 0.2s;
 }
 
-button:hover,
-.accountCard:hover,
-.transactionCard:hover {
+button:hover {
+  background-color: #4a1284;
   cursor: pointer;
-  box-shadow: 0 0 10px black;
+}
+
+.card:hover {
+  box-shadow: -5px -5px var(--light-bg);
+  transform: translate(5px, 5px);
 }
 
 form {
@@ -55,7 +72,8 @@ input {
 }
 
 footer {
-  background-color: white;
+  background-color: var(--light-bg);
+  color: var(--primary);
   bottom: 0;
   height: 50px;
   padding: 15px;
@@ -69,14 +87,34 @@ footer {
   margin-top: 25px;
 }
 
-.accountCard {
-  background-color: white;
-  border: 3px solid rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
+.card {
+  border-radius: 15px;
   height: 250px;
   margin: 0 25px 25px 0;
-  padding: 15px;
   width: 250px;
+  transition: all 0.2s;
+}
+
+.cardHeading {
+  background-color: var(--primary);
+  border-radius: 15px 15px 0 0;
+  color: white;
+  min-height: 25%;
+  padding: 15px 0;
+  text-align: center;
+}
+
+.cardHeading h2 {
+  color: white;
+  font-weight: normal;
+}
+
+.cardBody {
+  background-color: var(--light-bg);
+  border-radius: 0 0 15px 15px;
+  color: var(--dark-accent);
+  min-height: 75%;
+  padding: 15px;
 }
 
 .transactions {
@@ -86,8 +124,10 @@ footer {
 }
 
 .transactionCard {
-  background-color: white;
-  border-bottom: 3px solid rgba(0, 0, 0, 0.5);
+  background-color: var(--light-bg);
+  border-bottom: 3px solid var(--primary);
+  display: flex;
+  justify-content: space-between;
   padding: 15px;
 }
 
@@ -104,11 +144,15 @@ footer {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+#brand {
+  color: var(--primary);
+}
+
 #addAccountBtn {
   background-color: transparent;
-  border: 5px dashed rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
-  color: rgba(0, 0, 0, 0.5);
+  border: 5px dashed var(--primary);
+  border-radius: 15px;
+  color: var(--primary);
   font-size: 2em;
   height: 250px;
   margin: 0 25px 25px 0;
@@ -116,11 +160,13 @@ footer {
   width: 250px;
 }
 
+#addAccountBtn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 #newAccountForm {
-  background-color: white;
-  border: 1px solid black;
-  border-radius: 5px;
-  box-shadow: 0 0 10px black;
+  background-color: var(--light-bg);
+  border-radius: 15px;
   left: 25%;
   padding: 15px;
   position: absolute;

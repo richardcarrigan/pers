@@ -4,7 +4,7 @@ function Header() {
   return (
     <header>
       <Link to='/'>
-        <h3>Pers.io</h3>
+        <h3 id='brand'>Pers.io</h3>
       </Link>
     </header>
   );
