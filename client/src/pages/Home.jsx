@@ -38,7 +38,9 @@ export default function Home() {
               to={`/accounts/${account._id}`}
               element={<Account />}
             >
-              <Card heading={account.name} />
+              <Card heading={account.name}>
+                <p>Click to view transactions</p>
+              </Card>
             </Link>
           );
         })}
