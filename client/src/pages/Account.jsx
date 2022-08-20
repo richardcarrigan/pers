@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client';
+import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
 
 import Transaction from '../components/Transaction';
 
@@ -18,20 +20,79 @@ const GET_ACCOUNT = gql`
   }
 `;
 
+const UPDATE_ACCOUNT = gql`
+  mutation UpdateAccount($accountId: ID!, $updatedAccountName: String!) {
+    updateAccount(
+      accountId: $accountId
+      updatedAccountName: $updatedAccountName
+    ) {
+      _id
+      name
+    }
+  }
+`;
+
 export default function Account() {
   const { id } = useParams();
-  const { loading, error, data } = useQuery(GET_ACCOUNT, {
+  const [isEditing, setIsEditing] = useState(false);
+  const [accountName, setAccountName] = useState('');
+  const {
+    loading: queryLoading,
+    error: queryError,
+    data: queryData
+  } = useQuery(GET_ACCOUNT, {
     variables: { id }
   });
+  const [updateAccount, { mutationLoading, mutationError }] = useMutation(
+    UPDATE_ACCOUNT,
+    { refetchQueries: { query: GET_ACCOUNT, variables: { id } } }
+  );
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error 😢</p>;
+  if (queryLoading || mutationLoading) return <p>Loading...</p>;
+  if (queryError || mutationError) return <p>Error 😢</p>;
 
   return (
     <>
-      <h1>{`${data.account.name} Transactions`}</h1>
+      <div className='accountHeading'>
+        {isEditing ? (
+          <input
+            value={accountName}
+            onChange={e => {
+              setAccountName(e.target.value);
+            }}
+          />
+        ) : (
+          <h1>{queryData.account.name}</h1>
+        )}
+
+        {!isEditing && (
+          <FaPencilAlt
+            className='btn'
+            onClick={e => {
+              setAccountName(queryData.account.name);
+              setIsEditing(true);
+            }}
+          />
+        )}
+        {isEditing && (
+          <FaSave
+            className='btn'
+            onClick={e => {
+              setIsEditing(false);
+              updateAccount({
+                variables: {
+                  accountId: queryData.account._id,
+                  updatedAccountName: accountName
+                }
+              });
+            }}
+          />
+        )}
+        <FaTrashAlt className='btn' />
+      </div>
+      <h2>Transactions</h2>
       <div className='transactions'>
-        {data.account.transactions.map(transaction => {
+        {queryData.account.transactions.map(transaction => {
           return (
             <Transaction key={transaction._id} transaction={transaction} />
           );
