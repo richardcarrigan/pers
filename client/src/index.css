@@ -30,8 +30,10 @@ main {
   padding: 15px;
 }
 
-main h1 {
+main h1,
+main h2 {
   color: var(--primary);
+  margin-top: 15px;
 }
 
 a {
@@ -85,6 +87,18 @@ footer {
   display: flex;
   flex-wrap: wrap;
   margin-top: 25px;
+}
+
+.accountHeading {
+  align-items: center;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  max-width: 350px;
+}
+
+.btn {
+  cursor: pointer;
 }
 
 .card {
