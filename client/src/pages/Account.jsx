@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
 
@@ -32,10 +32,18 @@ const UPDATE_ACCOUNT = gql`
   }
 `;
 
-export default function Account() {
+const DELETE_ACCOUNT = gql`
+  mutation DeleteAccount($accountId: ID!) {
+    deleteAccount(accountId: $accountId)
+  }
+`;
+
+export default function Account({ getAccounts }) {
   const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [accountName, setAccountName] = useState('');
+  const navigate = useNavigate();
+
   const {
     loading: queryLoading,
     error: queryError,
@@ -43,13 +51,19 @@ export default function Account() {
   } = useQuery(GET_ACCOUNT, {
     variables: { id }
   });
+
   const [updateAccount, { mutationLoading, mutationError }] = useMutation(
     UPDATE_ACCOUNT,
     { refetchQueries: { query: GET_ACCOUNT, variables: { id } } }
   );
 
-  if (queryLoading || mutationLoading) return <p>Loading...</p>;
-  if (queryError || mutationError) return <p>Error 😢</p>;
+  const [deleteAccount, { deleteMutationLoading, deleteMutationError }] =
+    useMutation(DELETE_ACCOUNT);
+
+  if (queryLoading || mutationLoading || deleteMutationLoading)
+    return <p>Loading...</p>;
+  if (queryError || mutationError || deleteMutationError)
+    return <p>Error 😢</p>;
 
   return (
     <>
@@ -66,13 +80,24 @@ export default function Account() {
         )}
 
         {!isEditing && (
-          <FaPencilAlt
-            className='btn'
-            onClick={e => {
-              setAccountName(queryData.account.name);
-              setIsEditing(true);
-            }}
-          />
+          <>
+            <FaPencilAlt
+              className='btn'
+              onClick={e => {
+                setAccountName(queryData.account.name);
+                setIsEditing(true);
+              }}
+            />
+            <FaTrashAlt
+              className='btn'
+              onClick={e => {
+                deleteAccount({
+                  variables: { accountId: queryData.account._id }
+                });
+                navigate('/');
+              }}
+            />
+          </>
         )}
         {isEditing && (
           <FaSave
@@ -88,7 +113,6 @@ export default function Account() {
             }}
           />
         )}
-        <FaTrashAlt className='btn' />
       </div>
       <h2>Transactions</h2>
       <div className='transactions'>

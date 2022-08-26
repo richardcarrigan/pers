@@ -18,7 +18,9 @@ const GET_ACCOUNTS = gql`
 
 export default function Home() {
   const [isHidden, setIsHidden] = useState(true);
-  const { loading, error, data } = useQuery(GET_ACCOUNTS);
+  const { loading, error, data } = useQuery(GET_ACCOUNTS, {
+    pollInterval: 100
+  });
 
   const handleAddAccount = () => {
     setIsHidden(false);
@@ -36,7 +38,7 @@ export default function Home() {
             <Link
               key={account._id}
               to={`/accounts/${account._id}`}
-              element={<Account />}
+              element={<Account getAccounts={GET_ACCOUNTS} />}
             >
               <Card heading={account.name}>
                 <p>Click to view transactions</p>
