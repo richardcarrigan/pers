@@ -1,9 +1,9 @@
 /* Theme colors */
 :root {
-  --light-bg: #f5f4ee;
-  --primary: #8722ed;
   --dark-accent: #8c6797;
   --dark-bg: #1d284e;
+  --light-bg: #f5f4ee;
+  --primary: #8722ed;
 }
 
 * {
@@ -13,39 +13,17 @@
   padding: 0;
 }
 
-header {
-  background-color: var(--light-bg);
-  color: var(--primary);
-  height: 50px;
-  padding: 15px;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
-}
-
-main {
-  background-color: var(--dark-bg);
-  min-height: calc(100vh - 100px);
-  margin-bottom: 50px;
-  padding: 15px;
-}
-
-main h1,
-main h2 {
-  color: var(--primary);
-}
-
 a {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
 }
 
 button {
-  padding: 12px 32px;
   background-color: var(--primary);
   border: none;
   border-radius: 5px;
   color: white;
+  padding: 12px 32px;
   transition: all 0.2s;
 }
 
@@ -56,11 +34,14 @@ button:focus {
   cursor: pointer;
 }
 
-.card:hover,
-.card:active,
-.card:focus {
-  box-shadow: 0 0 10px var(--primary);
-  transform: scale(110%);
+footer {
+  background-color: var(--light-bg);
+  bottom: 0;
+  color: var(--primary);
+  height: 50px;
+  padding: 15px;
+  position: fixed;
+  width: 100%;
 }
 
 form {
@@ -76,14 +57,50 @@ input {
   padding: 15px;
 }
 
-footer {
+header {
   background-color: var(--light-bg);
   color: var(--primary);
-  bottom: 0;
   height: 50px;
   padding: 15px;
-  position: fixed;
-  width: 100%;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+
+main {
+  background-color: var(--dark-bg);
+  margin-bottom: 50px;
+  min-height: calc(100vh - 100px);
+  padding: 15px;
+}
+
+main h1,
+main h2 {
+  color: var(--primary);
+}
+
+.accountHeading {
+  align-items: center;
+  display: flex;
+}
+
+h1,
+.accountNameUpdateInput {
+  color: var(--primary);
+  margin: 0;
+  padding: 0;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.accountNameUpdateInput {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-bottom: 2px solid var(--primary);
+}
+
+.accountNameUpdateInput:focus {
+  outline: none;
 }
 
 .accounts {
@@ -92,33 +109,42 @@ footer {
   margin-top: 25px;
 }
 
-.accountHeading {
-  align-items: center;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  max-width: 350px;
-}
-
 .btn {
+  color: white;
   cursor: pointer;
+  margin: 0 10px;
 }
 
 .btnGroup {
   display: flex;
+  justify-content: space-between;
 }
 
 .btnGroup button {
-  flex-grow: 1;
-  margin-right: 10px;
+  width: 47.5%;
 }
 
 .card {
   border-radius: 15px;
   height: 250px;
   margin: 0 25px 25px 0;
-  width: 250px;
   transition: all 0.2s;
+  width: 250px;
+}
+
+.card:hover,
+.card:active,
+.card:focus {
+  box-shadow: 0 0 10px var(--primary);
+  transform: scale(110%);
+}
+
+.cardBody {
+  background-color: var(--light-bg);
+  border-radius: 0 0 15px 15px;
+  color: var(--dark-accent);
+  min-height: 75%;
+  padding: 15px;
 }
 
 .cardHeading {
@@ -135,12 +161,17 @@ footer {
   font-weight: normal;
 }
 
-.cardBody {
-  background-color: var(--light-bg);
-  border-radius: 0 0 15px 15px;
-  color: var(--dark-accent);
-  min-height: 75%;
-  padding: 15px;
+.hidden {
+  display: none;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
 }
 
 .transactions {
@@ -155,23 +186,6 @@ footer {
   display: flex;
   justify-content: space-between;
   padding: 15px;
-}
-
-.hidden {
-  display: none;
-}
-
-.overlay {
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-#brand {
-  color: var(--primary);
 }
 
 #addAccountBtn {
@@ -192,13 +206,21 @@ footer {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-#newAccountForm {
+#brand {
+  color: var(--primary);
+}
+
+#modal {
   background-color: var(--light-bg);
   border-radius: 15px;
-  left: 25%;
+  margin: 100px auto 0 auto;
   padding: 15px;
-  position: absolute;
-  top: 100px;
-  width: 50%;
+  width: 80%;
   z-index: 9999;
+}
+
+@media screen and (min-width: 768px) {
+  #modal {
+    width: 50%;
+  }
 }

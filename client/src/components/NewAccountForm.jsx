@@ -1,4 +1,5 @@
 import { useMutation, gql } from '@apollo/client';
+import Modal from './Modal';
 
 const ADD_ACCOUNT = gql`
   mutation AddAccount($accountName: String!) {
@@ -22,46 +23,33 @@ const NewAccountForm = ({ isHidden, setIsHidden, getAccounts }) => {
     return <p>{error.message}</p>;
   }
 
-  const handleCancel = () => {
-    setIsHidden(true);
-  };
-
   return (
-    <div
-      className={`overlay ${isHidden ? 'hidden' : ''}`}
-      onClick={handleCancel}
-    >
-      <div
-        id='newAccountForm'
-        className={isHidden ? 'hidden' : ''}
-        onClick={e => e.stopPropagation()}
+    <Modal isHidden={isHidden} setIsHidden={setIsHidden}>
+      <h1>Add a new account</h1>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          addAccount({
+            variables: { accountName: input.value }
+          });
+          input.value = '';
+          setIsHidden(true);
+        }}
       >
-        <h1>Add a new account</h1>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-            addAccount({
-              variables: { accountName: input.value }
-            });
-            input.value = '';
-            setIsHidden(true);
-          }}
-        >
-          <label htmlFor='accountName'>Account Name</label>
-          <input
-            ref={node => (input = node)}
-            required
-            placeholder='Account name'
-          />
-          <div class='btnGroup'>
-            <button type='submit'>Submit</button>
-            <button type='button' onClick={handleCancel}>
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <label htmlFor='accountName'>Account Name</label>
+        <input
+          ref={node => (input = node)}
+          required
+          placeholder='Account name'
+        />
+        <div className='btnGroup'>
+          <button type='submit'>Submit</button>
+          <button type='button' onClick={e => setIsHidden(true)}>
+            Cancel
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 };
 export default NewAccountForm;

@@ -69,18 +69,31 @@ export default function Account({ getAccounts }) {
     <>
       <div className='accountHeading'>
         {isEditing ? (
-          <input
-            value={accountName}
-            onChange={e => {
-              setAccountName(e.target.value);
-            }}
-          />
-        ) : (
-          <h1>{queryData.account.name}</h1>
-        )}
-
-        {!isEditing && (
           <>
+            <input
+              type='text'
+              value={accountName}
+              class='accountNameUpdateInput'
+              onChange={e => {
+                setAccountName(e.target.value);
+              }}
+            />
+            <FaSave
+              className='btn'
+              onClick={e => {
+                setIsEditing(false);
+                updateAccount({
+                  variables: {
+                    accountId: queryData.account._id,
+                    updatedAccountName: accountName
+                  }
+                });
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <h1>{queryData.account.name}</h1>
             <FaPencilAlt
               className='btn'
               onClick={e => {
@@ -98,20 +111,6 @@ export default function Account({ getAccounts }) {
               }}
             />
           </>
-        )}
-        {isEditing && (
-          <FaSave
-            className='btn'
-            onClick={e => {
-              setIsEditing(false);
-              updateAccount({
-                variables: {
-                  accountId: queryData.account._id,
-                  updatedAccountName: accountName
-                }
-              });
-            }}
-          />
         )}
       </div>
       <h2>Transactions</h2>
