@@ -33,7 +33,6 @@ main {
 main h1,
 main h2 {
   color: var(--primary);
-  margin-top: 15px;
 }
 
 a {
