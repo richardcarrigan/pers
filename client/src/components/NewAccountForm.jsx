@@ -27,8 +27,16 @@ const NewAccountForm = ({ isHidden, setIsHidden, getAccounts }) => {
   };
 
   return (
-    <div className={`overlay ${isHidden ? 'hidden' : ''}`}>
-      <div id='newAccountForm' className={isHidden ? 'hidden' : ''}>
+    <div
+      className={`overlay ${isHidden ? 'hidden' : ''}`}
+      onClick={handleCancel}
+    >
+      <div
+        id='newAccountForm'
+        className={isHidden ? 'hidden' : ''}
+        onClick={e => e.stopPropagation()}
+      >
+        <h1>Add a new account</h1>
         <form
           onSubmit={e => {
             e.preventDefault();
@@ -40,11 +48,17 @@ const NewAccountForm = ({ isHidden, setIsHidden, getAccounts }) => {
           }}
         >
           <label htmlFor='accountName'>Account Name</label>
-          <input ref={node => (input = node)} required />
-          <button type='submit'>Submit</button>
-          <button type='button' onClick={handleCancel}>
-            Cancel
-          </button>
+          <input
+            ref={node => (input = node)}
+            required
+            placeholder='Account name'
+          />
+          <div class='btnGroup'>
+            <button type='submit'>Submit</button>
+            <button type='button' onClick={handleCancel}>
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>

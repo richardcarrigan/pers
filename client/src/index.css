@@ -49,14 +49,18 @@ button {
   transition: all 0.2s;
 }
 
-button:hover {
+button:hover,
+button:active,
+button:focus {
   background-color: #4a1284;
   cursor: pointer;
 }
 
-.card:hover {
-  box-shadow: -5px -5px var(--light-bg);
-  transform: translate(5px, 5px);
+.card:hover,
+.card:active,
+.card:focus {
+  box-shadow: 0 0 10px var(--primary);
+  transform: scale(110%);
 }
 
 form {
@@ -98,6 +102,15 @@ footer {
 
 .btn {
   cursor: pointer;
+}
+
+.btnGroup {
+  display: flex;
+}
+
+.btnGroup button {
+  flex-grow: 1;
+  margin-right: 10px;
 }
 
 .card {
@@ -173,7 +186,9 @@ footer {
   width: 250px;
 }
 
-#addAccountBtn:hover {
+#addAccountBtn:hover,
+#addAccountBtn:active,
+#addAccountBtn:focus {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
