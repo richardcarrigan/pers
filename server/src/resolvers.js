@@ -36,6 +36,20 @@ const resolvers = {
     },
     deleteAccount: (_, { accountId }, { dataSources }) => {
       return dataSources.accounts.deleteAccount(accountId);
+    },
+    addTransaction: (
+      _,
+      { description, recurrence, amount, type, startDate, accountId },
+      { dataSources }
+    ) => {
+      return dataSources.transactions.addTransaction(
+        description,
+        recurrence,
+        amount,
+        type,
+        startDate,
+        accountId
+      );
     }
   }
 };

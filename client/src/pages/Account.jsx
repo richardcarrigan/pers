@@ -4,6 +4,7 @@ import { useQuery, useMutation, gql } from '@apollo/client';
 import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
 
 import Transaction from '../components/Transaction';
+import NewTransactionForm from '../components/NewTransactionForm';
 
 const GET_ACCOUNT = gql`
   query getAccount($id: ID!) {
@@ -15,6 +16,8 @@ const GET_ACCOUNT = gql`
         startDate
         description
         amount
+        type
+        recurrence
       }
     }
   }
@@ -38,11 +41,16 @@ const DELETE_ACCOUNT = gql`
   }
 `;
 
-export default function Account({ getAccounts }) {
+export default function Account() {
   const { id } = useParams();
+  const [isHidden, setIsHidden] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [accountName, setAccountName] = useState('');
   const navigate = useNavigate();
+
+  const handleAddTransaction = () => {
+    setIsHidden(false);
+  };
 
   const {
     loading: queryLoading,
@@ -121,9 +129,24 @@ export default function Account({ getAccounts }) {
           );
         })}
       </div>
-      <Link to='/'>
-        <button>Go Back</button>
-      </Link>
+      <div className='btnGroup'>
+        <button
+          id='addTransactionBtn'
+          type='button'
+          onClick={handleAddTransaction}
+        >
+          Add new transaction
+        </button>
+        <button type='button' onClick={e => navigate('/')}>
+          Back
+        </button>
+      </div>
+      <NewTransactionForm
+        isHidden={isHidden}
+        setIsHidden={setIsHidden}
+        getAccount={GET_ACCOUNT}
+        accountId={queryData.account._id}
+      />
     </>
   );
 }
