@@ -18,7 +18,7 @@ class Transactions extends MongoDataSource {
       const result = await this.collection.insertOne({
         description,
         recurrence,
-        amount,
+        amount: Number(amount),
         type,
         startDate: startDateFormatted,
         account: ObjectId(accountId)

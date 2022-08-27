@@ -38,7 +38,7 @@ export default function Home() {
             <Link
               key={account._id}
               to={`/accounts/${account._id}`}
-              element={<Account getAccounts={GET_ACCOUNTS} />}
+              element={<Account />}
             >
               <Card heading={account.name}>
                 <p>Click to view transactions</p>
