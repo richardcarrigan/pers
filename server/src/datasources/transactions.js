@@ -61,6 +61,13 @@ class Transactions extends MongoDataSource {
       return this.findOneById(transactionId);
     }
   }
+
+  // Delete a transaction
+  deleteTransaction(transactionId) {
+    this.collection.deleteOne({ _id: ObjectId(transactionId) });
+    this.deleteFromCacheById(transactionId);
+    return transactionId;
+  }
 }
 
 module.exports = Transactions;

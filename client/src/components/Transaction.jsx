@@ -1,11 +1,27 @@
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { useMutation, gql } from '@apollo/client';
+
+const DELETE_TRANSACTION = gql`
+  mutation DeleteTransaction($transactionId: ID!) {
+    deleteTransaction(transactionId: $transactionId)
+  }
+`;
 
 export default function Transaction({
   transaction,
   handleAddTransaction,
-  setFormData
+  setFormData,
+  getAccount,
+  accountId
 }) {
-  const { description, recurrence, amount, type, startDate } = transaction;
+  const { _id, description, recurrence, amount, type, startDate } = transaction;
+
+  const [deleteTransaction, { loading, error }] = useMutation(
+    DELETE_TRANSACTION,
+    {
+      refetchQueries: { query: getAccount, variables: { accountId } }
+    }
+  );
 
   const options = {
     timeZone: 'UTC',
@@ -19,6 +35,13 @@ export default function Transaction({
     new Date(Number(startDate))
   );
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
   return (
     <div className='transactionCard'>
       <span>{startDateFormatted}</span>
@@ -31,6 +54,22 @@ export default function Transaction({
         onClick={() => {
           setFormData(transaction);
           handleAddTransaction(transaction);
+        }}
+      />
+      <FaTrashAlt
+        className='btn'
+        onClick={() => {
+          deleteTransaction({
+            variables: { transactionId: _id },
+            update(cache) {
+              const normalizedId = cache.identify({
+                id: _id,
+                __typename: 'Transaction'
+              });
+              cache.evict({ id: normalizedId });
+              cache.gc();
+            }
+          });
         }}
       />
     </div>

@@ -138,6 +138,8 @@ export default function Account() {
               transaction={transaction}
               handleAddTransaction={handleAddTransaction}
               setFormData={setFormData}
+              getAccount={GET_ACCOUNT}
+              accountId={queryData.account._id}
             />
           );
         })}

@@ -60,6 +60,9 @@ const resolvers = {
         type,
         startDate
       );
+    },
+    deleteTransaction: (_, { transactionId }, { dataSources }) => {
+      return dataSources.transactions.deleteTransaction(transactionId);
     }
   }
 };
