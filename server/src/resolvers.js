@@ -11,10 +11,6 @@ const resolvers = {
     // returns an array of Transactions
     transactions: (_, __, { dataSources }) => {
       return dataSources.transactions.getTransactions();
-    },
-    // returns a single transaction, provided the transaction's ID
-    transaction: (_, { id }, { dataSources }) => {
-      return dataSources.transactions.getTransaction(id);
     }
   },
   Account: {
@@ -49,6 +45,20 @@ const resolvers = {
         type,
         startDate,
         accountId
+      );
+    },
+    updateTransaction: (
+      _,
+      { transactionId, description, recurrence, amount, type, startDate },
+      { dataSources }
+    ) => {
+      return dataSources.transactions.updateTransaction(
+        transactionId,
+        description,
+        recurrence,
+        amount,
+        type,
+        startDate
       );
     }
   }
