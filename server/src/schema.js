@@ -64,6 +64,8 @@ const typeDefs = gql`
       type: TransactionTypes!
       startDate: String!
     ): Transaction
+
+    deleteTransaction(transactionId: ID!): ID
   }
 `;
 
