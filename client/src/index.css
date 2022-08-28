@@ -125,7 +125,7 @@ h1,
 }
 
 .btn {
-  color: white;
+  color: var(--primary);
   cursor: pointer;
   margin: 0 10px;
 }

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FaDollarSign } from 'react-icons/fa';
 import { useMutation, gql } from '@apollo/client';
 import Modal from './Modal';
@@ -30,25 +29,68 @@ const ADD_TRANSACTION = gql`
   }
 `;
 
+const UPDATE_TRANSACTION = gql`
+  mutation updateTransaction(
+    $transactionId: ID!
+    $description: String!
+    $recurrence: RecurrenceOptions!
+    $amount: Float!
+    $type: TransactionTypes!
+    $startDate: String!
+  ) {
+    updateTransaction(
+      transactionId: $transactionId
+      description: $description
+      recurrence: $recurrence
+      amount: $amount
+      type: $type
+      startDate: $startDate
+    ) {
+      description
+      recurrence
+      amount
+      type
+      startDate
+      account {
+        name
+      }
+    }
+  }
+`;
+
 const NewTransactionForm = ({
   isHidden,
   setIsHidden,
+  formData,
+  setFormData,
   getAccount,
   accountId
 }) => {
-  const [formData, setFormData] = useState({
-    description: '',
-    recurrence: 'none',
-    amount: 0.01,
-    type: 'expense',
-    startDate: ''
-  });
-
   const { description, recurrence, amount, type, startDate } = formData;
 
-  const [addTransaction, { loading, error }] = useMutation(ADD_TRANSACTION, {
-    refetchQueries: [getAccount]
-  });
+  let startDateFormatted;
+  if (formData._id) {
+    startDateFormatted = new Date(Number(startDate));
+    startDateFormatted = `${startDateFormatted.getUTCFullYear()}-${
+      startDateFormatted.getUTCMonth() + 1 < 10
+        ? `0${startDateFormatted.getUTCMonth() + 1}`
+        : startDateFormatted.getUTCMonth()
+    }-${
+      startDateFormatted.getUTCDate() < 10
+        ? `0${startDateFormatted.getUTCDate()}`
+        : startDateFormatted.getUTCDate()
+    }`;
+  } else {
+    startDateFormatted = startDate;
+  }
+
+  const [addTransaction, { addMutationLoading, addMutationError }] =
+    useMutation(ADD_TRANSACTION, {
+      refetchQueries: [getAccount]
+    });
+
+  const [updateTransaction, { updateMutationLoading, updateMutationError }] =
+    useMutation(UPDATE_TRANSACTION, { refetchQueries: [getAccount] });
 
   const handleFormChange = e => {
     if (e.target.id === 'amount') {
@@ -58,22 +100,39 @@ const NewTransactionForm = ({
     }
   };
 
-  if (loading) {
+  if (addMutationLoading || updateMutationLoading) {
     return <p>Loading...</p>;
   }
-  if (error) {
+  if (addMutationError || updateMutationError) {
     return <p>{error.message}</p>;
   }
 
   return (
-    <Modal isHidden={isHidden} setIsHidden={setIsHidden}>
-      <h1>Add a new transaction</h1>
+    <Modal
+      isHidden={isHidden}
+      setIsHidden={setIsHidden}
+      setFormData={setFormData}
+    >
+      <h1>{`${formData._id ? 'Update' : 'Add a new'} transaction`}</h1>
       <form
         onSubmit={e => {
           e.preventDefault();
-          addTransaction({
-            variables: { ...formData, accountId }
-          });
+          if (formData._id) {
+            updateTransaction({
+              variables: {
+                transactionId: formData._id,
+                description,
+                recurrence,
+                amount,
+                type,
+                startDate: startDateFormatted
+              }
+            });
+          } else {
+            addTransaction({
+              variables: { ...formData, accountId }
+            });
+          }
           setIsHidden(true);
           setFormData({
             description: '',
@@ -133,14 +192,26 @@ const NewTransactionForm = ({
         <label htmlFor='startDate'>Start Date</label>
         <input
           type='date'
-          value={startDate}
+          value={startDateFormatted}
           id='startDate'
           required
           onChange={handleFormChange}
         />
         <div className='btnGroup'>
           <button type='submit'>Submit</button>
-          <button type='button' onClick={e => setIsHidden(true)}>
+          <button
+            type='button'
+            onClick={() => {
+              setIsHidden(true);
+              setFormData({
+                description: '',
+                recurrence: 'none',
+                amount: 0.01,
+                type: 'expense',
+                startDate: ''
+              });
+            }}
+          >
             Cancel
           </button>
         </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
 
@@ -45,7 +45,15 @@ export default function Account() {
   const { id } = useParams();
   const [isHidden, setIsHidden] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    description: '',
+    recurrence: 'none',
+    amount: 0.01,
+    type: 'expense',
+    startDate: ''
+  });
   const [accountName, setAccountName] = useState('');
+
   const navigate = useNavigate();
 
   const handleAddTransaction = () => {
@@ -125,7 +133,12 @@ export default function Account() {
       <div className='transactions'>
         {queryData.account.transactions.map(transaction => {
           return (
-            <Transaction key={transaction._id} transaction={transaction} />
+            <Transaction
+              key={transaction._id}
+              transaction={transaction}
+              handleAddTransaction={handleAddTransaction}
+              setFormData={setFormData}
+            />
           );
         })}
       </div>
@@ -144,6 +157,8 @@ export default function Account() {
       <NewTransactionForm
         isHidden={isHidden}
         setIsHidden={setIsHidden}
+        formData={formData}
+        setFormData={setFormData}
         getAccount={GET_ACCOUNT}
         accountId={queryData.account._id}
       />

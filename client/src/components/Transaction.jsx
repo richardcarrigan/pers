@@ -1,4 +1,10 @@
-export default function Transaction({ transaction }) {
+import { FaPencilAlt } from 'react-icons/fa';
+
+export default function Transaction({
+  transaction,
+  handleAddTransaction,
+  setFormData
+}) {
   const { description, recurrence, amount, type, startDate } = transaction;
 
   const options = {
@@ -20,6 +26,13 @@ export default function Transaction({ transaction }) {
       <span>{recurrence}</span>
       <span>{amount}</span>
       <span>{type}</span>
+      <FaPencilAlt
+        className='btn'
+        onClick={() => {
+          setFormData(transaction);
+          handleAddTransaction(transaction);
+        }}
+      />
     </div>
   );
 }
