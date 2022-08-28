@@ -42,7 +42,9 @@ const typeDefs = gql`
 
   type Mutation {
     addAccount(accountName: String!): Account
+
     updateAccount(accountId: ID!, updatedAccountName: String!): Account
+
     deleteAccount(accountId: ID!): ID
 
     addTransaction(
@@ -52,6 +54,15 @@ const typeDefs = gql`
       type: TransactionTypes!
       startDate: String!
       accountId: ID!
+    ): Transaction
+
+    updateTransaction(
+      transactionId: ID!
+      description: String!
+      recurrence: RecurrenceOptions!
+      amount: Float!
+      type: TransactionTypes!
+      startDate: String!
     ): Transaction
   }
 `;

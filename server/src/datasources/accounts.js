@@ -3,8 +3,8 @@ const { ObjectId } = require('mongodb');
 
 class Accounts extends MongoDataSource {
   // Create methods
-  async addAccount(accountName) {
-    const result = await this.collection.insertOne({ name: accountName });
+  addAccount(accountName) {
+    const result = this.collection.insertOne({ name: accountName });
     return this.findOneById(result.insertedId);
   }
 
@@ -18,9 +18,9 @@ class Accounts extends MongoDataSource {
   }
 
   // Update methods
-  async updateAccount(accountId, updatedAccountName) {
+  updateAccount(accountId, updatedAccountName) {
     this.deleteFromCacheById(accountId);
-    await this.collection.updateOne(
+    this.collection.updateOne(
       { _id: ObjectId(accountId) },
       {
         $set: {
@@ -32,8 +32,8 @@ class Accounts extends MongoDataSource {
   }
 
   // Delete methods
-  async deleteAccount(accountId) {
-    await this.collection.deleteOne({ _id: ObjectId(accountId) });
+  deleteAccount(accountId) {
+    this.collection.deleteOne({ _id: ObjectId(accountId) });
     this.deleteFromCacheById(accountId);
     return accountId;
   }

@@ -2,7 +2,7 @@ const { MongoDataSource } = require('apollo-datasource-mongodb');
 const { ObjectId } = require('mongodb');
 
 class Transactions extends MongoDataSource {
-  // Create methods
+  // Add a new transaction to an account
   async addTransaction(
     description,
     recurrence,
@@ -27,14 +27,39 @@ class Transactions extends MongoDataSource {
     }
   }
 
+  // Get an array of an account's transactions
   getTransactions(accountId) {
-    return accountId
-      ? this.findByFields({ account: accountId })
-      : this.findByFields({});
+    return this.findByFields({ account: accountId });
   }
 
-  getTransaction(transactionId) {
-    return this.findOneById(transactionId);
+  // Update a transaction
+  updateTransaction(
+    transactionId,
+    description,
+    recurrence,
+    amount,
+    type,
+    startDate
+  ) {
+    const startDateFormatted = new Date(startDate);
+    if (startDateFormatted.toString() === 'Invalid Date') {
+      throw new Error('Start date is not valid');
+    } else {
+      this.deleteFromCacheById(transactionId);
+      this.collection.updateOne(
+        { _id: ObjectId(transactionId) },
+        {
+          $set: {
+            description,
+            recurrence,
+            amount: Number(amount),
+            type,
+            startDate: startDateFormatted
+          }
+        }
+      );
+      return this.findOneById(transactionId);
+    }
   }
 }
 
