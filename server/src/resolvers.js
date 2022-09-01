@@ -26,7 +26,14 @@ const resolvers = {
     updateAccount: (_, { accountId, updatedAccountName }, { dataSources }) => {
       return dataSources.accounts.updateAccount(accountId, updatedAccountName);
     },
-    deleteAccount: (_, { accountId }, { dataSources }) => {
+    deleteAccount: async (_, { accountId }, { dataSources }) => {
+      const transactions = await dataSources.transactions.getTransactions(
+        accountId
+      );
+      transactions.forEach(transaction =>
+        dataSources.transactions.deleteTransaction(transaction._id)
+      );
+
       return dataSources.accounts.deleteAccount(accountId);
     },
     addTransaction: (
