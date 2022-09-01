@@ -7,10 +7,6 @@ const resolvers = {
     // returns a single account, provided the account's ID
     account: (_, { id }, { dataSources }) => {
       return dataSources.accounts.getAccount(id);
-    },
-    // returns an array of Transactions
-    transactions: (_, __, { dataSources }) => {
-      return dataSources.transactions.getTransactions();
     }
   },
   Account: {
