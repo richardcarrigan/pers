@@ -23,7 +23,9 @@ export const UPDATE_ACCOUNT = gql`
 
 export const DELETE_ACCOUNT = gql`
   mutation DeleteAccount($accountId: ID!) {
-    deleteAccount(accountId: $accountId)
+    deleteAccount(accountId: $accountId) {
+      _id
+    }
   }
 `;
 
@@ -71,12 +73,14 @@ export const UPDATE_TRANSACTION = gql`
       type: $type
       startDate: $startDate
     ) {
+      _id
       description
       recurrence
       amount
       type
       startDate
       account {
+        _id
         name
       }
     }
@@ -85,6 +89,8 @@ export const UPDATE_TRANSACTION = gql`
 
 export const DELETE_TRANSACTION = gql`
   mutation DeleteTransaction($transactionId: ID!) {
-    deleteTransaction(transactionId: $transactionId)
+    deleteTransaction(transactionId: $transactionId) {
+      _id
+    }
   }
 `;

@@ -7,7 +7,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Transaction from '../components/Transaction';
 import NewTransactionForm from '../components/NewTransactionForm';
 
-import { GET_ACCOUNT } from '../graphQL/queries';
+import { GET_ACCOUNT, GET_ACCOUNTS } from '../graphQL/queries';
 import { UPDATE_ACCOUNT, DELETE_ACCOUNT } from '../graphQL/mutations';
 
 export default function Account() {
@@ -36,7 +36,8 @@ export default function Account() {
     error: queryError,
     data: queryData
   } = useQuery(GET_ACCOUNT, {
-    variables: { id }
+    variables: { id },
+    pollInterval: 100
   });
 
   const [updateAccount, { mutationLoading, mutationError }] = useMutation(
@@ -45,7 +46,7 @@ export default function Account() {
   );
 
   const [deleteAccount, { deleteMutationLoading, deleteMutationError }] =
-    useMutation(DELETE_ACCOUNT);
+    useMutation(DELETE_ACCOUNT, { refetchQueries: [{ query: GET_ACCOUNTS }] });
 
   if (queryLoading || mutationLoading || deleteMutationLoading)
     return <p>Loading...</p>;
