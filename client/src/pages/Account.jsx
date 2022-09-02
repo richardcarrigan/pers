@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import Transaction from '../components/Transaction';
 import NewTransactionForm from '../components/NewTransactionForm';
@@ -60,6 +61,8 @@ export default function Account() {
     setIsHidden(false);
   };
 
+  const onDragEnd = result => {};
+
   const {
     loading: queryLoading,
     error: queryError,
@@ -82,7 +85,7 @@ export default function Account() {
     return <p>Error 😢</p>;
 
   return (
-    <>
+    <DragDropContext onDragEnd={onDragEnd}>
       <div className='accountHeading'>
         {isEditing ? (
           <>
@@ -130,20 +133,30 @@ export default function Account() {
         )}
       </div>
       <h2>Transactions</h2>
-      <div className='transactions'>
-        {queryData.account.transactions.map(transaction => {
-          return (
-            <Transaction
-              key={transaction._id}
-              transaction={transaction}
-              handleAddTransaction={handleAddTransaction}
-              setFormData={setFormData}
-              getAccount={GET_ACCOUNT}
-              accountId={queryData.account._id}
-            />
-          );
-        })}
-      </div>
+      <Droppable droppableId={queryData.account._id}>
+        {provided => (
+          <div
+            className='transactions'
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {queryData.account.transactions.map((transaction, index) => {
+              return (
+                <Transaction
+                  key={transaction._id}
+                  index={index}
+                  transaction={transaction}
+                  handleAddTransaction={handleAddTransaction}
+                  setFormData={setFormData}
+                  getAccount={GET_ACCOUNT}
+                  accountId={queryData.account._id}
+                />
+              );
+            })}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
       <div className='btnGroup'>
         <button
           id='addTransactionBtn'
@@ -164,6 +177,6 @@ export default function Account() {
         getAccount={GET_ACCOUNT}
         accountId={queryData.account._id}
       />
-    </>
+    </DragDropContext>
   );
 }

@@ -1,5 +1,6 @@
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { useMutation, gql } from '@apollo/client';
+import { Draggable } from 'react-beautiful-dnd';
 
 const DELETE_TRANSACTION = gql`
   mutation DeleteTransaction($transactionId: ID!) {
@@ -8,6 +9,7 @@ const DELETE_TRANSACTION = gql`
 `;
 
 export default function Transaction({
+  index,
   transaction,
   handleAddTransaction,
   setFormData,
@@ -43,35 +45,44 @@ export default function Transaction({
   }
 
   return (
-    <div className='transactionCard'>
-      <span>{startDateFormatted}</span>
-      <span>{description}</span>
-      <span>{recurrence}</span>
-      <span>{amount}</span>
-      <span>{type}</span>
-      <FaPencilAlt
-        className='btn'
-        onClick={() => {
-          setFormData(transaction);
-          handleAddTransaction(transaction);
-        }}
-      />
-      <FaTrashAlt
-        className='btn'
-        onClick={() => {
-          deleteTransaction({
-            variables: { transactionId: _id },
-            update(cache) {
-              const normalizedId = cache.identify({
-                id: _id,
-                __typename: 'Transaction'
+    <Draggable draggableId={_id} index={index}>
+      {provided => (
+        <div
+          className='transactionCard'
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <span>{startDateFormatted}</span>
+          <span>{description}</span>
+          <span>{recurrence}</span>
+          <span>{amount}</span>
+          <span>{type}</span>
+          <FaPencilAlt
+            className='btn'
+            onClick={() => {
+              setFormData(transaction);
+              handleAddTransaction(transaction);
+            }}
+          />
+          <FaTrashAlt
+            className='btn'
+            onClick={() => {
+              deleteTransaction({
+                variables: { transactionId: _id },
+                update(cache) {
+                  const normalizedId = cache.identify({
+                    id: _id,
+                    __typename: 'Transaction'
+                  });
+                  cache.evict({ id: normalizedId });
+                  cache.gc();
+                }
               });
-              cache.evict({ id: normalizedId });
-              cache.gc();
-            }
-          });
-        }}
-      />
-    </div>
+            }}
+          />
+        </div>
+      )}
+    </Draggable>
   );
 }
