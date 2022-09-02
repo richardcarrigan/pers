@@ -1,46 +1,14 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import Transaction from '../components/Transaction';
 import NewTransactionForm from '../components/NewTransactionForm';
 
-const GET_ACCOUNT = gql`
-  query getAccount($id: ID!) {
-    account(id: $id) {
-      _id
-      name
-      transactions {
-        _id
-        startDate
-        description
-        amount
-        type
-        recurrence
-      }
-    }
-  }
-`;
-
-const UPDATE_ACCOUNT = gql`
-  mutation UpdateAccount($accountId: ID!, $updatedAccountName: String!) {
-    updateAccount(
-      accountId: $accountId
-      updatedAccountName: $updatedAccountName
-    ) {
-      _id
-      name
-    }
-  }
-`;
-
-const DELETE_ACCOUNT = gql`
-  mutation DeleteAccount($accountId: ID!) {
-    deleteAccount(accountId: $accountId)
-  }
-`;
+import { GET_ACCOUNT } from '../graphQL/queries';
+import { UPDATE_ACCOUNT, DELETE_ACCOUNT } from '../graphQL/mutations';
 
 export default function Account() {
   const { id } = useParams();
@@ -73,7 +41,7 @@ export default function Account() {
 
   const [updateAccount, { mutationLoading, mutationError }] = useMutation(
     UPDATE_ACCOUNT,
-    { refetchQueries: { query: GET_ACCOUNT, variables: { id } } }
+    { refetchQueries: [{ query: GET_ACCOUNT, variables: { id } }] }
   );
 
   const [deleteAccount, { deleteMutationLoading, deleteMutationError }] =
@@ -92,7 +60,7 @@ export default function Account() {
             <input
               type='text'
               value={accountName}
-              class='accountNameUpdateInput'
+              className='accountNameUpdateInput'
               onChange={e => {
                 setAccountName(e.target.value);
               }}
@@ -148,7 +116,6 @@ export default function Account() {
                   transaction={transaction}
                   handleAddTransaction={handleAddTransaction}
                   setFormData={setFormData}
-                  getAccount={GET_ACCOUNT}
                   accountId={queryData.account._id}
                 />
               );
@@ -174,7 +141,6 @@ export default function Account() {
         setIsHidden={setIsHidden}
         formData={formData}
         setFormData={setFormData}
-        getAccount={GET_ACCOUNT}
         accountId={queryData.account._id}
       />
     </DragDropContext>

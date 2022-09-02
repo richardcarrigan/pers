@@ -1,19 +1,15 @@
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Draggable } from 'react-beautiful-dnd';
 
-const DELETE_TRANSACTION = gql`
-  mutation DeleteTransaction($transactionId: ID!) {
-    deleteTransaction(transactionId: $transactionId)
-  }
-`;
+import { GET_ACCOUNT } from '../graphQL/queries';
+import { DELETE_TRANSACTION } from '../graphQL/mutations';
 
 export default function Transaction({
   index,
   transaction,
   handleAddTransaction,
   setFormData,
-  getAccount,
   accountId
 }) {
   const { _id, description, recurrence, amount, type, startDate } = transaction;
@@ -21,7 +17,7 @@ export default function Transaction({
   const [deleteTransaction, { loading, error }] = useMutation(
     DELETE_TRANSACTION,
     {
-      refetchQueries: { query: getAccount, variables: { accountId } }
+      refetchQueries: { query: GET_ACCOUNT, variables: { accountId } }
     }
   );
 

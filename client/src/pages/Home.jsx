@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
 
 import Card from '../components/Card';
@@ -7,14 +7,7 @@ import NewAccountForm from '../components/NewAccountForm';
 
 import Account from './Account';
 
-const GET_ACCOUNTS = gql`
-  query getAccounts {
-    accounts {
-      _id
-      name
-    }
-  }
-`;
+import { GET_ACCOUNTS } from '../graphQL/queries';
 
 export default function Home() {
   const [isHidden, setIsHidden] = useState(true);
@@ -50,11 +43,7 @@ export default function Home() {
           Add new account
         </button>
       </div>
-      <NewAccountForm
-        isHidden={isHidden}
-        setIsHidden={setIsHidden}
-        getAccounts={GET_ACCOUNTS}
-      />
+      <NewAccountForm isHidden={isHidden} setIsHidden={setIsHidden} />
     </>
   );
 }
