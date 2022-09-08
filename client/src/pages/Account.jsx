@@ -8,7 +8,11 @@ import Transaction from '../components/Transaction';
 import NewTransactionForm from '../components/NewTransactionForm';
 
 import { GET_ACCOUNT, GET_ACCOUNTS } from '../graphQL/queries';
-import { UPDATE_ACCOUNT, DELETE_ACCOUNT } from '../graphQL/mutations';
+import {
+  UPDATE_ACCOUNT,
+  DELETE_ACCOUNT,
+  UPDATE_TRANSACTION
+} from '../graphQL/mutations';
 
 export default function Account() {
   const { id } = useParams();
@@ -29,7 +33,78 @@ export default function Account() {
     setIsHidden(false);
   };
 
-  const onDragEnd = result => {};
+  const onDragEnd = result => {
+    const { source, destination, draggableId } = result;
+    const transactions = [...queryData.account.transactions];
+
+    if (!destination || source.index === destination.index) {
+      return;
+    }
+
+    transactions.forEach((transaction, index) => {
+      const {
+        _id,
+        description,
+        recurrence,
+        amount,
+        type,
+        startDate,
+        displayOrder
+      } = transaction;
+      let startDateFormatted = new Date(Number(startDate));
+      startDateFormatted = `${startDateFormatted.getUTCFullYear()}-${
+        startDateFormatted.getUTCMonth() + 1 < 10
+          ? `0${startDateFormatted.getUTCMonth() + 1}`
+          : startDateFormatted.getUTCMonth()
+      }-${
+        startDateFormatted.getUTCDate() < 10
+          ? `0${startDateFormatted.getUTCDate()}`
+          : startDateFormatted.getUTCDate()
+      }`;
+
+      if (_id === draggableId) {
+        updateTransaction({
+          variables: {
+            transactionId: draggableId,
+            description,
+            recurrence,
+            amount,
+            type,
+            startDate: startDateFormatted,
+            displayOrder: index
+          }
+        });
+      } else if (source.index < destination.index) {
+        if (index > source.index && index <= destination.index) {
+          updateTransaction({
+            variables: {
+              transactionId: _id,
+              description,
+              recurrence,
+              amount,
+              type,
+              startDate: startDateFormatted,
+              displayOrder: index - 1
+            }
+          });
+        }
+      } else if (destination.index < source.index) {
+        if (index >= destination.index && index < source.index) {
+          updateTransaction({
+            variables: {
+              transactionId: _id,
+              description,
+              recurrence,
+              amount,
+              type,
+              startDate: startDateFormatted,
+              displayOrder: index + 1
+            }
+          });
+        }
+      }
+    });
+  };
 
   const {
     loading: queryLoading,
@@ -42,11 +117,20 @@ export default function Account() {
 
   const [updateAccount, { mutationLoading, mutationError }] = useMutation(
     UPDATE_ACCOUNT,
-    { refetchQueries: [{ query: GET_ACCOUNT, variables: { id } }] }
+    {
+      refetchQueries: [{ query: GET_ACCOUNT, variables: { id } }]
+    }
   );
 
   const [deleteAccount, { deleteMutationLoading, deleteMutationError }] =
-    useMutation(DELETE_ACCOUNT, { refetchQueries: [{ query: GET_ACCOUNTS }] });
+    useMutation(DELETE_ACCOUNT, {
+      refetchQueries: [{ query: GET_ACCOUNTS }]
+    });
+
+  const [
+    updateTransaction,
+    { updateTransactionLoading, updateTransactionError }
+  ] = useMutation(UPDATE_TRANSACTION);
 
   if (queryLoading || mutationLoading || deleteMutationLoading)
     return <p>Loading...</p>;

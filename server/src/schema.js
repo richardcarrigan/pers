@@ -26,6 +26,7 @@ const typeDefs = gql`
     amount: Float!
     type: TransactionTypes!
     startDate: String!
+    displayOrder: Int
     account: Account!
   }
 
@@ -59,6 +60,7 @@ const typeDefs = gql`
       amount: Float!
       type: TransactionTypes!
       startDate: String!
+      displayOrder: Int
     ): Transaction
 
     deleteTransaction(transactionId: ID!): Transaction

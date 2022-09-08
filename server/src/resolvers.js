@@ -52,7 +52,15 @@ const resolvers = {
     },
     updateTransaction: (
       _,
-      { transactionId, description, recurrence, amount, type, startDate },
+      {
+        transactionId,
+        description,
+        recurrence,
+        amount,
+        type,
+        startDate,
+        displayOrder
+      },
       { dataSources }
     ) => {
       return dataSources.transactions.updateTransaction(
@@ -61,7 +69,8 @@ const resolvers = {
         recurrence,
         amount,
         type,
-        startDate
+        startDate,
+        displayOrder
       );
     },
     deleteTransaction: (_, { transactionId }, { dataSources }) => {
