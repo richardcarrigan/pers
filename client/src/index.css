@@ -205,6 +205,15 @@ h1,
   justify-content: space-between;
   padding: 15px;
 }
+.transactionCard * {
+  text-align: left;
+  flex-basis: 10%;
+  padding: 0 5px;
+}
+
+.transactionCard .transAmount {
+  text-align: right;
+}
 
 #addAccountBtn {
   background-color: transparent;

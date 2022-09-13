@@ -41,7 +41,7 @@ export default function Account() {
       return;
     }
 
-    transactions.forEach((transaction, index) => {
+    transactions.forEach(transaction => {
       const {
         _id,
         description,
@@ -51,6 +51,7 @@ export default function Account() {
         startDate,
         displayOrder
       } = transaction;
+
       let startDateFormatted = new Date(Number(startDate));
       startDateFormatted = `${startDateFormatted.getUTCFullYear()}-${
         startDateFormatted.getUTCMonth() + 1 < 10
@@ -71,11 +72,19 @@ export default function Account() {
             amount,
             type,
             startDate: startDateFormatted,
-            displayOrder: index
+            displayOrder: destination.index
+          },
+          update(cache) {
+            const normalizedId = cache.identify({
+              id: _id,
+              __typename: 'Transaction'
+            });
+            cache.evict({ id: normalizedId });
+            cache.gc();
           }
         });
       } else if (source.index < destination.index) {
-        if (index > source.index && index <= destination.index) {
+        if (displayOrder > source.index && displayOrder <= destination.index) {
           updateTransaction({
             variables: {
               transactionId: _id,
@@ -84,12 +93,20 @@ export default function Account() {
               amount,
               type,
               startDate: startDateFormatted,
-              displayOrder: index - 1
+              displayOrder: displayOrder - 1
+            },
+            update(cache) {
+              const normalizedId = cache.identify({
+                id: _id,
+                __typename: 'Transaction'
+              });
+              cache.evict({ id: normalizedId });
+              cache.gc();
             }
           });
         }
       } else if (destination.index < source.index) {
-        if (index >= destination.index && index < source.index) {
+        if (displayOrder >= destination.index && displayOrder < source.index) {
           updateTransaction({
             variables: {
               transactionId: _id,
@@ -98,7 +115,15 @@ export default function Account() {
               amount,
               type,
               startDate: startDateFormatted,
-              displayOrder: index + 1
+              displayOrder: displayOrder + 1
+            },
+            update(cache) {
+              const normalizedId = cache.identify({
+                id: _id,
+                __typename: 'Transaction'
+              });
+              cache.evict({ id: normalizedId });
+              cache.gc();
             }
           });
         }
@@ -127,15 +152,16 @@ export default function Account() {
       refetchQueries: [{ query: GET_ACCOUNTS }]
     });
 
-  const [
-    updateTransaction,
-    { updateTransactionLoading, updateTransactionError }
-  ] = useMutation(UPDATE_TRANSACTION);
+  const [updateTransaction] = useMutation(UPDATE_TRANSACTION);
 
   if (queryLoading || mutationLoading || deleteMutationLoading)
     return <p>Loading...</p>;
   if (queryError || mutationError || deleteMutationError)
     return <p>Error 😢</p>;
+
+  const sortedTransactions = [...queryData.account.transactions].sort(
+    (a, b) => a.displayOrder - b.displayOrder
+  );
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -193,7 +219,7 @@ export default function Account() {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {queryData.account.transactions.map((transaction, index) => {
+            {sortedTransactions.map((transaction, index) => {
               return (
                 <Transaction
                   key={transaction._id}

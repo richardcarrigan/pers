@@ -49,11 +49,11 @@ export default function Transaction({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <span>{startDateFormatted}</span>
-          <span>{description}</span>
-          <span>{recurrence}</span>
-          <span>{amount}</span>
-          <span>{type}</span>
+          <span className='transStartDate'>{startDateFormatted}</span>
+          <span className='transDescription'>{description}</span>
+          <span className='transRecurrence'>{recurrence}</span>
+          <span className='transAmount'>${amount}</span>
+          <span className='transType'>{type}</span>
           <FaPencilAlt
             className='btn'
             onClick={() => {
