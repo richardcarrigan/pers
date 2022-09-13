@@ -1,69 +1,15 @@
 import { FaDollarSign } from 'react-icons/fa';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import Modal from './Modal';
 
-const ADD_TRANSACTION = gql`
-  mutation AddTransaction(
-    $description: String!
-    $recurrence: RecurrenceOptions!
-    $amount: Float!
-    $type: TransactionTypes!
-    $startDate: String!
-    $accountId: ID!
-  ) {
-    addTransaction(
-      description: $description
-      recurrence: $recurrence
-      amount: $amount
-      type: $type
-      startDate: $startDate
-      accountId: $accountId
-    ) {
-      _id
-      description
-      recurrence
-      amount
-      type
-      startDate
-    }
-  }
-`;
-
-const UPDATE_TRANSACTION = gql`
-  mutation updateTransaction(
-    $transactionId: ID!
-    $description: String!
-    $recurrence: RecurrenceOptions!
-    $amount: Float!
-    $type: TransactionTypes!
-    $startDate: String!
-  ) {
-    updateTransaction(
-      transactionId: $transactionId
-      description: $description
-      recurrence: $recurrence
-      amount: $amount
-      type: $type
-      startDate: $startDate
-    ) {
-      description
-      recurrence
-      amount
-      type
-      startDate
-      account {
-        name
-      }
-    }
-  }
-`;
+import { GET_ACCOUNT } from '../graphQL/queries';
+import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../graphQL/mutations';
 
 const NewTransactionForm = ({
   isHidden,
   setIsHidden,
   formData,
   setFormData,
-  getAccount,
   accountId
 }) => {
   const { description, recurrence, amount, type, startDate } = formData;
@@ -86,11 +32,13 @@ const NewTransactionForm = ({
 
   const [addTransaction, { addMutationLoading, addMutationError }] =
     useMutation(ADD_TRANSACTION, {
-      refetchQueries: [getAccount]
+      refetchQueries: [{ query: GET_ACCOUNT, variables: { id: accountId } }]
     });
 
   const [updateTransaction, { updateMutationLoading, updateMutationError }] =
-    useMutation(UPDATE_TRANSACTION, { refetchQueries: [getAccount] });
+    useMutation(UPDATE_TRANSACTION, [
+      { refetchQueries: { query: GET_ACCOUNT, variables: { id: accountId } } }
+    ]);
 
   const handleFormChange = e => {
     if (e.target.id === 'amount') {

@@ -1,17 +1,15 @@
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { Draggable } from 'react-beautiful-dnd';
 
-const DELETE_TRANSACTION = gql`
-  mutation DeleteTransaction($transactionId: ID!) {
-    deleteTransaction(transactionId: $transactionId)
-  }
-`;
+import { GET_ACCOUNT } from '../graphQL/queries';
+import { DELETE_TRANSACTION } from '../graphQL/mutations';
 
 export default function Transaction({
+  index,
   transaction,
   handleAddTransaction,
   setFormData,
-  getAccount,
   accountId
 }) {
   const { _id, description, recurrence, amount, type, startDate } = transaction;
@@ -19,7 +17,7 @@ export default function Transaction({
   const [deleteTransaction, { loading, error }] = useMutation(
     DELETE_TRANSACTION,
     {
-      refetchQueries: { query: getAccount, variables: { accountId } }
+      refetchQueries: { query: GET_ACCOUNT, variables: { accountId } }
     }
   );
 
@@ -43,35 +41,44 @@ export default function Transaction({
   }
 
   return (
-    <div className='transactionCard'>
-      <span>{startDateFormatted}</span>
-      <span>{description}</span>
-      <span>{recurrence}</span>
-      <span>{amount}</span>
-      <span>{type}</span>
-      <FaPencilAlt
-        className='btn'
-        onClick={() => {
-          setFormData(transaction);
-          handleAddTransaction(transaction);
-        }}
-      />
-      <FaTrashAlt
-        className='btn'
-        onClick={() => {
-          deleteTransaction({
-            variables: { transactionId: _id },
-            update(cache) {
-              const normalizedId = cache.identify({
-                id: _id,
-                __typename: 'Transaction'
+    <Draggable draggableId={_id} index={index}>
+      {provided => (
+        <div
+          className='transactionCard'
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <span className='transStartDate'>{startDateFormatted}</span>
+          <span className='transDescription'>{description}</span>
+          <span className='transRecurrence'>{recurrence}</span>
+          <span className='transAmount'>${amount}</span>
+          <span className='transType'>{type}</span>
+          <FaPencilAlt
+            className='btn'
+            onClick={() => {
+              setFormData(transaction);
+              handleAddTransaction(transaction);
+            }}
+          />
+          <FaTrashAlt
+            className='btn'
+            onClick={() => {
+              deleteTransaction({
+                variables: { transactionId: _id },
+                update(cache) {
+                  const normalizedId = cache.identify({
+                    id: _id,
+                    __typename: 'Transaction'
+                  });
+                  cache.evict({ id: normalizedId });
+                  cache.gc();
+                }
               });
-              cache.evict({ id: normalizedId });
-              cache.gc();
-            }
-          });
-        }}
-      />
-    </div>
+            }}
+          />
+        </div>
+      )}
+    </Draggable>
   );
 }

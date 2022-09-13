@@ -39,7 +39,8 @@ class Transactions extends MongoDataSource {
     recurrence,
     amount,
     type,
-    startDate
+    startDate,
+    displayOrder
   ) {
     const startDateFormatted = new Date(startDate);
     if (startDateFormatted.toString() === 'Invalid Date') {
@@ -54,7 +55,8 @@ class Transactions extends MongoDataSource {
             recurrence,
             amount: Number(amount),
             type,
-            startDate: startDateFormatted
+            startDate: startDateFormatted,
+            displayOrder
           }
         }
       );
@@ -66,7 +68,7 @@ class Transactions extends MongoDataSource {
   deleteTransaction(transactionId) {
     this.collection.deleteOne({ _id: ObjectId(transactionId) });
     this.deleteFromCacheById(transactionId);
-    return transactionId;
+    return { _id: transactionId };
   }
 }
 

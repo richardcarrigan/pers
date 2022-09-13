@@ -35,7 +35,7 @@ class Accounts extends MongoDataSource {
   deleteAccount(accountId) {
     this.collection.deleteOne({ _id: ObjectId(accountId) });
     this.deleteFromCacheById(accountId);
-    return accountId;
+    return { _id: accountId };
   }
 }
 

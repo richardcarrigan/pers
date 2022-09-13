@@ -1,45 +1,18 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import Transaction from '../components/Transaction';
 import NewTransactionForm from '../components/NewTransactionForm';
 
-const GET_ACCOUNT = gql`
-  query getAccount($id: ID!) {
-    account(id: $id) {
-      _id
-      name
-      transactions {
-        _id
-        startDate
-        description
-        amount
-        type
-        recurrence
-      }
-    }
-  }
-`;
-
-const UPDATE_ACCOUNT = gql`
-  mutation UpdateAccount($accountId: ID!, $updatedAccountName: String!) {
-    updateAccount(
-      accountId: $accountId
-      updatedAccountName: $updatedAccountName
-    ) {
-      _id
-      name
-    }
-  }
-`;
-
-const DELETE_ACCOUNT = gql`
-  mutation DeleteAccount($accountId: ID!) {
-    deleteAccount(accountId: $accountId)
-  }
-`;
+import { GET_ACCOUNT, GET_ACCOUNTS } from '../graphQL/queries';
+import {
+  UPDATE_ACCOUNT,
+  DELETE_ACCOUNT,
+  UPDATE_TRANSACTION
+} from '../graphQL/mutations';
 
 export default function Account() {
   const { id } = useParams();
@@ -60,36 +33,145 @@ export default function Account() {
     setIsHidden(false);
   };
 
+  const onDragEnd = result => {
+    const { source, destination, draggableId } = result;
+    const transactions = [...queryData.account.transactions];
+
+    if (!destination || source.index === destination.index) {
+      return;
+    }
+
+    transactions.forEach(transaction => {
+      const {
+        _id,
+        description,
+        recurrence,
+        amount,
+        type,
+        startDate,
+        displayOrder
+      } = transaction;
+
+      let startDateFormatted = new Date(Number(startDate));
+      startDateFormatted = `${startDateFormatted.getUTCFullYear()}-${
+        startDateFormatted.getUTCMonth() + 1 < 10
+          ? `0${startDateFormatted.getUTCMonth() + 1}`
+          : startDateFormatted.getUTCMonth()
+      }-${
+        startDateFormatted.getUTCDate() < 10
+          ? `0${startDateFormatted.getUTCDate()}`
+          : startDateFormatted.getUTCDate()
+      }`;
+
+      if (_id === draggableId) {
+        updateTransaction({
+          variables: {
+            transactionId: draggableId,
+            description,
+            recurrence,
+            amount,
+            type,
+            startDate: startDateFormatted,
+            displayOrder: destination.index
+          },
+          update(cache) {
+            const normalizedId = cache.identify({
+              id: _id,
+              __typename: 'Transaction'
+            });
+            cache.evict({ id: normalizedId });
+            cache.gc();
+          }
+        });
+      } else if (source.index < destination.index) {
+        if (displayOrder > source.index && displayOrder <= destination.index) {
+          updateTransaction({
+            variables: {
+              transactionId: _id,
+              description,
+              recurrence,
+              amount,
+              type,
+              startDate: startDateFormatted,
+              displayOrder: displayOrder - 1
+            },
+            update(cache) {
+              const normalizedId = cache.identify({
+                id: _id,
+                __typename: 'Transaction'
+              });
+              cache.evict({ id: normalizedId });
+              cache.gc();
+            }
+          });
+        }
+      } else if (destination.index < source.index) {
+        if (displayOrder >= destination.index && displayOrder < source.index) {
+          updateTransaction({
+            variables: {
+              transactionId: _id,
+              description,
+              recurrence,
+              amount,
+              type,
+              startDate: startDateFormatted,
+              displayOrder: displayOrder + 1
+            },
+            update(cache) {
+              const normalizedId = cache.identify({
+                id: _id,
+                __typename: 'Transaction'
+              });
+              cache.evict({ id: normalizedId });
+              cache.gc();
+            }
+          });
+        }
+      }
+    });
+  };
+
   const {
     loading: queryLoading,
     error: queryError,
     data: queryData
   } = useQuery(GET_ACCOUNT, {
-    variables: { id }
+    variables: { id },
+    pollInterval: 100
   });
 
   const [updateAccount, { mutationLoading, mutationError }] = useMutation(
     UPDATE_ACCOUNT,
-    { refetchQueries: { query: GET_ACCOUNT, variables: { id } } }
+    {
+      refetchQueries: [{ query: GET_ACCOUNT, variables: { id } }]
+    }
   );
 
   const [deleteAccount, { deleteMutationLoading, deleteMutationError }] =
-    useMutation(DELETE_ACCOUNT);
+    useMutation(DELETE_ACCOUNT, {
+      refetchQueries: [{ query: GET_ACCOUNTS }]
+    });
+
+  const [updateTransaction] = useMutation(UPDATE_TRANSACTION);
 
   if (queryLoading || mutationLoading || deleteMutationLoading)
     return <p>Loading...</p>;
   if (queryError || mutationError || deleteMutationError)
     return <p>Error 😢</p>;
 
+  const sortedTransactions = [...queryData.account.transactions].sort(
+    (a, b) => a.displayOrder - b.displayOrder
+  );
+
   return (
-    <>
+    <DragDropContext onDragEnd={onDragEnd}>
       <div className='accountHeading'>
         {isEditing ? (
           <>
             <input
               type='text'
               value={accountName}
-              class='accountNameUpdateInput'
+              className='accountNameUpdateInput'
               onChange={e => {
                 setAccountName(e.target.value);
               }}
@@ -130,20 +212,29 @@ export default function Account() {
         )}
       </div>
       <h2>Transactions</h2>
-      <div className='transactions'>
-        {queryData.account.transactions.map(transaction => {
-          return (
-            <Transaction
-              key={transaction._id}
-              transaction={transaction}
-              handleAddTransaction={handleAddTransaction}
-              setFormData={setFormData}
-              getAccount={GET_ACCOUNT}
-              accountId={queryData.account._id}
-            />
-          );
-        })}
-      </div>
+      <Droppable droppableId={queryData.account._id}>
+        {provided => (
+          <div
+            className='transactions'
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {sortedTransactions.map((transaction, index) => {
+              return (
+                <Transaction
+                  key={transaction._id}
+                  index={index}
+                  transaction={transaction}
+                  handleAddTransaction={handleAddTransaction}
+                  setFormData={setFormData}
+                  accountId={queryData.account._id}
+                />
+              );
+            })}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
       <div className='btnGroup'>
         <button
           id='addTransactionBtn'
@@ -161,9 +252,8 @@ export default function Account() {
         setIsHidden={setIsHidden}
         formData={formData}
         setFormData={setFormData}
-        getAccount={GET_ACCOUNT}
         accountId={queryData.account._id}
       />
-    </>
+    </DragDropContext>
   );
 }

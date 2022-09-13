@@ -1,19 +1,13 @@
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import Modal from './Modal';
 
-const ADD_ACCOUNT = gql`
-  mutation AddAccount($accountName: String!) {
-    addAccount(accountName: $accountName) {
-      _id
-      name
-    }
-  }
-`;
+import { GET_ACCOUNTS } from '../graphQL/queries';
+import { ADD_ACCOUNT } from '../graphQL/mutations';
 
-const NewAccountForm = ({ isHidden, setIsHidden, getAccounts }) => {
+const NewAccountForm = ({ isHidden, setIsHidden }) => {
   let input;
   const [addAccount, { loading, error }] = useMutation(ADD_ACCOUNT, {
-    refetchQueries: [getAccounts]
+    refetchQueries: [{ query: GET_ACCOUNTS }]
   });
 
   if (loading) {
