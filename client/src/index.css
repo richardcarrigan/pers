@@ -192,27 +192,26 @@ h1,
   z-index: 1;
 }
 
-.transactions {
-  display: flex;
-  flex-direction: column;
-  margin: 25px 0;
-}
-
-.transactionCard {
+.transactionCard,
+.transactionListHeader {
   background-color: var(--light-bg);
   border-bottom: 3px solid var(--primary);
   display: flex;
   justify-content: space-between;
   padding: 15px;
 }
-.transactionCard * {
+.transactionCard *,
+.transactionListHeader * {
+  flex-basis: calc(100% / 7);
+  height: 35px;
+  padding: 5px;
   text-align: left;
-  flex-basis: 10%;
-  padding: 0 5px;
 }
 
-.transactionCard .transAmount {
-  text-align: right;
+.transactions {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
 }
 
 #addAccountBtn {

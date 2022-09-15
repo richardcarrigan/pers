@@ -115,32 +115,43 @@ const TransactionList = ({
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <>
       <h2>Transactions</h2>
-      <Droppable droppableId={accountId}>
-        {provided => (
-          <div
-            className='transactions'
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {sortedTransactions.map((transaction, index) => {
-              return (
-                <Transaction
-                  key={transaction._id}
-                  index={index}
-                  transaction={transaction}
-                  handleAddTransaction={handleAddTransaction}
-                  setFormData={setFormData}
-                  accountId={accountId}
-                />
-              );
-            })}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={accountId}>
+          {provided => (
+            <div
+              className='transactions'
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              <div className='transactionListHeader'>
+                <h3>Start Date</h3>
+                <h3>Description</h3>
+                <h3>Recurrence</h3>
+                <h3>Amount</h3>
+                <h3>Transaction Type</h3>
+                <h3>Edit</h3>
+                <h3>Delete</h3>
+              </div>
+              {sortedTransactions.map((transaction, index) => {
+                return (
+                  <Transaction
+                    key={transaction._id}
+                    index={index}
+                    transaction={transaction}
+                    handleAddTransaction={handleAddTransaction}
+                    setFormData={setFormData}
+                    accountId={accountId}
+                  />
+                );
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
   );
 };
 
