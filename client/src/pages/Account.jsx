@@ -1,23 +1,18 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
+import AccountHeading from '../components/AccountHeading';
 import Transaction from '../components/Transaction';
 import NewTransactionForm from '../components/NewTransactionForm';
 
-import { GET_ACCOUNT, GET_ACCOUNTS } from '../graphQL/queries';
-import {
-  UPDATE_ACCOUNT,
-  DELETE_ACCOUNT,
-  UPDATE_TRANSACTION
-} from '../graphQL/mutations';
+import { GET_ACCOUNT } from '../graphQL/queries';
+import { UPDATE_TRANSACTION } from '../graphQL/mutations';
 
 export default function Account() {
   const { id } = useParams();
   const [isHidden, setIsHidden] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     description: '',
     recurrence: 'none',
@@ -25,7 +20,6 @@ export default function Account() {
     type: 'expense',
     startDate: ''
   });
-  const [accountName, setAccountName] = useState('');
 
   const navigate = useNavigate();
 
@@ -140,24 +134,10 @@ export default function Account() {
     pollInterval: 100
   });
 
-  const [updateAccount, { mutationLoading, mutationError }] = useMutation(
-    UPDATE_ACCOUNT,
-    {
-      refetchQueries: [{ query: GET_ACCOUNT, variables: { id } }]
-    }
-  );
-
-  const [deleteAccount, { deleteMutationLoading, deleteMutationError }] =
-    useMutation(DELETE_ACCOUNT, {
-      refetchQueries: [{ query: GET_ACCOUNTS }]
-    });
-
   const [updateTransaction] = useMutation(UPDATE_TRANSACTION);
 
-  if (queryLoading || mutationLoading || deleteMutationLoading)
-    return <p>Loading...</p>;
-  if (queryError || mutationError || deleteMutationError)
-    return <p>Error 😢</p>;
+  if (queryLoading) return <p>Loading...</p>;
+  if (queryError) return <p>Error 😢</p>;
 
   const sortedTransactions = [...queryData.account.transactions].sort(
     (a, b) => a.displayOrder - b.displayOrder
@@ -165,52 +145,10 @@ export default function Account() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className='accountHeading'>
-        {isEditing ? (
-          <>
-            <input
-              type='text'
-              value={accountName}
-              className='accountNameUpdateInput'
-              onChange={e => {
-                setAccountName(e.target.value);
-              }}
-            />
-            <FaSave
-              className='btn'
-              onClick={e => {
-                setIsEditing(false);
-                updateAccount({
-                  variables: {
-                    accountId: queryData.account._id,
-                    updatedAccountName: accountName
-                  }
-                });
-              }}
-            />
-          </>
-        ) : (
-          <>
-            <h1>{queryData.account.name}</h1>
-            <FaPencilAlt
-              className='btn'
-              onClick={e => {
-                setAccountName(queryData.account.name);
-                setIsEditing(true);
-              }}
-            />
-            <FaTrashAlt
-              className='btn'
-              onClick={e => {
-                deleteAccount({
-                  variables: { accountId: queryData.account._id }
-                });
-                navigate('/');
-              }}
-            />
-          </>
-        )}
-      </div>
+      <AccountHeading
+        accountId={queryData.account._id}
+        accountNameProp={queryData.account.name}
+      />
       <h2>Transactions</h2>
       <Droppable droppableId={queryData.account._id}>
         {provided => (
