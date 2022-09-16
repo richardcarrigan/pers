@@ -7,7 +7,13 @@ import { ADD_ACCOUNT } from '../graphQL/mutations';
 const NewAccountForm = ({ isHidden, setIsHidden }) => {
   let input;
   const [addAccount, { loading, error }] = useMutation(ADD_ACCOUNT, {
-    refetchQueries: [{ query: GET_ACCOUNTS }]
+    update(cache, { data: { addAccount } }) {
+      const data = { ...cache.readQuery({ query: GET_ACCOUNTS }) };
+      console.log(data.accounts);
+      data.accounts = [...data.accounts, addAccount];
+      console.log(data.accounts);
+      cache.writeQuery({ query: GET_ACCOUNTS, data });
+    }
   });
 
   if (loading) {
@@ -24,7 +30,14 @@ const NewAccountForm = ({ isHidden, setIsHidden }) => {
         onSubmit={e => {
           e.preventDefault();
           addAccount({
-            variables: { accountName: input.value }
+            variables: { accountName: input.value },
+            optimisticResponse: {
+              addAccount: {
+                _id: 'temp-id',
+                __typename: 'Account',
+                name: input.value
+              }
+            }
           });
           input.value = '';
           setIsHidden(true);

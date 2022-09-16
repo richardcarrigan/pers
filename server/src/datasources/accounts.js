@@ -3,8 +3,8 @@ const { ObjectId } = require('mongodb');
 
 class Accounts extends MongoDataSource {
   // Create methods
-  addAccount(accountName) {
-    const result = this.collection.insertOne({ name: accountName });
+  async addAccount(accountName) {
+    const result = await this.collection.insertOne({ name: accountName });
     return this.findOneById(result.insertedId);
   }
 

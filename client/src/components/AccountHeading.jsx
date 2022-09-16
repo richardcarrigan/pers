@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 
-import { GET_ACCOUNT, GET_ACCOUNTS } from '../graphQL/queries';
 import { UPDATE_ACCOUNT, DELETE_ACCOUNT } from '../graphQL/mutations';
 
 const AccountHeading = ({ accountId, accountNameProp }) => {
@@ -12,17 +11,11 @@ const AccountHeading = ({ accountId, accountNameProp }) => {
 
   const navigate = useNavigate();
 
-  const [updateAccount, { mutationLoading, mutationError }] = useMutation(
-    UPDATE_ACCOUNT,
-    {
-      refetchQueries: [{ query: GET_ACCOUNT, variables: { id: accountId } }]
-    }
-  );
+  const [updateAccount, { mutationLoading, mutationError }] =
+    useMutation(UPDATE_ACCOUNT);
 
   const [deleteAccount, { deleteMutationLoading, deleteMutationError }] =
-    useMutation(DELETE_ACCOUNT, {
-      refetchQueries: [{ query: GET_ACCOUNTS }]
-    });
+    useMutation(DELETE_ACCOUNT);
 
   if (mutationLoading || deleteMutationLoading) return <p>Loading...</p>;
   if (mutationError || deleteMutationError) return <p>Error 😢</p>;

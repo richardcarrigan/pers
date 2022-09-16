@@ -6,19 +6,7 @@ import App from './App';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
-  cache: new InMemoryCache({
-    typePolicies: {
-      Account: {
-        fields: {
-          transactions: {
-            merge(_, incoming) {
-              return incoming;
-            }
-          }
-        }
-      }
-    }
-  })
+  cache: new InMemoryCache()
 });
 
 const container = document.getElementById('app');

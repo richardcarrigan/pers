@@ -30,8 +30,7 @@ export default function Account() {
     error: queryError,
     data: queryData
   } = useQuery(GET_ACCOUNT, {
-    variables: { id },
-    pollInterval: 100
+    variables: { id }
   });
 
   if (queryLoading) return <p>Loading...</p>;

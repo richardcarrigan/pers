@@ -2,7 +2,6 @@ import { FaDollarSign } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import Modal from './Modal';
 
-import { GET_ACCOUNT } from '../graphQL/queries';
 import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../graphQL/mutations';
 
 const NewTransactionForm = ({
@@ -31,14 +30,10 @@ const NewTransactionForm = ({
   }
 
   const [addTransaction, { addMutationLoading, addMutationError }] =
-    useMutation(ADD_TRANSACTION, {
-      refetchQueries: [{ query: GET_ACCOUNT, variables: { id: accountId } }]
-    });
+    useMutation(ADD_TRANSACTION);
 
   const [updateTransaction, { updateMutationLoading, updateMutationError }] =
-    useMutation(UPDATE_TRANSACTION, [
-      { refetchQueries: { query: GET_ACCOUNT, variables: { id: accountId } } }
-    ]);
+    useMutation(UPDATE_TRANSACTION);
 
   const handleFormChange = e => {
     if (e.target.id === 'amount') {

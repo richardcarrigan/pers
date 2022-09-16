@@ -2,24 +2,18 @@ import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import { Draggable } from 'react-beautiful-dnd';
 
-import { GET_ACCOUNT } from '../graphQL/queries';
 import { DELETE_TRANSACTION } from '../graphQL/mutations';
 
 export default function Transaction({
   index,
   transaction,
   handleAddTransaction,
-  setFormData,
-  accountId
+  setFormData
 }) {
   const { _id, description, recurrence, amount, type, startDate } = transaction;
 
-  const [deleteTransaction, { loading, error }] = useMutation(
-    DELETE_TRANSACTION,
-    {
-      refetchQueries: { query: GET_ACCOUNT, variables: { accountId } }
-    }
-  );
+  const [deleteTransaction, { loading, error }] =
+    useMutation(DELETE_TRANSACTION);
 
   const options = {
     timeZone: 'UTC',
@@ -65,15 +59,7 @@ export default function Transaction({
             className='btn'
             onClick={() => {
               deleteTransaction({
-                variables: { transactionId: _id },
-                update(cache) {
-                  const normalizedId = cache.identify({
-                    id: _id,
-                    __typename: 'Transaction'
-                  });
-                  cache.evict({ id: normalizedId });
-                  cache.gc();
-                }
+                variables: { transactionId: _id }
               });
             }}
           />

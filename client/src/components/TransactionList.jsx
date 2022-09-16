@@ -56,14 +56,6 @@ const TransactionList = ({
             type,
             startDate: startDateFormatted,
             displayOrder: destination.index
-          },
-          update(cache) {
-            const normalizedId = cache.identify({
-              id: _id,
-              __typename: 'Transaction'
-            });
-            cache.evict({ id: normalizedId });
-            cache.gc();
           }
         });
       } else if (source.index < destination.index) {
@@ -77,14 +69,6 @@ const TransactionList = ({
               type,
               startDate: startDateFormatted,
               displayOrder: displayOrder - 1
-            },
-            update(cache) {
-              const normalizedId = cache.identify({
-                id: _id,
-                __typename: 'Transaction'
-              });
-              cache.evict({ id: normalizedId });
-              cache.gc();
             }
           });
         }
@@ -99,14 +83,6 @@ const TransactionList = ({
               type,
               startDate: startDateFormatted,
               displayOrder: displayOrder + 1
-            },
-            update(cache) {
-              const normalizedId = cache.identify({
-                id: _id,
-                __typename: 'Transaction'
-              });
-              cache.evict({ id: normalizedId });
-              cache.gc();
             }
           });
         }

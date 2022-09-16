@@ -11,9 +11,7 @@ import { GET_ACCOUNTS } from '../graphQL/queries';
 
 export default function Home() {
   const [isHidden, setIsHidden] = useState(true);
-  const { loading, error, data } = useQuery(GET_ACCOUNTS, {
-    pollInterval: 100
-  });
+  const { loading, error, data } = useQuery(GET_ACCOUNTS);
 
   const handleAddAccount = () => {
     setIsHidden(false);
