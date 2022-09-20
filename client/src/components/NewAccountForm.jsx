@@ -9,9 +9,7 @@ const NewAccountForm = ({ isHidden, setIsHidden }) => {
   const [addAccount, { loading, error }] = useMutation(ADD_ACCOUNT, {
     update(cache, { data: { addAccount } }) {
       const data = { ...cache.readQuery({ query: GET_ACCOUNTS }) };
-      console.log(data.accounts);
       data.accounts = [...data.accounts, addAccount];
-      console.log(data.accounts);
       cache.writeQuery({ query: GET_ACCOUNTS, data });
     }
   });
