@@ -16,7 +16,8 @@ export default function Account() {
     recurrence: 'none',
     amount: 0.01,
     type: 'expense',
-    startDate: ''
+    startDate: '',
+    displayOrder: 0
   });
 
   const navigate = useNavigate();
@@ -65,6 +66,7 @@ export default function Account() {
         formData={formData}
         setFormData={setFormData}
         accountId={id}
+        transactionCount={transactions.length}
       />
     </>
   );

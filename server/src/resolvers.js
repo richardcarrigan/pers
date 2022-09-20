@@ -38,7 +38,15 @@ const resolvers = {
     },
     addTransaction: (
       _,
-      { description, recurrence, amount, type, startDate, accountId },
+      {
+        description,
+        recurrence,
+        amount,
+        type,
+        startDate,
+        accountId,
+        displayOrder
+      },
       { dataSources }
     ) => {
       return dataSources.transactions.addTransaction(
@@ -47,7 +55,8 @@ const resolvers = {
         amount,
         type,
         startDate,
-        accountId
+        accountId,
+        displayOrder
       );
     },
     updateTransaction: (

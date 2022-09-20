@@ -37,6 +37,7 @@ export const ADD_TRANSACTION = gql`
     $type: TransactionTypes!
     $startDate: String!
     $accountId: ID!
+    $displayOrder: Int!
   ) {
     addTransaction(
       description: $description
@@ -45,6 +46,7 @@ export const ADD_TRANSACTION = gql`
       type: $type
       startDate: $startDate
       accountId: $accountId
+      displayOrder: $displayOrder
     ) {
       _id
       description
@@ -52,6 +54,7 @@ export const ADD_TRANSACTION = gql`
       amount
       type
       startDate
+      displayOrder
     }
   }
 `;

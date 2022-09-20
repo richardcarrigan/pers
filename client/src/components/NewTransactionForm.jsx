@@ -2,6 +2,7 @@ import { FaDollarSign } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import Modal from './Modal';
 
+import { GET_ACCOUNT } from '../graphQL/queries';
 import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../graphQL/mutations';
 
 const NewTransactionForm = ({
@@ -9,9 +10,11 @@ const NewTransactionForm = ({
   setIsHidden,
   formData,
   setFormData,
-  accountId
+  accountId,
+  transactionCount
 }) => {
-  const { description, recurrence, amount, type, startDate } = formData;
+  const { description, recurrence, amount, type, startDate, displayOrder } =
+    formData;
 
   let startDateFormatted;
   if (formData._id) {
@@ -30,7 +33,21 @@ const NewTransactionForm = ({
   }
 
   const [addTransaction, { addMutationLoading, addMutationError }] =
-    useMutation(ADD_TRANSACTION);
+    useMutation(ADD_TRANSACTION, {
+      update(cache, { data: { addTransaction } }) {
+        const data = {
+          ...cache.readQuery({
+            query: GET_ACCOUNT,
+            variables: { id: accountId }
+          })
+        };
+        data.account = {
+          ...data.account,
+          transactions: [...data.account.transactions, addTransaction]
+        };
+        cache.writeQuery({ query: GET_ACCOUNT, data });
+      }
+    });
 
   const [updateTransaction, { updateMutationLoading, updateMutationError }] =
     useMutation(UPDATE_TRANSACTION);
@@ -68,12 +85,29 @@ const NewTransactionForm = ({
                 recurrence,
                 amount,
                 type,
-                startDate: startDateFormatted
+                startDate: startDateFormatted,
+                displayOrder
               }
             });
           } else {
             addTransaction({
-              variables: { ...formData, accountId }
+              variables: {
+                ...formData,
+                accountId,
+                displayOrder: transactionCount
+              },
+              optimisticResponse: {
+                addTransaction: {
+                  _id: 'temp-id',
+                  __typename: 'Transaction',
+                  description,
+                  recurrence,
+                  amount,
+                  type,
+                  startDate: Date.parse(startDate).toString(),
+                  displayOrder
+                }
+              }
             });
           }
           setIsHidden(true);
@@ -82,7 +116,8 @@ const NewTransactionForm = ({
             recurrence: 'none',
             amount: 0.01,
             type: 'expense',
-            startDate: ''
+            startDate: '',
+            displayOrder: 0
           });
         }}
       >
@@ -151,7 +186,8 @@ const NewTransactionForm = ({
                 recurrence: 'none',
                 amount: 0.01,
                 type: 'expense',
-                startDate: ''
+                startDate: '',
+                displayOrder: 0
               });
             }}
           >

@@ -9,7 +9,8 @@ class Transactions extends MongoDataSource {
     amount,
     type,
     startDate,
-    accountId
+    accountId,
+    displayOrder
   ) {
     const startDateFormatted = new Date(startDate);
     if (startDateFormatted.toString() === 'Invalid Date') {
@@ -21,7 +22,8 @@ class Transactions extends MongoDataSource {
         amount: Number(amount),
         type,
         startDate: startDateFormatted,
-        account: ObjectId(accountId)
+        account: ObjectId(accountId),
+        displayOrder
       });
       return this.findOneById(result.insertedId);
     }
