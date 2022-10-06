@@ -67,7 +67,7 @@ export const UPDATE_TRANSACTION = gql`
     $amount: Float!
     $type: TransactionTypes!
     $startDate: String!
-    $displayOrder: Int
+    $displayOrder: Int!
   ) {
     updateTransaction(
       transactionId: $transactionId
