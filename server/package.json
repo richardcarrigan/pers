@@ -21,10 +21,10 @@
     "apollo-datasource-mongodb": "^0.5.4",
     "apollo-server": "^3.10.2",
     "graphql": "^16.6.0",
-    "mongodb": "^4.9.1"
+    "mongodb": "^4.10.0"
   },
   "devDependencies": {
-    "dotenv": "^16.0.2",
-    "nodemon": "^2.0.19"
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20"
   }
 }
