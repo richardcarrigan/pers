@@ -118,7 +118,6 @@ const TransactionList = ({
                     transaction={transaction}
                     handleAddTransaction={handleAddTransaction}
                     setFormData={setFormData}
-                    accountId={accountId}
                   />
                 );
               })}

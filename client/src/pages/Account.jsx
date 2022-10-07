@@ -71,6 +71,7 @@ export default function Account() {
         setFormData={setFormData}
         accountId={id}
         transactionCount={transactions.length}
+        accountName={name}
       />
     </>
   );
