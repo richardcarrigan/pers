@@ -41,7 +41,11 @@ export default function Account() {
 
   return (
     <>
-      <AccountHeading accountId={id} accountNameProp={name} />
+      <AccountHeading
+        accountId={id}
+        accountNameProp={name}
+        transactions={transactions}
+      />
       <TransactionList
         transactionsProp={transactions}
         accountId={id}
