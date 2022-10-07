@@ -5,22 +5,22 @@ class Accounts extends MongoDataSource {
   // Create methods
   async addAccount(accountName) {
     const result = await this.collection.insertOne({ name: accountName });
-    return this.findOneById(result.insertedId);
+    return await this.findOneById(result.insertedId);
   }
 
   // Read methods
-  getAccounts() {
-    return this.findByFields({});
+  async getAccounts() {
+    return await this.findByFields({});
   }
 
-  getAccount(accountId) {
-    return this.findOneById(accountId);
+  async getAccount(accountId) {
+    return await this.findOneById(accountId);
   }
 
   // Update methods
-  updateAccount(accountId, updatedAccountName) {
-    this.deleteFromCacheById(accountId);
-    this.collection.updateOne(
+  async updateAccount(accountId, updatedAccountName) {
+    await this.deleteFromCacheById(accountId);
+    await this.collection.updateOne(
       { _id: ObjectId(accountId) },
       {
         $set: {
@@ -28,13 +28,13 @@ class Accounts extends MongoDataSource {
         }
       }
     );
-    return this.findOneById(accountId);
+    return await this.findOneById(accountId);
   }
 
   // Delete methods
-  deleteAccount(accountId) {
-    this.collection.deleteOne({ _id: ObjectId(accountId) });
-    this.deleteFromCacheById(accountId);
+  async deleteAccount(accountId) {
+    await this.collection.deleteOne({ _id: ObjectId(accountId) });
+    await this.deleteFromCacheById(accountId);
     return { _id: accountId };
   }
 }

@@ -41,7 +41,11 @@ export default function Account() {
 
   return (
     <>
-      <AccountHeading accountId={id} accountNameProp={name} />
+      <AccountHeading
+        accountId={id}
+        accountNameProp={name}
+        transactions={transactions}
+      />
       <TransactionList
         transactionsProp={transactions}
         accountId={id}
@@ -67,6 +71,7 @@ export default function Account() {
         setFormData={setFormData}
         accountId={id}
         transactionCount={transactions.length}
+        accountName={name}
       />
     </>
   );

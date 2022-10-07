@@ -25,17 +25,17 @@ class Transactions extends MongoDataSource {
         account: ObjectId(accountId),
         displayOrder
       });
-      return this.findOneById(result.insertedId);
+      return await this.findOneById(result.insertedId);
     }
   }
 
   // Get an array of an account's transactions
-  getTransactions(accountId) {
-    return this.findByFields({ account: accountId });
+  async getTransactions(accountId) {
+    return await this.findByFields({ account: accountId });
   }
 
   // Update a transaction
-  updateTransaction(
+  async updateTransaction(
     transactionId,
     description,
     recurrence,
@@ -48,8 +48,8 @@ class Transactions extends MongoDataSource {
     if (startDateFormatted.toString() === 'Invalid Date') {
       throw new Error('Start date is not valid');
     } else {
-      this.deleteFromCacheById(transactionId);
-      this.collection.updateOne(
+      await this.deleteFromCacheById(transactionId);
+      await this.collection.updateOne(
         { _id: ObjectId(transactionId) },
         {
           $set: {
@@ -62,14 +62,14 @@ class Transactions extends MongoDataSource {
           }
         }
       );
-      return this.findOneById(transactionId);
+      return await this.findOneById(transactionId);
     }
   }
 
   // Delete a transaction
-  deleteTransaction(transactionId) {
-    this.collection.deleteOne({ _id: ObjectId(transactionId) });
-    this.deleteFromCacheById(transactionId);
+  async deleteTransaction(transactionId) {
+    await this.collection.deleteOne({ _id: ObjectId(transactionId) });
+    await this.deleteFromCacheById(transactionId);
     return { _id: transactionId };
   }
 }

@@ -11,13 +11,21 @@ const NewTransactionForm = ({
   formData,
   setFormData,
   accountId,
-  transactionCount
+  transactionCount,
+  accountName
 }) => {
-  const { description, recurrence, amount, type, startDate, displayOrder } =
-    formData;
+  const {
+    _id,
+    description,
+    recurrence,
+    amount,
+    type,
+    startDate,
+    displayOrder
+  } = formData;
 
   let startDateFormatted;
-  if (formData._id) {
+  if (_id) {
     startDateFormatted = new Date(Number(startDate));
     startDateFormatted = `${startDateFormatted.getUTCFullYear()}-${
       startDateFormatted.getUTCMonth() + 1 < 10
@@ -50,7 +58,16 @@ const NewTransactionForm = ({
     });
 
   const [updateTransaction, { updateMutationLoading, updateMutationError }] =
-    useMutation(UPDATE_TRANSACTION);
+    useMutation(UPDATE_TRANSACTION, {
+      update(cache, { data: { updateTransaction } }) {
+        const data = {
+          ...cache.readQuery({
+            query: GET_ACCOUNT,
+            variables: { id: accountId }
+          })
+        };
+      }
+    });
 
   const handleFormChange = e => {
     if (e.target.id === 'amount') {
@@ -73,20 +90,37 @@ const NewTransactionForm = ({
       setIsHidden={setIsHidden}
       setFormData={setFormData}
     >
-      <h1>{`${formData._id ? 'Update' : 'Add a new'} transaction`}</h1>
+      <h1>{`${_id ? 'Update' : 'Add a new'} transaction`}</h1>
       <form
         onSubmit={e => {
           e.preventDefault();
-          if (formData._id) {
+          if (_id) {
             updateTransaction({
               variables: {
-                transactionId: formData._id,
+                transactionId: _id,
                 description,
                 recurrence,
                 amount,
                 type,
                 startDate: startDateFormatted,
                 displayOrder
+              },
+              optimisticResponse: {
+                updateTransaction: {
+                  _id,
+                  __typename: 'Transaction',
+                  description,
+                  recurrence,
+                  amount,
+                  type,
+                  startDate,
+                  displayOrder,
+                  account: {
+                    _id: accountId,
+                    __typename: 'Account',
+                    name: accountName
+                  }
+                }
               }
             });
           } else {
