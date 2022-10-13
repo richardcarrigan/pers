@@ -19,6 +19,10 @@ const typeDefs = gql`
     transactions: [Transaction]!
   }
 
+  type DeleteAccountPayload {
+    _id: ID!
+  }
+
   type Transaction {
     _id: ID!
     description: String!
@@ -28,6 +32,10 @@ const typeDefs = gql`
     startDate: String!
     displayOrder: Int!
     account: Account!
+  }
+
+  type DeleteTransactionPayload {
+    _id: ID!
   }
 
   type Query {
@@ -42,7 +50,7 @@ const typeDefs = gql`
 
     updateAccount(accountId: ID!, updatedAccountName: String!): Account
 
-    deleteAccount(accountId: ID!): Account
+    deleteAccount(accountId: ID!): DeleteAccountPayload
 
     addTransaction(
       description: String!
@@ -64,7 +72,7 @@ const typeDefs = gql`
       displayOrder: Int!
     ): Transaction
 
-    deleteTransaction(transactionId: ID!): Transaction
+    deleteTransaction(transactionId: ID!): DeleteTransactionPayload
   }
 `;
 
