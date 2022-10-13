@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 
-import { GET_ACCOUNT } from '../graphQL/queries';
+import { GET_ACCOUNT, GET_ACCOUNTS } from '../graphQL/queries';
 import { UPDATE_ACCOUNT, DELETE_ACCOUNT } from '../graphQL/mutations';
 
 const AccountHeading = ({ accountId, accountNameProp, transactions }) => {
@@ -29,7 +29,20 @@ const AccountHeading = ({ accountId, accountNameProp, transactions }) => {
   );
 
   const [deleteAccount, { deleteMutationLoading, deleteMutationError }] =
-    useMutation(DELETE_ACCOUNT);
+    useMutation(DELETE_ACCOUNT, {
+      update(cache, { data: { deleteAccount } }) {
+        const data = {
+          ...cache.readQuery({
+            query: GET_ACCOUNTS
+          })
+        };
+        const updatedAccounts = data.accounts.filter(account => {
+          return account._id !== deleteAccount._id;
+        });
+        data.accounts = updatedAccounts;
+        cache.writeQuery({ query: GET_ACCOUNTS, data });
+      }
+    });
 
   if (mutationLoading || deleteMutationLoading) return <p>Loading...</p>;
   if (mutationError || deleteMutationError) return <p>Error 😢</p>;
@@ -80,7 +93,13 @@ const AccountHeading = ({ accountId, accountNameProp, transactions }) => {
             className='btn'
             onClick={() => {
               deleteAccount({
-                variables: { accountId }
+                variables: { accountId },
+                optimisticResponse: {
+                  deleteAccount: {
+                    _id: accountId,
+                    __typename: 'Account'
+                  }
+                }
               });
               navigate('/');
             }}
