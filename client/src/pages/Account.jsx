@@ -51,6 +51,7 @@ export default function Account() {
         accountId={id}
         handleAddTransaction={handleAddTransaction}
         setFormData={setFormData}
+        accountName={name}
       />
       <div className='btnGroup'>
         <button

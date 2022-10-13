@@ -3,14 +3,38 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import Transaction from '../components/Transaction';
 import { UPDATE_TRANSACTION } from '../graphQL/mutations';
+import { GET_ACCOUNT } from '../graphQL/queries';
 
 const TransactionList = ({
   transactionsProp,
   accountId,
   handleAddTransaction,
-  setFormData
+  setFormData,
+  accountName
 }) => {
-  const [updateTransaction] = useMutation(UPDATE_TRANSACTION);
+  const [updateTransaction] = useMutation(UPDATE_TRANSACTION, {
+    update(cache, { data: { updateTransaction } }) {
+      const data = {
+        ...cache.readQuery({
+          query: GET_ACCOUNT,
+          variables: { id: accountId }
+        })
+      };
+      const updatedTransaction = { ...updateTransaction };
+      delete updatedTransaction.account;
+      const updatedTransactions = [...data.account.transactions];
+      const index = updatedTransactions.findIndex(transaction => {
+        return transaction._id === updatedTransaction._id;
+      });
+      updatedTransactions.splice(index, 1, updatedTransaction);
+      data.account = { ...data.account, transactions: updatedTransactions };
+      cache.writeQuery({
+        query: GET_ACCOUNT,
+        variables: { id: accountId },
+        data
+      });
+    }
+  });
 
   const sortedTransactions = [...transactionsProp].sort(
     (a, b) => a.displayOrder - b.displayOrder
@@ -56,6 +80,23 @@ const TransactionList = ({
             type,
             startDate: startDateFormatted,
             displayOrder: destination.index
+          },
+          optimisticResponse: {
+            updateTransaction: {
+              _id,
+              __typename: 'Transaction',
+              description,
+              recurrence,
+              amount,
+              type,
+              startDate,
+              displayOrder: destination.index,
+              account: {
+                _id: accountId,
+                __typename: 'Account',
+                name: accountName
+              }
+            }
           }
         });
       } else if (source.index < destination.index) {
@@ -69,6 +110,23 @@ const TransactionList = ({
               type,
               startDate: startDateFormatted,
               displayOrder: displayOrder - 1
+            },
+            optimisticResponse: {
+              updateTransaction: {
+                _id,
+                __typename: 'Transaction',
+                description,
+                recurrence,
+                amount,
+                type,
+                startDate,
+                displayOrder: displayOrder - 1,
+                account: {
+                  _id: accountId,
+                  __typename: 'Account',
+                  name: accountName
+                }
+              }
             }
           });
         }
@@ -83,6 +141,23 @@ const TransactionList = ({
               type,
               startDate: startDateFormatted,
               displayOrder: displayOrder + 1
+            },
+            optimisticResponse: {
+              updateTransaction: {
+                _id,
+                __typename: 'Transaction',
+                description,
+                recurrence,
+                amount,
+                type,
+                startDate,
+                displayOrder: displayOrder + 1,
+                account: {
+                  _id: accountId,
+                  __typename: 'Account',
+                  name: accountName
+                }
+              }
             }
           });
         }

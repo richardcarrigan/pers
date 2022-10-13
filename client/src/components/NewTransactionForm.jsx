@@ -66,6 +66,19 @@ const NewTransactionForm = ({
             variables: { id: accountId }
           })
         };
+        const updatedTransaction = { ...updateTransaction };
+        delete updatedTransaction.account;
+        const updatedTransactions = [...data.account.transactions];
+        const index = updatedTransactions.findIndex(transaction => {
+          return transaction._id === _id;
+        });
+        updatedTransactions.splice(index, 1, updatedTransaction);
+        data.account = { ...data.account, transactions: updatedTransactions };
+        cache.writeQuery({
+          query: GET_ACCOUNT,
+          variables: { id: accountId },
+          data
+        });
       }
     });
 
