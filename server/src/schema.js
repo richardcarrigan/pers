@@ -15,6 +15,7 @@ const typeDefs = gql`
 
   type Account {
     _id: ID!
+    balance: Float!
     name: String!
     transactions: [Transaction]!
   }
