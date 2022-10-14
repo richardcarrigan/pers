@@ -183,7 +183,9 @@ h1,
   color: white;
   min-height: 25%;
   padding: 15px 0;
+  position: relative;
   text-align: center;
+  z-index: 0;
 }
 
 .card header h2 {

@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 
 export const ADD_ACCOUNT = gql`
-  mutation AddAccount($accountName: String!) {
-    addAccount(accountName: $accountName) {
+  mutation AddAccount($name: String!, $balance: Float!) {
+    addAccount(name: $name, balance: $balance) {
       _id
       name
+      balance
     }
   }
 `;
