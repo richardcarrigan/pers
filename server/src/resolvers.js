@@ -20,8 +20,8 @@ const resolvers = {
     }
   },
   Mutation: {
-    addAccount: (_, { accountName }, { dataSources }) => {
-      return dataSources.accounts.addAccount(accountName);
+    addAccount: (_, { name, balance }, { dataSources }) => {
+      return dataSources.accounts.addAccount(name, balance);
     },
     updateAccount: (_, { accountId, updatedAccountName }, { dataSources }) => {
       return dataSources.accounts.updateAccount(accountId, updatedAccountName);

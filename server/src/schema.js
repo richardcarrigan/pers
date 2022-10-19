@@ -15,6 +15,7 @@ const typeDefs = gql`
 
   type Account {
     _id: ID!
+    balance: Float!
     name: String!
     transactions: [Transaction]!
   }
@@ -46,7 +47,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addAccount(accountName: String!): Account
+    addAccount(name: String!, balance: Float!): Account
 
     updateAccount(accountId: ID!, updatedAccountName: String!): Account
 

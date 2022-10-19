@@ -31,8 +31,8 @@ export default function Home() {
               to={`/accounts/${account._id}`}
               element={<Account />}
             >
-              <Card heading={account.name}>
-                <p>Click to view transactions</p>
+              <Card heading={account.name} footer='Click to view transactions'>
+                <h3>{`Balance: $${account.balance}`}</h3>
               </Card>
             </Link>
           );
