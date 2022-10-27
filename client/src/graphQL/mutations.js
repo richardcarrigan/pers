@@ -11,13 +11,11 @@ export const ADD_ACCOUNT = gql`
 `;
 
 export const UPDATE_ACCOUNT = gql`
-  mutation UpdateAccount($accountId: ID!, $updatedAccountName: String!) {
-    updateAccount(
-      accountId: $accountId
-      updatedAccountName: $updatedAccountName
-    ) {
+  mutation UpdateAccount($accountId: ID!, $name: String!, $balance: Float!) {
+    updateAccount(accountId: $accountId, name: $name, balance: $balance) {
       _id
       name
+      balance
     }
   }
 `;

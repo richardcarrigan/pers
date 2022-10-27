@@ -8,8 +8,8 @@ import { GET_ACCOUNT } from '../graphQL/queries';
 export default function Transaction({
   index,
   transaction,
-  handleAddTransaction,
-  setFormData,
+  setIsTransactionFormVisible,
+  setTransactionFormData,
   accountId
 }) {
   const { _id, description, recurrence, amount, type, startDate } = transaction;
@@ -75,22 +75,26 @@ export default function Transaction({
           <FaPencilAlt
             className='btn'
             onClick={() => {
-              setFormData(transaction);
-              handleAddTransaction(transaction);
+              if (description !== 'Initial balance') {
+                setTransactionFormData(transaction);
+                setIsTransactionFormVisible(true);
+              }
             }}
           />
           <FaTrashAlt
             className='btn'
             onClick={() => {
-              deleteTransaction({
-                variables: { transactionId: _id },
-                optimisticResponse: {
-                  deleteTransaction: {
-                    _id,
-                    __typename: 'Transaction'
+              if (description !== 'Initial balance') {
+                deleteTransaction({
+                  variables: { transactionId: _id },
+                  optimisticResponse: {
+                    deleteTransaction: {
+                      _id,
+                      __typename: 'Transaction'
+                    }
                   }
-                }
-              });
+                });
+              }
             }}
           />
         </div>

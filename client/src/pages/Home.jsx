@@ -9,13 +9,9 @@ import Account from './Account';
 
 import { GET_ACCOUNTS } from '../graphQL/queries';
 
-export default function Home() {
-  const [isHidden, setIsHidden] = useState(true);
+export default function Home({ accountFormData, setAccountFormData }) {
+  const [isAccountFormVisible, setIsAccountFormVisible] = useState(false);
   const { loading, error, data } = useQuery(GET_ACCOUNTS);
-
-  const handleAddAccount = () => {
-    setIsHidden(false);
-  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
@@ -37,11 +33,20 @@ export default function Home() {
             </Link>
           );
         })}
-        <button id='addAccountBtn' type='button' onClick={handleAddAccount}>
+        <button
+          id='addAccountBtn'
+          type='button'
+          onClick={() => setIsAccountFormVisible(true)}
+        >
           Add new account
         </button>
       </div>
-      <NewAccountForm isHidden={isHidden} setIsHidden={setIsHidden} />
+      <NewAccountForm
+        isVisible={isAccountFormVisible}
+        setIsVisible={setIsAccountFormVisible}
+        formData={accountFormData}
+        setFormData={setAccountFormData}
+      />
     </>
   );
 }

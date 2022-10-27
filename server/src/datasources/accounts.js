@@ -21,13 +21,14 @@ class Accounts extends MongoDataSource {
   }
 
   // Update methods
-  async updateAccount(accountId, updatedAccountName) {
+  async updateAccount(accountId, name, balance) {
     await this.deleteFromCacheById(accountId);
     await this.collection.updateOne(
       { _id: ObjectId(accountId) },
       {
         $set: {
-          name: updatedAccountName
+          name,
+          balance
         }
       }
     );
