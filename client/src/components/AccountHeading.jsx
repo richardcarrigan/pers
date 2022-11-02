@@ -1,32 +1,18 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaPencilAlt, FaSave, FaTrashAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 
-import { GET_ACCOUNT, GET_ACCOUNTS } from '../graphQL/queries';
-import { UPDATE_ACCOUNT, DELETE_ACCOUNT } from '../graphQL/mutations';
+import { GET_ACCOUNTS } from '../graphQL/queries';
+import { DELETE_ACCOUNT } from '../graphQL/mutations';
 
-const AccountHeading = ({ accountId, accountNameProp, transactions }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [accountName, setAccountName] = useState('');
-
+const AccountHeading = ({
+  _id,
+  name,
+  balance,
+  setIsAccountFormVisible,
+  setAccountFormData
+}) => {
   const navigate = useNavigate();
-
-  const [updateAccount, { mutationLoading, mutationError }] = useMutation(
-    UPDATE_ACCOUNT,
-    {
-      update(cache, { data: { updateAccount } }) {
-        const data = {
-          ...cache.readQuery({
-            query: GET_ACCOUNT,
-            variables: { id: accountId }
-          })
-        };
-        data.account = { ...updateAccount, transactions };
-        cache.writeQuery({ query: GET_ACCOUNT, data });
-      }
-    }
-  );
 
   const [deleteAccount, { deleteMutationLoading, deleteMutationError }] =
     useMutation(DELETE_ACCOUNT, {
@@ -44,68 +30,38 @@ const AccountHeading = ({ accountId, accountNameProp, transactions }) => {
       }
     });
 
-  if (mutationLoading || deleteMutationLoading) return <p>Loading...</p>;
-  if (mutationError || deleteMutationError) return <p>Error 😢</p>;
+  if (deleteMutationLoading) return <p>Loading...</p>;
+  if (deleteMutationError) return <p>Error 😢</p>;
 
   return (
     <div className='accountHeading'>
-      {isEditing ? (
-        <>
-          <input
-            type='text'
-            value={accountName}
-            className='accountNameUpdateInput'
-            onChange={e => {
-              setAccountName(e.target.value);
-            }}
-          />
-          <FaSave
-            className='btn'
-            onClick={e => {
-              setIsEditing(false);
-              updateAccount({
-                variables: {
-                  accountId,
-                  updatedAccountName: accountName
-                },
-                optimisticResponse: {
-                  updateAccount: {
-                    _id: accountId,
-                    __typename: 'Account',
-                    name: accountName
-                  }
-                }
-              });
-            }}
-          />
-        </>
-      ) : (
-        <>
-          <h1>{accountNameProp}</h1>
-          <FaPencilAlt
-            className='btn'
-            onClick={e => {
-              setAccountName(accountNameProp);
-              setIsEditing(true);
-            }}
-          />
-          <FaTrashAlt
-            className='btn'
-            onClick={() => {
-              deleteAccount({
-                variables: { accountId },
-                optimisticResponse: {
-                  deleteAccount: {
-                    _id: accountId,
-                    __typename: 'Account'
-                  }
-                }
-              });
-              navigate('/');
-            }}
-          />
-        </>
-      )}
+      <h1>{name}</h1>
+      <FaPencilAlt
+        className='btn'
+        onClick={() => {
+          setAccountFormData({
+            _id,
+            name,
+            balance
+          });
+          setIsAccountFormVisible(true);
+        }}
+      />
+      <FaTrashAlt
+        className='btn'
+        onClick={() => {
+          deleteAccount({
+            variables: { accountId: _id },
+            optimisticResponse: {
+              deleteAccount: {
+                _id,
+                __typename: 'Account'
+              }
+            }
+          });
+          navigate('/');
+        }}
+      />
     </div>
   );
 };

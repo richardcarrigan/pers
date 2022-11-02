@@ -1,9 +1,9 @@
-const Modal = ({ isHidden, setIsHidden, setFormData, children }) => {
+const Modal = ({ isVisible, setIsVisible, setFormData, children }) => {
   return (
     <div
-      className={`overlay ${isHidden ? 'hidden' : ''}`}
+      className={`overlay ${isVisible ? '' : 'hidden'}`}
       onClick={() => {
-        setIsHidden(true);
+        setIsVisible(false);
         setFormData({
           description: '',
           recurrence: 'none',
@@ -15,7 +15,7 @@ const Modal = ({ isHidden, setIsHidden, setFormData, children }) => {
     >
       <div
         id='modal'
-        className={isHidden ? 'hidden' : ''}
+        className={isVisible ? '' : 'hidden'}
         onClick={e => e.stopPropagation()}
       >
         {children}

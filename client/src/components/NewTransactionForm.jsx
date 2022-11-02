@@ -6,8 +6,8 @@ import { GET_ACCOUNT } from '../graphQL/queries';
 import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../graphQL/mutations';
 
 const NewTransactionForm = ({
-  isHidden,
-  setIsHidden,
+  isVisible,
+  setIsVisible,
   formData,
   setFormData,
   accountId,
@@ -99,8 +99,8 @@ const NewTransactionForm = ({
 
   return (
     <Modal
-      isHidden={isHidden}
-      setIsHidden={setIsHidden}
+      isVisible={isVisible}
+      setIsVisible={setIsVisible}
       setFormData={setFormData}
     >
       <h1>{`${_id ? 'Update' : 'Add a new'} transaction`}</h1>
@@ -157,7 +157,7 @@ const NewTransactionForm = ({
               }
             });
           }
-          setIsHidden(true);
+          setIsVisible(false);
           setFormData({
             description: '',
             recurrence: 'none',
@@ -227,7 +227,7 @@ const NewTransactionForm = ({
           <button
             type='button'
             onClick={() => {
-              setIsHidden(true);
+              setIsVisible(false);
               setFormData({
                 description: '',
                 recurrence: 'none',

@@ -8,8 +8,8 @@ import { GET_ACCOUNT } from '../graphQL/queries';
 export default function Transaction({
   index,
   transaction,
-  handleAddTransaction,
-  setFormData,
+  setIsTransactionFormVisible,
+  setTransactionFormData,
   accountId
 }) {
   const { _id, description, recurrence, amount, type, startDate } = transaction;
@@ -61,39 +61,51 @@ export default function Transaction({
   return (
     <Draggable draggableId={_id} index={index}>
       {provided => (
-        <div
+        <tr
           className='transactionCard'
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <span className='transStartDate'>{startDateFormatted}</span>
-          <span className='transDescription'>{description}</span>
-          <span className='transRecurrence'>{recurrence}</span>
-          <span className='transAmount'>${amount}</span>
-          <span className='transType'>{type}</span>
-          <FaPencilAlt
-            className='btn'
-            onClick={() => {
-              setFormData(transaction);
-              handleAddTransaction(transaction);
-            }}
-          />
-          <FaTrashAlt
-            className='btn'
-            onClick={() => {
-              deleteTransaction({
-                variables: { transactionId: _id },
-                optimisticResponse: {
-                  deleteTransaction: {
-                    _id,
-                    __typename: 'Transaction'
-                  }
+          <td className='transStartDate'>{startDateFormatted}</td>
+          <td className='transDescription'>{description}</td>
+          <td
+            className='transAmount'
+            style={{ color: type === 'income' ? 'green' : 'red' }}
+          >
+            {Intl.NumberFormat('en-us', {
+              style: 'currency',
+              currency: 'USD'
+            }).format(type === 'income' ? amount : amount * -1)}
+          </td>
+          <td>
+            <FaPencilAlt
+              className='btn'
+              onClick={() => {
+                if (description !== 'Initial balance') {
+                  setTransactionFormData(transaction);
+                  setIsTransactionFormVisible(true);
                 }
-              });
-            }}
-          />
-        </div>
+              }}
+            />
+            <FaTrashAlt
+              className='btn'
+              onClick={() => {
+                if (description !== 'Initial balance') {
+                  deleteTransaction({
+                    variables: { transactionId: _id },
+                    optimisticResponse: {
+                      deleteTransaction: {
+                        _id,
+                        __typename: 'Transaction'
+                      }
+                    }
+                  });
+                }
+              }}
+            />
+          </td>
+        </tr>
       )}
     </Draggable>
   );

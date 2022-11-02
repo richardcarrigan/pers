@@ -4,14 +4,17 @@ import { useQuery } from '@apollo/client';
 
 import AccountHeading from '../components/AccountHeading';
 import TransactionList from '../components/TransactionList';
+import NewAccountForm from '../components/NewAccountForm';
 import NewTransactionForm from '../components/NewTransactionForm';
 
 import { GET_ACCOUNT } from '../graphQL/queries';
 
-export default function Account() {
+export default function Account({ accountFormData, setAccountFormData }) {
   const { id } = useParams();
-  const [isHidden, setIsHidden] = useState(true);
-  const [formData, setFormData] = useState({
+  const [isAccountFormVisible, setIsAccountFormVisible] = useState(false);
+  const [isTransactionFormVisible, setIsTransactionFormVisible] =
+    useState(false);
+  const [transactionFormData, setTransactionFormData] = useState({
     description: '',
     recurrence: 'none',
     amount: 0.01,
@@ -21,10 +24,6 @@ export default function Account() {
   });
 
   const navigate = useNavigate();
-
-  const handleAddTransaction = () => {
-    setIsHidden(false);
-  };
 
   const {
     loading: queryLoading,
@@ -37,39 +36,49 @@ export default function Account() {
   if (queryLoading) return <p>Loading...</p>;
   if (queryError) return <p>Error 😢</p>;
 
-  const { name, transactions } = queryData.account;
+  const { name, balance, transactions } = queryData.account;
 
   return (
     <>
       <AccountHeading
-        accountId={id}
-        accountNameProp={name}
-        transactions={transactions}
+        _id={id}
+        name={name}
+        balance={balance}
+        setIsAccountFormVisible={setIsAccountFormVisible}
+        setAccountFormData={setAccountFormData}
       />
       <TransactionList
         transactionsProp={transactions}
         accountId={id}
-        handleAddTransaction={handleAddTransaction}
-        setFormData={setFormData}
+        setIsTransactionFormVisible={setIsTransactionFormVisible}
+        setTransactionFormData={setTransactionFormData}
         accountName={name}
+        balance={balance}
       />
       <div className='btnGroup'>
         <button
           id='addTransactionBtn'
           type='button'
-          onClick={handleAddTransaction}
+          onClick={() => setIsTransactionFormVisible(true)}
         >
           Add new transaction
         </button>
-        <button type='button' onClick={e => navigate('/')}>
+        <button type='button' onClick={() => navigate('/')}>
           Back
         </button>
       </div>
+      <NewAccountForm
+        isVisible={isAccountFormVisible}
+        setIsVisible={setIsAccountFormVisible}
+        formData={accountFormData}
+        setFormData={setAccountFormData}
+        transactions={transactions}
+      />
       <NewTransactionForm
-        isHidden={isHidden}
-        setIsHidden={setIsHidden}
-        formData={formData}
-        setFormData={setFormData}
+        isVisible={isTransactionFormVisible}
+        setIsVisible={setIsTransactionFormVisible}
+        formData={transactionFormData}
+        setFormData={setTransactionFormData}
         accountId={id}
         transactionCount={transactions.length}
         accountName={name}

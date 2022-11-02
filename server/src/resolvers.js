@@ -23,8 +23,8 @@ const resolvers = {
     addAccount: (_, { name, balance }, { dataSources }) => {
       return dataSources.accounts.addAccount(name, balance);
     },
-    updateAccount: (_, { accountId, updatedAccountName }, { dataSources }) => {
-      return dataSources.accounts.updateAccount(accountId, updatedAccountName);
+    updateAccount: (_, { accountId, name, balance }, { dataSources }) => {
+      return dataSources.accounts.updateAccount(accountId, name, balance);
     },
     deleteAccount: async (_, { accountId }, { dataSources }) => {
       const transactions = await dataSources.transactions.getTransactions(
