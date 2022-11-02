@@ -1,7 +1,7 @@
 /* Theme colors */
 :root {
-  --dark-accent: #8c6797;
-  --dark-bg: #1d284e;
+  --dark-accent: #85618f;
+  --dark-bg: #0e142b;
   --light-bg: #f5f4ee;
   --primary: #8722ed;
 }
@@ -71,7 +71,7 @@ header {
 }
 
 main {
-  background-color: var(--dark-bg);
+  background-color: var(--light-bg);
   margin-bottom: 50px;
   min-height: calc(100vh - 100px);
   padding: 15px;
@@ -80,6 +80,30 @@ main {
 main h1,
 main h2 {
   color: var(--primary);
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+thead {
+  border-bottom: 2px solid var(--dark-accent);
+}
+
+td,
+th {
+  border: none;
+  background-color: var(--light-bg);
+  padding: 8px;
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
 }
 
 .accountHeading {
@@ -141,9 +165,9 @@ h1,
 }
 
 .card {
-  background-color: var(--light-bg);
+  background-color: var(--dark-bg);
   border-radius: 15px;
-  color: var(--dark-accent);
+  color: var(--light-bg);
   height: 250px;
   margin: 0 25px 25px 0;
   transition: all 0.2s;
@@ -158,19 +182,20 @@ h1,
 }
 
 .card main {
-  background-color: var(--light-bg);
+  background-color: var(--dark-bg);
   margin-bottom: 0;
   min-height: 50%;
   padding: 15px;
 }
 
 .card main h2 {
-  color: var(--dark-accent);
+  color: var(--light-bg);
 }
 
 .card footer {
+  background-color: var(--dark-bg);
   border-radius: 0 0 15px 15px;
-  color: var(--dark-accent);
+  color: var(--light-bg);
   min-height: 25%;
   padding: 15px 0;
   position: relative;
@@ -189,7 +214,7 @@ h1,
 }
 
 .card header h2 {
-  color: white;
+  color: black;
   font-weight: normal;
 }
 
@@ -208,28 +233,6 @@ h1,
   z-index: 1;
 }
 
-.transactionCard,
-.transactionListHeader {
-  background-color: var(--light-bg);
-  border-bottom: 3px solid var(--primary);
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
-}
-.transactionCard *,
-.transactionListHeader * {
-  flex-basis: calc(100% / 7);
-  height: 35px;
-  padding: 5px;
-  text-align: left;
-}
-
-.transactions {
-  display: flex;
-  flex-direction: column;
-  margin: 15px 0;
-}
-
 #addAccountBtn {
   background-color: transparent;
   border: 5px dashed var(--primary);
@@ -245,7 +248,7 @@ h1,
 #addAccountBtn:hover,
 #addAccountBtn:active,
 #addAccountBtn:focus {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 #brand {
@@ -264,5 +267,64 @@ h1,
 @media screen and (min-width: 768px) {
   #modal {
     width: 50%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  footer {
+    background-color: var(--dark-bg);
+  }
+  header {
+    background-color: var(--dark-bg);
+  }
+  label {
+    color: var(--light-bg);
+  }
+  main {
+    background-color: var(--dark-bg);
+  }
+  svg {
+    color: var(--light-bg);
+  }
+  td,
+  th {
+    background-color: var(--dark-bg);
+    color: var(--light-bg);
+  }
+  .card {
+    background-color: var(--light-bg);
+    color: var(--dark-accent);
+  }
+  .card main {
+    background-color: var(--light-bg);
+  }
+
+  .card main h2 {
+    color: var(--dark-accent);
+  }
+
+  .card footer {
+    background-color: var(--light-bg);
+    color: var(--dark-accent);
+  }
+
+  .card header {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  .card header h2 {
+    color: white;
+  }
+  .overlay {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  #addAccountBtn:hover,
+  #addAccountBtn:active,
+  #addAccountBtn:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  #modal {
+    background-color: var(--dark-bg);
   }
 }

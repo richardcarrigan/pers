@@ -172,48 +172,35 @@ const TransactionList = ({
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={accountId}>
           {provided => (
-            <div
+            <table
               className='transactions'
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              <div className='transactionListHeader'>
-                <h3>Start Date</h3>
-                <h3>Description</h3>
-                <h3>Recurrence</h3>
-                <h3>Amount</h3>
-                <h3>Transaction Type</h3>
-                <h3>Edit</h3>
-                <h3>Delete</h3>
-              </div>
-              <Transaction
-                index={-1}
-                transaction={{
-                  _id: 'N/A',
-                  description: 'Initial balance',
-                  recurrence: 'none',
-                  amount: balance,
-                  type: 'income',
-                  startDate: Date.now()
-                }}
-                setIsTransactionFormVisible={setIsTransactionFormVisible}
-                setTransactionFormData={setTransactionFormData}
-                accountId={accountId}
-              />
-              {sortedTransactions.map((transaction, index) => {
-                return (
-                  <Transaction
-                    key={transaction._id}
-                    index={index}
-                    transaction={transaction}
-                    setIsTransactionFormVisible={setIsTransactionFormVisible}
-                    setTransactionFormData={setTransactionFormData}
-                    accountId={accountId}
-                  />
-                );
-              })}
-              {provided.placeholder}
-            </div>
+              <thead className='transactionListHeader'>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedTransactions.map((transaction, index) => {
+                  return (
+                    <Transaction
+                      key={transaction._id}
+                      index={index}
+                      transaction={transaction}
+                      setIsTransactionFormVisible={setIsTransactionFormVisible}
+                      setTransactionFormData={setTransactionFormData}
+                      accountId={accountId}
+                    />
+                  );
+                })}
+                {provided.placeholder}
+              </tbody>
+            </table>
           )}
         </Droppable>
       </DragDropContext>
