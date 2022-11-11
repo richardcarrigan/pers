@@ -26,8 +26,6 @@ export default function Account({ accountFormData, setAccountFormData }) {
 
   const navigate = useNavigate();
 
-  const { isAuthenticated } = useAuth0();
-
   const {
     loading: queryLoading,
     error: queryError,
@@ -41,7 +39,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
 
   const { name, balance, transactions } = queryData.account;
 
-  return isAuthenticated ? (
+  return (
     <>
       <AccountHeading
         _id={id}
@@ -66,7 +64,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
         >
           Add new transaction
         </button>
-        <button type='button' onClick={() => navigate('/')}>
+        <button type='button' onClick={() => navigate('/dashboard')}>
           Back
         </button>
       </div>
@@ -87,7 +85,5 @@ export default function Account({ accountFormData, setAccountFormData }) {
         accountName={name}
       />
     </>
-  ) : (
-    <h1>Log in to see your accounts</h1>
   );
 }

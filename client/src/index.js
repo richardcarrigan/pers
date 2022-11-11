@@ -18,7 +18,7 @@ root.render(
   <Auth0Provider
     domain='dev-4d6u7snvyprxooqo.us.auth0.com'
     clientId='XPGKdNsp1T9ZvwQ69a8G30aQYdhZ0aNT'
-    redirectUri={window.location.origin}
+    redirectUri={`${window.location.origin}/dashboard`}
   >
     <ApolloProvider client={client}>
       <App />
