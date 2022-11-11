@@ -1,6 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { Auth0Provider } from '@auth0/auth0-react';
+
 import './index.css';
 import App from './App';
 
@@ -13,7 +15,13 @@ const container = document.getElementById('app');
 const root = createRoot(container);
 
 root.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>
+  <Auth0Provider
+    domain='dev-4d6u7snvyprxooqo.us.auth0.com'
+    clientId='XPGKdNsp1T9ZvwQ69a8G30aQYdhZ0aNT'
+    redirectUri={window.location.origin}
+  >
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </Auth0Provider>
 );

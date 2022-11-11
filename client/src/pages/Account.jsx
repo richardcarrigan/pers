@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import AccountHeading from '../components/AccountHeading';
 import TransactionList from '../components/TransactionList';
@@ -25,6 +26,8 @@ export default function Account({ accountFormData, setAccountFormData }) {
 
   const navigate = useNavigate();
 
+  const { isAuthenticated } = useAuth0();
+
   const {
     loading: queryLoading,
     error: queryError,
@@ -38,7 +41,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
 
   const { name, balance, transactions } = queryData.account;
 
-  return (
+  return isAuthenticated ? (
     <>
       <AccountHeading
         _id={id}
@@ -84,5 +87,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
         accountName={name}
       />
     </>
+  ) : (
+    <h1>Log in to see your accounts</h1>
   );
 }

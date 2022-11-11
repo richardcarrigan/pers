@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import Card from '../components/Card';
 import NewAccountForm from '../components/NewAccountForm';
@@ -12,11 +13,12 @@ import { GET_ACCOUNTS } from '../graphQL/queries';
 export default function Home({ accountFormData, setAccountFormData }) {
   const [isAccountFormVisible, setIsAccountFormVisible] = useState(false);
   const { loading, error, data } = useQuery(GET_ACCOUNTS);
+  const { isAuthenticated } = useAuth0();
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
 
-  return (
+  return isAuthenticated ? (
     <>
       <h1>Your Accounts</h1>
       <div className='accounts'>
@@ -48,5 +50,7 @@ export default function Home({ accountFormData, setAccountFormData }) {
         setFormData={setAccountFormData}
       />
     </>
+  ) : (
+    <h1>Log in to see your accounts</h1>
   );
 }

@@ -70,10 +70,16 @@ header {
   z-index: 9999;
 }
 
+#app > header {
+  display: flex;
+  justify-content: space-between;
+  height: 75px;
+}
+
 main {
   background-color: var(--light-bg);
   margin-bottom: 50px;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 125px);
   padding: 15px;
 }
 
@@ -253,6 +259,11 @@ h1,
 
 #brand {
   color: var(--primary);
+}
+
+#greeting {
+  display: inline-block;
+  margin-right: 15px;
 }
 
 #modal {
