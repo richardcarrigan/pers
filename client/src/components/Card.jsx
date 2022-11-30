@@ -1,11 +1,10 @@
-const Card = ({ heading, footer, children }) => {
+const Card = ({ heading, children }) => {
   return (
     <div className='card'>
       <header>
         <h2>{heading}</h2>
       </header>
       <main>{children}</main>
-      <footer>{footer}</footer>
     </div>
   );
 };

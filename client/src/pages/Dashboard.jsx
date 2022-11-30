@@ -29,7 +29,7 @@ const Dashboard = ({ accountFormData, setAccountFormData }) => {
               to={`/accounts/${account._id}`}
               element={<Account />}
             >
-              <Card heading={account.name} footer='Click to view transactions'>
+              <Card heading={account.name}>
                 <h3>{`Balance: $${account.balance}`}</h3>
               </Card>
             </Link>
