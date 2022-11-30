@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import AccountHeading from '../components/AccountHeading';
 import TransactionList from '../components/TransactionList';
@@ -63,7 +64,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
         >
           Add new transaction
         </button>
-        <button type='button' onClick={() => navigate('/')}>
+        <button type='button' onClick={() => navigate('/dashboard')}>
           Back
         </button>
       </div>
