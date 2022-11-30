@@ -30,7 +30,10 @@ const Dashboard = ({ accountFormData, setAccountFormData }) => {
               element={<Account />}
             >
               <Card heading={account.name}>
-                <h3>{`Balance: $${account.balance}`}</h3>
+                <h3>{`Balance: ${Intl.NumberFormat('en-us', {
+              style: 'currency',
+              currency: 'USD'
+            }).format(account.balance)}`}</h3>
               </Card>
             </Link>
           );
