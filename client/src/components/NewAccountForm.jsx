@@ -1,3 +1,4 @@
+import { FaDollarSign } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import Modal from './Modal';
 
@@ -108,16 +109,19 @@ const NewAccountForm = ({
           placeholder='Account name'
         />
         <label htmlFor='balance'>Current Balance</label>
-        <input
-          id='balance'
-          type='number'
-          min='0.01'
-          step='0.01'
-          required
-          placeholder='Account balance'
-          value={balance}
-          onChange={handleFormChange}
-        />
+        <div className='amountInputWithIcon'>
+          <FaDollarSign />
+          <input
+            id='balance'
+            type='number'
+            min='0.01'
+            step='0.01'
+            required
+            placeholder='Account balance'
+            value={balance}
+            onChange={handleFormChange}
+          />
+        </div>
         <div className='btnGroup'>
           <button type='submit'>Submit</button>
           <button
