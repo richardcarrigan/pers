@@ -59,7 +59,7 @@ const AccountHeading = ({
               }
             }
           });
-          navigate('/');
+          navigate('/dashboard');
         }}
       />
     </div>

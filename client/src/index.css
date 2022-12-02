@@ -2,8 +2,10 @@
 :root {
   --dark-accent: #85618f;
   --dark-bg: #0e142b;
+  --footer-height: 50px;
+  --header-height: 50px;
   --light-bg: #f5f4ee;
-  --primary: #8722ed;
+  --primary: 135, 34, 237;
 }
 
 * {
@@ -24,7 +26,7 @@ body {
 }
 
 button {
-  background-color: var(--primary);
+  background-color: rgb(var(--primary));
   border: none;
   border-radius: 5px;
   color: var(--light-bg);
@@ -40,10 +42,8 @@ button:focus {
 }
 
 footer {
-  bottom: 0;
-  height: 50px;
+  height: var(--footer-height);
   padding: 15px;
-  position: fixed;
   text-align: center;
   width: 100%;
 }
@@ -63,24 +63,44 @@ select {
 }
 
 header {
-  height: 50px;
-  padding: 15px;
+  min-height: var(--header-height);
   position: sticky;
-  position: -webkit-sticky;
   top: 0;
   z-index: 9999;
 }
+header a:has(h3) {
+  display: inline-block;
+  width: 100%;
+}
+
+header > div {
+  display: flex;
+  align-items: baseline;
+}
 
 #app > header {
+  background-color: rgba(var(--primary), 0.7);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 0 5px var(--dark-bg);
   display: flex;
-  justify-content: space-between;
-  height: 75px;
+  flex-direction: column;
+  min-height: 50px;
+  padding-block-end: 10px;
+  width: 100%;
 }
 
 main {
-  margin-bottom: 50px;
-  min-height: calc(100vh - 125px);
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
   padding: 15px;
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav a {
+  display: inline-block;
+  width: 100%;
 }
 
 table {
@@ -137,6 +157,10 @@ h1,
   flex-grow: 1;
 }
 
+.auth-container {
+  justify-content: center;
+}
+
 .btn {
   cursor: pointer;
   margin: 0 10px;
@@ -153,7 +177,7 @@ h1,
 }
 
 .card {
-  border: 1px solid var(--primary);
+  border: 1px solid rgb(var(--primary));
   border-radius: 15px;
   height: 250px;
   margin: 0 25px 25px 0;
@@ -180,12 +204,24 @@ h1,
   font-weight: normal;
 }
 
+.header-item {
+  text-align: center;
+  width: 100%;
+}
+.header-item a {
+  padding: 10px;
+}
+.header-item a:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .hidden {
   display: none;
 }
 
 .overlay {
   background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
   height: 100%;
   left: 0;
   overflow: auto;
@@ -197,7 +233,7 @@ h1,
 
 #addAccountBtn {
   background-color: transparent;
-  border: 5px dashed var(--primary);
+  border: 5px dashed rgb(var(--primary));
   border-radius: 15px;
   color: var(--dark-bg);
   font-size: 2em;
@@ -216,10 +252,6 @@ h1,
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-#brand {
-  color: var(--primary);
-}
-
 #greeting {
   display: inline-block;
   margin-right: 15px;
@@ -234,6 +266,25 @@ h1,
 }
 
 @media screen and (min-width: 768px) {
+  nav ul {
+    width: auto;
+  }
+  nav a {
+    display: inline;
+  }
+  .auth-container {
+    justify-content: flex-end;
+    padding-inline-end: 10px;
+  }
+  .header-item a:has(h3) {
+    display: inline;
+    width: auto;
+  }
+  #app > header {
+    align-items: center;
+    flex-direction: row;
+    padding-block-end: 0;
+  }
   #modal {
     width: 50%;
   }
