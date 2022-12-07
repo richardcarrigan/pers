@@ -25,12 +25,13 @@ const NewTransactionForm = ({
   } = formData;
 
   let startDateFormatted;
-  if (_id) {
+  if (_id && !Number.isNaN(Number(startDate))) {
     startDateFormatted = new Date(Number(startDate));
+
     startDateFormatted = `${startDateFormatted.getUTCFullYear()}-${
       startDateFormatted.getUTCMonth() + 1 < 10
         ? `0${startDateFormatted.getUTCMonth() + 1}`
-        : startDateFormatted.getUTCMonth()
+        : startDateFormatted.getUTCMonth() + 1
     }-${
       startDateFormatted.getUTCDate() < 10
         ? `0${startDateFormatted.getUTCDate()}`
@@ -108,6 +109,8 @@ const NewTransactionForm = ({
         onSubmit={e => {
           e.preventDefault();
           if (_id) {
+            console.log();
+
             updateTransaction({
               variables: {
                 transactionId: _id,
@@ -126,7 +129,7 @@ const NewTransactionForm = ({
                   recurrence,
                   amount,
                   type,
-                  startDate,
+                  startDate: Date.parse(startDate).toString(),
                   displayOrder,
                   account: {
                     _id: accountId,
