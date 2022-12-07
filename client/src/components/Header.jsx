@@ -12,12 +12,12 @@ function Header() {
       <div className="header-item">
       <Link to='/'><h3 id='brand'>Pers.io</h3></Link>
       </div>
-      <nav class='header-item'>
+      <nav className='header-item'>
         <ul>
           <li><Link to='/dashboard'>Dashboard</Link></li>
         </ul>
       </nav>
-      <div class='header-item auth-container'>
+      <div className='header-item auth-container'>
         {isAuthenticated ? (
           <>
             <div id='greeting'>{`Hi, ${user.given_name || user.name}!`}</div>
