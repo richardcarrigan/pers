@@ -95,7 +95,7 @@ const NewAccountForm = ({
           setIsVisible(false);
           setFormData({
             name: '',
-            balance: 0.01
+            balance: 0.00
           });
         }}
       >
@@ -114,7 +114,7 @@ const NewAccountForm = ({
           <input
             id='balance'
             type='number'
-            min='0.01'
+            min='0.00'
             step='0.01'
             required
             placeholder='Account balance'
@@ -130,7 +130,7 @@ const NewAccountForm = ({
               setIsVisible(false);
               setFormData({
                 name: '',
-                balance: 0.01
+                balance: 0.00
               });
             }}
           >

@@ -164,7 +164,7 @@ const NewTransactionForm = ({
           setFormData({
             description: '',
             recurrence: 'none',
-            amount: 0.01,
+            amount: 0.00,
             type: 'expense',
             startDate: '',
             displayOrder: 0
@@ -198,7 +198,7 @@ const NewTransactionForm = ({
           <FaDollarSign />
           <input
             type='number'
-            min='0.01'
+            min='0.00'
             step='0.01'
             id='amount'
             required
@@ -234,7 +234,7 @@ const NewTransactionForm = ({
               setFormData({
                 description: '',
                 recurrence: 'none',
-                amount: 0.01,
+                amount: 0.00,
                 type: 'expense',
                 startDate: '',
                 displayOrder: 0

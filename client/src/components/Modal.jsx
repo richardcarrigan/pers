@@ -7,7 +7,7 @@ const Modal = ({ isVisible, setIsVisible, setFormData, children }) => {
         setFormData({
           description: '',
           recurrence: 'none',
-          amount: 0.01,
+          amount: 0.00,
           type: 'expense',
           startDate: ''
         });

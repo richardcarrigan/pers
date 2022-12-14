@@ -18,7 +18,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
   const [transactionFormData, setTransactionFormData] = useState({
     description: '',
     recurrence: 'none',
-    amount: 0.01,
+    amount: 0.00,
     type: 'expense',
     startDate: '',
     displayOrder: 0
