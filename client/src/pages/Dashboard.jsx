@@ -41,7 +41,10 @@ const Dashboard = ({ accountFormData, setAccountFormData }) => {
         <button
           id='addAccountBtn'
           type='button'
-          onClick={() => setIsAccountFormVisible(true)}
+          onClick={() => {
+            // setIsAccountFormVisible(true);
+            accountModal.showModal();
+          }}
         >
           Add new account
         </button>
