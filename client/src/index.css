@@ -20,9 +20,9 @@ a {
   text-decoration: none;
 }
 
-body {
+body, dialog {
   background-color: var(--light-bg);
-    color: var(--dark-bg);
+  color: var(--dark-bg);
 }
 
 button {
@@ -219,7 +219,14 @@ h1,
   display: none;
 }
 
-.overlay {
+.modal {
+  border-width: 0;
+  border-radius: 15px;
+  margin: 100px auto;
+  padding: 15px;
+  width: 80%;
+}
+.modal::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(3px);
   height: 100%;
@@ -257,14 +264,6 @@ h1,
   margin-right: 15px;
 }
 
-#modal {
-  background-color: var(--light-bg);
-  border-radius: 15px;
-  margin: 100px auto;
-  padding: 15px;
-  width: 80%;
-}
-
 @media screen and (min-width: 768px) {
   nav ul {
     width: auto;
@@ -280,26 +279,23 @@ h1,
     display: inline;
     width: auto;
   }
+  .modal {
+    width: 50%;
+  }
   #app > header {
     align-items: center;
     flex-direction: row;
     padding-block-end: 0;
   }
-  #modal {
-    width: 50%;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
-  body {
+  body, dialog {
     background-color: var(--dark-bg);
     color: var(--light-bg);
   }
   thead {
     border-bottom-color: var(--dark-accent);
-  }
-  .overlay {
-    background-color: rgba(255, 255, 255, 0.5);
   }
   .card,
   #addAccountBtn {
@@ -313,7 +309,7 @@ h1,
   #addAccountBtn:focus {
     background-color: rgba(255, 255, 255, 0.2);
   }
-  #modal {
-    background-color: var(--dark-bg);
+  .modal::backdrop {
+    background-color: rgba(255, 255, 255, 0.5);
   }
 }

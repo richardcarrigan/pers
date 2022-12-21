@@ -8,10 +8,8 @@ import { GET_ACCOUNT } from '../graphQL/queries';
 const TransactionList = ({
   transactionsProp,
   accountId,
-  setIsTransactionFormVisible,
   setTransactionFormData,
-  accountName,
-  balance
+  accountName
 }) => {
   const [updateTransaction] = useMutation(UPDATE_TRANSACTION, {
     update(cache, { data: { updateTransaction } }) {
@@ -192,7 +190,6 @@ const TransactionList = ({
                       key={transaction._id}
                       index={index}
                       transaction={transaction}
-                      setIsTransactionFormVisible={setIsTransactionFormVisible}
                       setTransactionFormData={setTransactionFormData}
                       accountId={accountId}
                     />

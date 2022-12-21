@@ -6,8 +6,6 @@ import { GET_ACCOUNT } from '../graphQL/queries';
 import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../graphQL/mutations';
 
 const NewTransactionForm = ({
-  isVisible,
-  setIsVisible,
   formData,
   setFormData,
   accountId,
@@ -83,13 +81,85 @@ const NewTransactionForm = ({
       }
     });
 
-  const handleFormChange = e => {
+  function handleFormChange(e) {
     if (e.target.id === 'amount') {
       setFormData({ ...formData, amount: Number(e.target.value) });
     } else {
       setFormData({ ...formData, [e.target.id]: e.target.value });
     }
   };
+
+  function handleSubmit() {
+    if (_id) {
+      updateTransaction({
+        variables: {
+          transactionId: _id,
+          description,
+          recurrence,
+          amount,
+          type,
+          startDate: startDateFormatted,
+          displayOrder
+        },
+        optimisticResponse: {
+          updateTransaction: {
+            _id,
+            __typename: 'Transaction',
+            description,
+            recurrence,
+            amount,
+            type,
+            startDate: Date.parse(startDate).toString(),
+            displayOrder,
+            account: {
+              _id: accountId,
+              __typename: 'Account',
+              name: accountName
+            }
+          }
+        }
+      });
+    } else {
+      addTransaction({
+        variables: {
+          ...formData,
+          accountId,
+          displayOrder: transactionCount
+        },
+        optimisticResponse: {
+          addTransaction: {
+            _id: 'temp-id',
+            __typename: 'Transaction',
+            description,
+            recurrence,
+            amount,
+            type,
+            startDate: Date.parse(startDate).toString(),
+            displayOrder
+          }
+        }
+      });
+    }
+    setFormData({
+      description: '',
+      recurrence: 'none',
+      amount: 0.00,
+      type: 'expense',
+      startDate: '',
+      displayOrder: 0
+    });
+  }
+
+  function handleCancel() {
+    setFormData({
+      description: '',
+      recurrence: 'none',
+      amount: 0.00,
+      type: 'expense',
+      startDate: '',
+      displayOrder: 0
+    });
+  }
 
   if (addMutationLoading || updateMutationLoading) {
     return <p>Loading...</p>;
@@ -100,151 +170,65 @@ const NewTransactionForm = ({
 
   return (
     <Modal
-      isVisible={isVisible}
-      setIsVisible={setIsVisible}
-      setFormData={setFormData}
+      id='transactionModal'
+      heading={`${_id ? 'Update' : 'Add a new'} transaction`}
+      submitHandler={handleSubmit}
+      cancelHandler={handleCancel}
     >
-      <h1>{`${_id ? 'Update' : 'Add a new'} transaction`}</h1>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          if (_id) {
-            console.log();
-
-            updateTransaction({
-              variables: {
-                transactionId: _id,
-                description,
-                recurrence,
-                amount,
-                type,
-                startDate: startDateFormatted,
-                displayOrder
-              },
-              optimisticResponse: {
-                updateTransaction: {
-                  _id,
-                  __typename: 'Transaction',
-                  description,
-                  recurrence,
-                  amount,
-                  type,
-                  startDate: Date.parse(startDate).toString(),
-                  displayOrder,
-                  account: {
-                    _id: accountId,
-                    __typename: 'Account',
-                    name: accountName
-                  }
-                }
-              }
-            });
-          } else {
-            addTransaction({
-              variables: {
-                ...formData,
-                accountId,
-                displayOrder: transactionCount
-              },
-              optimisticResponse: {
-                addTransaction: {
-                  _id: 'temp-id',
-                  __typename: 'Transaction',
-                  description,
-                  recurrence,
-                  amount,
-                  type,
-                  startDate: Date.parse(startDate).toString(),
-                  displayOrder
-                }
-              }
-            });
-          }
-          setIsVisible(false);
-          setFormData({
-            description: '',
-            recurrence: 'none',
-            amount: 0.00,
-            type: 'expense',
-            startDate: '',
-            displayOrder: 0
-          });
-        }}
+      <label htmlFor='description'>Description</label>
+      <input
+        id='description'
+        type='text'
+        value={description}
+        onChange={handleFormChange}
+        required
+        placeholder='Description'
+      />
+      <label htmlFor='recurrence'>Recurrence</label>
+      <select
+        id='recurrence'
+        selected
+        value={recurrence}
+        onChange={handleFormChange}
+        required
       >
-        <label htmlFor='description'>Description</label>
+        <option value='none'>none</option>
+        <option value='daily'>daily</option>
+        <option value='weekly'>weekly</option>
+        <option value='monthly'>monthly</option>
+      </select>
+      <label htmlFor='amount'>Amount</label>
+      <div className='amountInputWithIcon'>
+        <FaDollarSign />
         <input
-          id='description'
-          type='text'
-          value={description}
-          onChange={handleFormChange}
+          type='number'
+          min='0.00'
+          step='0.01'
+          id='amount'
           required
-          placeholder='Description'
-        />
-        <label htmlFor='recurrence'>Recurrence</label>
-        <select
-          id='recurrence'
-          selected
-          value={recurrence}
-          onChange={handleFormChange}
-          required
-        >
-          <option value='none'>none</option>
-          <option value='daily'>daily</option>
-          <option value='weekly'>weekly</option>
-          <option value='monthly'>monthly</option>
-        </select>
-        <label htmlFor='amount'>Amount</label>
-        <div className='amountInputWithIcon'>
-          <FaDollarSign />
-          <input
-            type='number'
-            min='0.00'
-            step='0.01'
-            id='amount'
-            required
-            value={amount}
-            onChange={handleFormChange}
-          />
-        </div>
-        <label htmlFor='type'>Transaction Type</label>
-        <select
-          id='type'
-          required
-          selected
-          value={type}
-          onChange={handleFormChange}
-        >
-          <option value='income'>income</option>
-          <option value='expense'>expense</option>
-        </select>
-        <label htmlFor='startDate'>Start Date</label>
-        <input
-          type='date'
-          value={startDateFormatted}
-          id='startDate'
-          required
+          value={amount}
           onChange={handleFormChange}
         />
-        <div className='btnGroup'>
-          <button type='submit'>Submit</button>
-          <button
-            type='button'
-            onClick={() => {
-              setIsVisible(false);
-              setFormData({
-                description: '',
-                recurrence: 'none',
-                amount: 0.00,
-                type: 'expense',
-                startDate: '',
-                displayOrder: 0
-              });
-            }}
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+      </div>
+      <label htmlFor='type'>Transaction Type</label>
+      <select
+        id='type'
+        required
+        selected
+        value={type}
+        onChange={handleFormChange}
+      >
+        <option value='income'>income</option>
+        <option value='expense'>expense</option>
+      </select>
+      <label htmlFor='startDate'>Start Date</label>
+      <input
+        type='date'
+        value={startDateFormatted}
+        id='startDate'
+        required
+        onChange={handleFormChange}
+      />
     </Modal>
   );
 };

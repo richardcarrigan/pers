@@ -6,8 +6,6 @@ import { GET_ACCOUNT, GET_ACCOUNTS } from '../graphQL/queries';
 import { ADD_ACCOUNT, UPDATE_ACCOUNT } from '../graphQL/mutations';
 
 const NewAccountForm = ({
-  isVisible,
-  setIsVisible,
   formData,
   setFormData,
   transactions
@@ -39,13 +37,55 @@ const NewAccountForm = ({
       }
     });
 
-  const handleFormChange = e => {
+  function handleFormChange(e) {
     if (e.target.id === 'balance') {
       setFormData({ ...formData, balance: Number(e.target.value) });
     } else {
       setFormData({ ...formData, [e.target.id]: e.target.value });
     }
   };
+
+  function handleSubmit() {
+    if (_id) {
+      updateAccount({
+        variables: {
+          accountId: _id,
+          name,
+          balance
+        },
+        optimisticResponse: {
+          updateAccount: {
+            _id,
+            __typename: 'Account',
+            name,
+            balance
+          }
+        }
+      });
+    } else {
+      addAccount({
+        variables: formData,
+        optimisticResponse: {
+          addAccount: {
+            _id: 'temp-id',
+            __typename: 'Account',
+            ...formData
+          }
+        }
+      });
+    }
+    setFormData({
+      name: '',
+      balance: 0.00
+    });
+  }
+
+  function handleCancel() {
+    setFormData({
+      name: '',
+      balance: 0.00
+    });
+  }
 
   if (addMutationLoading || updateMutationLoading) {
     return <p>Loading...</p>;
@@ -56,88 +96,34 @@ const NewAccountForm = ({
 
   return (
     <Modal
-      isVisible={isVisible}
-      setIsVisible={setIsVisible}
-      setFormData={setFormData}
+      id='accountModal'
+      heading={`${_id ? 'Update' : 'Add a new'} account`}
+      submitHandler={handleSubmit}
+      cancelHandler={handleCancel}
     >
-      <h1>{`${_id ? 'Update' : 'Add a new'} account`}</h1>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          if (_id) {
-            updateAccount({
-              variables: {
-                accountId: _id,
-                name,
-                balance
-              },
-              optimisticResponse: {
-                updateAccount: {
-                  _id,
-                  __typename: 'Account',
-                  name,
-                  balance
-                }
-              }
-            });
-          } else {
-            addAccount({
-              variables: formData,
-              optimisticResponse: {
-                addAccount: {
-                  _id: 'temp-id',
-                  __typename: 'Account',
-                  ...formData
-                }
-              }
-            });
-          }
-          setIsVisible(false);
-          setFormData({
-            name: '',
-            balance: 0.00
-          });
-        }}
-      >
-        <label htmlFor='name'>Account Name</label>
+      <label htmlFor='name'>Account Name</label>
+      <input
+        id='name'
+        type='text'
+        value={name}
+        onChange={handleFormChange}
+        required
+        placeholder='Account name'
+      />
+      <label htmlFor='balance'>Current Balance</label>
+      <div className='amountInputWithIcon'>
+        <FaDollarSign />
         <input
-          id='name'
-          type='text'
-          value={name}
-          onChange={handleFormChange}
+          id='balance'
+          type='number'
+          min='0.00'
+          step='0.01'
           required
-          placeholder='Account name'
+          placeholder='Account balance'
+          value={balance}
+          onChange={handleFormChange}
         />
-        <label htmlFor='balance'>Current Balance</label>
-        <div className='amountInputWithIcon'>
-          <FaDollarSign />
-          <input
-            id='balance'
-            type='number'
-            min='0.00'
-            step='0.01'
-            required
-            placeholder='Account balance'
-            value={balance}
-            onChange={handleFormChange}
-          />
-        </div>
-        <div className='btnGroup'>
-          <button type='submit'>Submit</button>
-          <button
-            type='button'
-            onClick={() => {
-              setIsVisible(false);
-              setFormData({
-                name: '',
-                balance: 0.00
-              });
-            }}
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+      </div>
     </Modal>
   );
 };

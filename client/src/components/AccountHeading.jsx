@@ -9,7 +9,6 @@ const AccountHeading = ({
   _id,
   name,
   balance,
-  setIsAccountFormVisible,
   setAccountFormData
 }) => {
   const navigate = useNavigate();
@@ -44,7 +43,7 @@ const AccountHeading = ({
             name,
             balance
           });
-          setIsAccountFormVisible(true);
+          accountModal.showModal();
         }}
       />
       <FaTrashAlt

@@ -8,11 +8,10 @@ import { GET_ACCOUNT } from '../graphQL/queries';
 export default function Transaction({
   index,
   transaction,
-  setIsTransactionFormVisible,
   setTransactionFormData,
   accountId
 }) {
-  const { _id, description, recurrence, amount, type, startDate } = transaction;
+  const { _id, description, amount, type, startDate } = transaction;
 
   const [deleteTransaction, { loading, error }] = useMutation(
     DELETE_TRANSACTION,
@@ -84,7 +83,7 @@ export default function Transaction({
               onClick={() => {
                 if (description !== 'Initial balance') {
                   setTransactionFormData(transaction);
-                  setIsTransactionFormVisible(true);
+                  transactionModal.showModal();
                 }
               }}
             />
