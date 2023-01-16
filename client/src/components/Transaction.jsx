@@ -9,7 +9,8 @@ export default function Transaction({
   index,
   transaction,
   setTransactionFormData,
-  accountId
+  accountId,
+  balance
 }) {
   const { _id, description, amount, type, startDate } = transaction;
 
@@ -70,12 +71,15 @@ export default function Transaction({
           <td className='transDescription'>{description}</td>
           <td
             className='transAmount'
-            style={{ color: type === 'income' ? 'green' : 'red' }}
+            style={{ color: type === 'income' ? 'green' : 'inherit', textAlign: 'right' }}
           >
             {Intl.NumberFormat('en-us', {
               style: 'currency',
               currency: 'USD'
             }).format(type === 'income' ? amount : amount * -1)}
+          </td>
+          <td style={{ color: balance < 0 ? 'red' : 'inherit', textAlign: 'right' }}>
+            {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
           </td>
           <td>
             <FaPencilAlt

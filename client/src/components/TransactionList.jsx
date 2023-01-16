@@ -9,7 +9,8 @@ const TransactionList = ({
   transactionsProp,
   accountId,
   setTransactionFormData,
-  accountName
+  accountName,
+  balance
 }) => {
   const [updateTransaction] = useMutation(UPDATE_TRANSACTION, {
     update(cache, { data: { updateTransaction } }) {
@@ -44,6 +45,7 @@ const TransactionList = ({
     const transactions = [...transactionsProp];
 
     if (!destination || source.index === destination.index) {
+      console.log('nothing should happen');
       return;
     }
 
@@ -164,6 +166,8 @@ const TransactionList = ({
     });
   };
 
+  let runningBalance = balance;
+
   return (
     <>
       <h2>Transactions</h2>
@@ -180,11 +184,21 @@ const TransactionList = ({
                   <th>Date</th>
                   <th>Description</th>
                   <th>Amount</th>
+                  <th>Balance</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {sortedTransactions.map((transaction, index) => {
+                  // This fixes calculation issues when a transaction is either dropped in its starting location or outside the droppable area
+                  if (index === 0) {
+                    runningBalance = balance;
+                  }
+                  if (transaction.type === 'income') {
+                    runningBalance += transaction.amount
+                  } else {
+                    runningBalance -= transaction.amount;
+                  }
                   return (
                     <Transaction
                       key={transaction._id}
@@ -192,6 +206,7 @@ const TransactionList = ({
                       transaction={transaction}
                       setTransactionFormData={setTransactionFormData}
                       accountId={accountId}
+                      balance={runningBalance}
                     />
                   );
                 })}
