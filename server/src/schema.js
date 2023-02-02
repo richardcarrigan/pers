@@ -18,6 +18,7 @@ const typeDefs = gql`
     balance: Float!
     name: String!
     transactions: [Transaction]!
+    userId: String!
   }
 
   type DeleteAccountPayload {
@@ -41,13 +42,13 @@ const typeDefs = gql`
 
   type Query {
     "Query to get accounts array"
-    accounts: [Account]
+    accounts(userId: String!): [Account]
     "Get a single account, provided the account's ID"
-    account(id: ID!): Account
+    account(id: ID!, userId: String!): Account
   }
 
   type Mutation {
-    addAccount(name: String!, balance: Float!): Account
+    addAccount(name: String!, balance: Float!, userId: String!): Account
 
     updateAccount(accountId: ID!, name: String!, balance: Float!): Account
 

@@ -1,12 +1,12 @@
 const resolvers = {
   Query: {
     // returns an array of Accounts
-    accounts: (_, __, { dataSources }) => {
-      return dataSources.accounts.getAccounts();
+    accounts: (_, { userId }, { dataSources }) => {
+      return dataSources.accounts.getAccounts(userId);
     },
     // returns a single account, provided the account's ID
-    account: (_, { id }, { dataSources }) => {
-      return dataSources.accounts.getAccount(id);
+    account: (_, { id, userId }, { dataSources }) => {
+      return dataSources.accounts.getAccount(id, userId);
     }
   },
   Account: {
@@ -20,8 +20,8 @@ const resolvers = {
     }
   },
   Mutation: {
-    addAccount: (_, { name, balance }, { dataSources }) => {
-      return dataSources.accounts.addAccount(name, balance);
+    addAccount: (_, { name, balance, userId }, { dataSources }) => {
+      return dataSources.accounts.addAccount(name, balance, userId);
     },
     updateAccount: (_, { accountId, name, balance }, { dataSources }) => {
       return dataSources.accounts.updateAccount(accountId, name, balance);

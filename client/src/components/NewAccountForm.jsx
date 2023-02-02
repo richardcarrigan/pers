@@ -1,5 +1,6 @@
 import { FaDollarSign } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
+import { useAuth0 } from '@auth0/auth0-react';
 import Modal from './Modal';
 
 import { GET_ACCOUNT, GET_ACCOUNTS } from '../graphQL/queries';
@@ -12,13 +13,17 @@ const NewAccountForm = ({
 }) => {
   const { _id, name, balance } = formData;
 
+  const { user } = useAuth0();
+
+  const userId = user.sub;
+
   const [addAccount, { addMutationLoading, addMutationError }] = useMutation(
     ADD_ACCOUNT,
     {
       update(cache, { data: { addAccount } }) {
-        const data = { ...cache.readQuery({ query: GET_ACCOUNTS }) };
+        const data = { ...cache.readQuery({ query: GET_ACCOUNTS, variables: { userId } }) };
         data.accounts = [...data.accounts, addAccount];
-        cache.writeQuery({ query: GET_ACCOUNTS, data });
+        cache.writeQuery({ query: GET_ACCOUNTS, variables: { userId }, data });
       }
     }
   );
@@ -29,11 +34,11 @@ const NewAccountForm = ({
         const data = {
           ...cache.readQuery({
             query: GET_ACCOUNT,
-            variables: { id: _id }
+            variables: { id: _id, userId }
           })
         };
         data.account = { ...updateAccount, transactions };
-        cache.writeQuery({ query: GET_ACCOUNT, data });
+        cache.writeQuery({ query: GET_ACCOUNT, variables: { userId }, data });
       }
     });
 
@@ -64,12 +69,13 @@ const NewAccountForm = ({
       });
     } else {
       addAccount({
-        variables: formData,
+        variables: { ...formData, userId },
         optimisticResponse: {
           addAccount: {
             _id: 'temp-id',
             __typename: 'Account',
-            ...formData
+            ...formData,
+            userId
           }
         }
       });

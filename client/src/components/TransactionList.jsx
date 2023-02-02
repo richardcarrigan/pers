@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import Transaction from '../components/Transaction';
 import { UPDATE_TRANSACTION } from '../graphQL/mutations';
@@ -12,12 +13,15 @@ const TransactionList = ({
   accountName,
   balance
 }) => {
+  const { user } = useAuth0();
+  const userId = user.sub;
+
   const [updateTransaction] = useMutation(UPDATE_TRANSACTION, {
     update(cache, { data: { updateTransaction } }) {
       const data = {
         ...cache.readQuery({
           query: GET_ACCOUNT,
-          variables: { id: accountId }
+          variables: { id: accountId, userId }
         })
       };
       const updatedTransaction = { ...updateTransaction };
@@ -30,7 +34,7 @@ const TransactionList = ({
       data.account = { ...data.account, transactions: updatedTransactions };
       cache.writeQuery({
         query: GET_ACCOUNT,
-        variables: { id: accountId },
+        variables: { id: accountId, userId },
         data
       });
     }

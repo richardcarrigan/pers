@@ -1,5 +1,6 @@
 import { FaDollarSign } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
+import { useAuth0 } from '@auth0/auth0-react';
 import Modal from './Modal';
 
 import { GET_ACCOUNT } from '../graphQL/queries';
@@ -39,13 +40,16 @@ const NewTransactionForm = ({
     startDateFormatted = startDate;
   }
 
+  const { user } = useAuth0();
+  const userId = user.sub;
+
   const [addTransaction, { addMutationLoading, addMutationError }] =
     useMutation(ADD_TRANSACTION, {
       update(cache, { data: { addTransaction } }) {
         const data = {
           ...cache.readQuery({
             query: GET_ACCOUNT,
-            variables: { id: accountId }
+            variables: { id: accountId, userId }
           })
         };
         data.account = {
@@ -62,7 +66,7 @@ const NewTransactionForm = ({
         const data = {
           ...cache.readQuery({
             query: GET_ACCOUNT,
-            variables: { id: accountId }
+            variables: { id: accountId, userId }
           })
         };
         const updatedTransaction = { ...updateTransaction };
@@ -75,7 +79,7 @@ const NewTransactionForm = ({
         data.account = { ...data.account, transactions: updatedTransactions };
         cache.writeQuery({
           query: GET_ACCOUNT,
-          variables: { id: accountId },
+          variables: { id: accountId, userId },
           data
         });
       }

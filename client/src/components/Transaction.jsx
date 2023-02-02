@@ -1,6 +1,7 @@
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import { Draggable } from 'react-beautiful-dnd';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import { DELETE_TRANSACTION } from '../graphQL/mutations';
 import { GET_ACCOUNT } from '../graphQL/queries';
@@ -14,6 +15,9 @@ export default function Transaction({
 }) {
   const { _id, description, amount, type, startDate } = transaction;
 
+  const { user } = useAuth0();
+  const userId = user.sub;
+
   const [deleteTransaction, { loading, error }] = useMutation(
     DELETE_TRANSACTION,
     {
@@ -21,7 +25,7 @@ export default function Transaction({
         const data = {
           ...cache.readQuery({
             query: GET_ACCOUNT,
-            variables: { id: accountId }
+            variables: { id: accountId, userId }
           })
         };
         const updatedTransactions = data.account.transactions.filter(
@@ -32,7 +36,7 @@ export default function Transaction({
         data.account = { ...data.account, transactions: updatedTransactions };
         cache.writeQuery({
           query: GET_ACCOUNT,
-          variables: { id: accountId },
+          variables: { id: accountId, userId },
           data
         });
       }
