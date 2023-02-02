@@ -12,8 +12,11 @@ import { GET_ACCOUNTS } from '../graphQL/queries';
 
 const Dashboard = ({ accountFormData, setAccountFormData }) => {
   const [isAccountFormVisible, setIsAccountFormVisible] = useState(false);
-  const { loading, error, data } = useQuery(GET_ACCOUNTS);
-  const { isAuthenticated } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
+
+  const userId = user.sub;
+
+  const { loading, error, data } = useQuery(GET_ACCOUNTS, { variables: { userId }});
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
@@ -42,7 +45,6 @@ const Dashboard = ({ accountFormData, setAccountFormData }) => {
           id='addAccountBtn'
           type='button'
           onClick={() => {
-            // setIsAccountFormVisible(true);
             accountModal.showModal();
           }}
         >

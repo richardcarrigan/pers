@@ -3,21 +3,22 @@ const { ObjectId } = require('mongodb');
 
 class Accounts extends MongoDataSource {
   // Create methods
-  async addAccount(name, balance) {
+  async addAccount(name, balance, userId) {
     const result = await this.collection.insertOne({
       name,
-      balance
+      balance,
+      userId
     });
     return await this.findOneById(result.insertedId);
   }
 
   // Read methods
-  async getAccounts() {
-    return await this.findByFields({});
+  async getAccounts(userId) {
+    return await this.findByFields({ userId });
   }
 
-  async getAccount(accountId) {
-    return await this.findOneById(accountId);
+  async getAccount(accountId, userId) {
+    return this.findByFields({ _id: accountId, userId }).then(documents => documents?.[0]);
   }
 
   // Update methods
