@@ -12,21 +12,16 @@ class Transactions extends MongoDataSource {
     accountId,
     displayOrder
   ) {
-    const startDateFormatted = new Date(startDate);
-    if (startDateFormatted.toString() === 'Invalid Date') {
-      throw new Error('Start date is not valid');
-    } else {
       const result = await this.collection.insertOne({
         description,
         recurrence,
         amount: Number(amount),
         type,
-        startDate: startDateFormatted,
+        startDate: new Date(Number(startDate)),
         account: ObjectId(accountId),
         displayOrder
       });
       return await this.findOneById(result.insertedId);
-    }
   }
 
   // Get an array of an account's transactions
@@ -44,10 +39,6 @@ class Transactions extends MongoDataSource {
     startDate,
     displayOrder
   ) {
-    const startDateFormatted = new Date(startDate);
-    if (startDateFormatted.toString() === 'Invalid Date') {
-      throw new Error('Start date is not valid');
-    } else {
       await this.deleteFromCacheById(transactionId);
       await this.collection.updateOne(
         { _id: ObjectId(transactionId) },
@@ -57,13 +48,12 @@ class Transactions extends MongoDataSource {
             recurrence,
             amount: Number(amount),
             type,
-            startDate: startDateFormatted,
+        startDate: new Date(Number(startDate)),
             displayOrder
           }
         }
       );
       return await this.findOneById(transactionId);
-    }
   }
 
   // Delete a transaction
