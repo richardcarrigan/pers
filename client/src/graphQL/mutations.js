@@ -85,10 +85,6 @@ export const UPDATE_TRANSACTION = gql`
       type
       startDate
       displayOrder
-      account {
-        _id
-        name
-      }
     }
   }
 `;

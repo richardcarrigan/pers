@@ -24,7 +24,7 @@ const NewTransactionForm = ({
   } = formData;
 
   let startDateFormatted;
-  if (_id && !Number.isNaN(Number(startDate))) {
+  if (startDate) {
     startDateFormatted = new Date(Number(startDate));
 
     startDateFormatted = `${startDateFormatted.getUTCFullYear()}-${
@@ -88,6 +88,8 @@ const NewTransactionForm = ({
   function handleFormChange(e) {
     if (e.target.id === 'amount') {
       setFormData({ ...formData, amount: Number(e.target.value) });
+    } else if (e.target.id === 'startDate') {
+      setFormData({ ...formData, startDate: Date.parse(e.target.value).toString() });
     } else {
       setFormData({ ...formData, [e.target.id]: e.target.value });
     }
@@ -102,7 +104,7 @@ const NewTransactionForm = ({
           recurrence,
           amount,
           type,
-          startDate: startDateFormatted,
+          startDate,
           displayOrder
         },
         optimisticResponse: {
@@ -113,13 +115,8 @@ const NewTransactionForm = ({
             recurrence,
             amount,
             type,
-            startDate: Date.parse(startDate).toString(),
-            displayOrder,
-            account: {
-              _id: accountId,
-              __typename: 'Account',
-              name: accountName
-            }
+            startDate,
+            displayOrder
           }
         }
       });
@@ -138,7 +135,7 @@ const NewTransactionForm = ({
             recurrence,
             amount,
             type,
-            startDate: Date.parse(startDate).toString(),
+            startDate,
             displayOrder
           }
         }

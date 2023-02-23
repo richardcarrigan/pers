@@ -64,17 +64,6 @@ const TransactionList = ({
         displayOrder
       } = transaction;
 
-      let startDateFormatted = new Date(Number(startDate));
-      startDateFormatted = `${startDateFormatted.getUTCFullYear()}-${
-        startDateFormatted.getUTCMonth() + 1 < 10
-          ? `0${startDateFormatted.getUTCMonth() + 1}`
-          : startDateFormatted.getUTCMonth()
-      }-${
-        startDateFormatted.getUTCDate() < 10
-          ? `0${startDateFormatted.getUTCDate()}`
-          : startDateFormatted.getUTCDate()
-      }`;
-
       if (_id === draggableId) {
         updateTransaction({
           variables: {
@@ -83,7 +72,7 @@ const TransactionList = ({
             recurrence,
             amount,
             type,
-            startDate: startDateFormatted,
+            startDate,
             displayOrder: destination.index
           },
           optimisticResponse: {
@@ -113,7 +102,7 @@ const TransactionList = ({
               recurrence,
               amount,
               type,
-              startDate: startDateFormatted,
+              startDate,
               displayOrder: displayOrder - 1
             },
             optimisticResponse: {
@@ -144,7 +133,7 @@ const TransactionList = ({
               recurrence,
               amount,
               type,
-              startDate: startDateFormatted,
+              startDate,
               displayOrder: displayOrder + 1
             },
             optimisticResponse: {
