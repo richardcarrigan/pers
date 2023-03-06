@@ -1,47 +1,13 @@
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
-import { useMutation } from '@apollo/client';
 import { Draggable } from 'react-beautiful-dnd';
-import { useAuth0 } from '@auth0/auth0-react';
-
-import { DELETE_TRANSACTION } from '../graphQL/mutations';
-import { GET_ACCOUNT } from '../graphQL/queries';
 
 export default function Transaction({
   index,
   transaction,
   setTransactionFormData,
-  accountId,
   balance
 }) {
   const { _id, description, amount, type, startDate } = transaction;
-
-  const { user } = useAuth0();
-  const userId = user.sub;
-
-  const [deleteTransaction, { loading, error }] = useMutation(
-    DELETE_TRANSACTION,
-    {
-      update(cache, { data: { deleteTransaction } }) {
-        const data = {
-          ...cache.readQuery({
-            query: GET_ACCOUNT,
-            variables: { id: accountId, userId }
-          })
-        };
-        const updatedTransactions = data.account.transactions.filter(
-          transaction => {
-            return transaction._id !== deleteTransaction._id;
-          }
-        );
-        data.account = { ...data.account, transactions: updatedTransactions };
-        cache.writeQuery({
-          query: GET_ACCOUNT,
-          variables: { id: accountId, userId },
-          data
-        });
-      }
-    }
-  );
 
   const options = {
     timeZone: 'UTC',
@@ -54,13 +20,6 @@ export default function Transaction({
   const startDateFormatted = new Intl.DateTimeFormat('en-US', options).format(
     new Date(Number(startDate))
   );
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
 
   return (
     <Draggable draggableId={_id} index={index}>
@@ -99,15 +58,8 @@ export default function Transaction({
               className='btn'
               onClick={() => {
                 if (description !== 'Initial balance') {
-                  deleteTransaction({
-                    variables: { transactionId: _id },
-                    optimisticResponse: {
-                      deleteTransaction: {
-                        _id,
-                        __typename: 'Transaction'
-                      }
-                    }
-                  });
+                  setTransactionFormData(transaction);
+                  deleteTransactionModal.showModal();
                 }
               }}
             />

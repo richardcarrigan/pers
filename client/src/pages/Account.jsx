@@ -9,6 +9,7 @@ import TransactionList from '../components/TransactionList';
 import NewAccountForm from '../components/NewAccountForm';
 import NewTransactionForm from '../components/NewTransactionForm';
 import DeleteAccountForm from '../components/DeleteAccountForm';
+import DeleteTransactionForm from '../components/DeleteTransactionForm';
 
 export default function Account({ accountFormData, setAccountFormData }) {
   const { id } = useParams();
@@ -81,6 +82,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
         accountName={name}
       />
       <DeleteAccountForm _id={id} />
+      <DeleteTransactionForm formData={transactionFormData} setFormData={setTransactionFormData} accountId={id} />
     </>
   );
 }
