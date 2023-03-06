@@ -11,7 +11,9 @@ const Modal = ({ id, heading, submitHandler, cancelHandler, children }) => {
           <button
             type='button' value='cancel'
             onClick={() => {
-              cancelHandler();
+              if (cancelHandler) {
+                cancelHandler();
+              }
               document.getElementById(id).close();
             }}
           >

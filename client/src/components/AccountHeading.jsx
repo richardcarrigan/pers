@@ -1,10 +1,4 @@
-import { useNavigate } from 'react-router-dom';
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
-import { useMutation } from '@apollo/client';
-import { useAuth0 } from '@auth0/auth0-react';
-
-import { GET_ACCOUNTS } from '../graphQL/queries';
-import { DELETE_ACCOUNT } from '../graphQL/mutations';
 
 const AccountHeading = ({
   _id,
@@ -12,30 +6,6 @@ const AccountHeading = ({
   balance,
   setAccountFormData
 }) => {
-  const navigate = useNavigate();
-
-  const { user } = useAuth0();
-  const userId = user.sub;
-
-  const [deleteAccount, { deleteMutationLoading, deleteMutationError }] =
-    useMutation(DELETE_ACCOUNT, {
-      update(cache, { data: { deleteAccount } }) {
-        const data = {
-          ...cache.readQuery({
-            query: GET_ACCOUNTS, variables: { userId }
-          })
-        };
-        const updatedAccounts = data.accounts.filter(account => {
-          return account._id !== deleteAccount._id;
-        });
-        data.accounts = updatedAccounts;
-        cache.writeQuery({ query: GET_ACCOUNTS, variables: { userId }, data });
-      }
-    });
-
-  if (deleteMutationLoading) return <p>Loading...</p>;
-  if (deleteMutationError) return <p>Error 😢</p>;
-
   return (
     <div className='accountHeading'>
       <h1>{name}</h1>
@@ -53,16 +23,7 @@ const AccountHeading = ({
       <FaTrashAlt
         className='btn'
         onClick={() => {
-          deleteAccount({
-            variables: { accountId: _id },
-            optimisticResponse: {
-              deleteAccount: {
-                _id,
-                __typename: 'Account'
-              }
-            }
-          });
-          navigate('/dashboard');
+          deleteAccountModal.showModal()
         }}
       />
     </div>
