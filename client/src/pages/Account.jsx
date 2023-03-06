@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
+import { GET_ACCOUNT } from '../graphQL/queries';
 
 import AccountHeading from '../components/AccountHeading';
 import TransactionList from '../components/TransactionList';
 import NewAccountForm from '../components/NewAccountForm';
 import NewTransactionForm from '../components/NewTransactionForm';
-
-import { GET_ACCOUNT } from '../graphQL/queries';
+import DeleteAccountForm from '../components/DeleteAccountForm';
 
 export default function Account({ accountFormData, setAccountFormData }) {
   const { id } = useParams();
@@ -80,6 +80,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
         transactionCount={transactions.length}
         accountName={name}
       />
+      <DeleteAccountForm _id={id} />
     </>
   );
 }
