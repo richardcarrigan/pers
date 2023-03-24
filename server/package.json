@@ -19,7 +19,7 @@
   "homepage": "https://github.com/nihonjinboy85/pers#readme",
   "dependencies": {
     "apollo-datasource-mongodb": "^0.5.4",
-    "apollo-server": "^3.11.1",
+    "apollo-server": "^3.12.0",
     "graphql": "^16.6.0",
     "mongodb": "^4.13.0"
   },
