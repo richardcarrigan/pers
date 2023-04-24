@@ -238,6 +238,12 @@ h1,
   z-index: 1;
 }
 
+.transDate, .transBalance {
+  color: rgb(122, 122, 122);
+  font-style: italic;
+  font-size: 0.7rem;
+}
+
 #addAccountBtn {
   background-color: transparent;
   border: 5px dashed rgb(var(--primary));
