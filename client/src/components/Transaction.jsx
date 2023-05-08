@@ -30,21 +30,22 @@ export default function Transaction({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <td className='transStartDate'>{startDateFormatted}</td>
-          <td className='transDescription'>{description}</td>
-          <td
-            className='transAmount'
-            style={{ color: type === 'income' ? 'green' : 'inherit', textAlign: 'right' }}
-          >
-            {Intl.NumberFormat('en-us', {
-              style: 'currency',
-              currency: 'USD'
-            }).format(type === 'income' ? amount : amount * -1)}
-          </td>
-          <td style={{ color: balance < 0 ? 'red' : 'inherit', textAlign: 'right' }}>
-            {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
+          <td>
+            <div className="transDescription">{description}</div>
+            <div className="transDate">{startDateFormatted}</div>
           </td>
           <td>
+            <div className="transAmount" style={{ color: type === 'income' ? 'green' : 'inherit', textAlign: 'right' }}>
+              {Intl.NumberFormat('en-us', {
+                style: 'currency',
+                currency: 'USD'
+              }).format(type === 'income' ? amount : amount * -1)}
+            </div>
+            <div className="transBalance" style={{ color: balance < 0 && 'red', textAlign: 'right' }}>
+              {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
+            </div>
+          </td>
+          <td style={{textAlign: 'right'}}>
             <FaPencilAlt
               className='btn'
               onClick={() => {

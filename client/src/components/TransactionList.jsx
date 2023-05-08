@@ -163,7 +163,6 @@ const TransactionList = ({
 
   return (
     <>
-      <h2>Transactions</h2>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={accountId}>
           {provided => (
@@ -174,11 +173,9 @@ const TransactionList = ({
             >
               <thead className='transactionListHeader'>
                 <tr>
-                  <th>Date</th>
                   <th>Description</th>
-                  <th>Amount</th>
-                  <th>Balance</th>
-                  <th>Actions</th>
+                  <th style={{textAlign: 'center'}}>Amount</th>
+                  <th style={{textAlign: 'right'}}>Actions</th>
                 </tr>
               </thead>
               <tbody>

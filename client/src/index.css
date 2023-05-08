@@ -3,7 +3,7 @@
   --dark-accent: #85618f;
   --dark-bg: #0e142b;
   --footer-height: 50px;
-  --header-height: 50px;
+  --header-height: 130px;
   --light-bg: #f5f4ee;
   --primary: 135, 34, 237;
 }
@@ -220,22 +220,18 @@ h1,
 }
 
 .modal {
-  border-width: 0;
-  border-radius: 15px;
-  margin: 100px auto;
-  padding: 15px;
-  width: 80%;
-}
-.modal::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(3px);
+  border: none;
   height: 100%;
-  left: 0;
-  overflow: auto;
-  position: fixed;
-  top: 0;
+  max-height: 100%;
+  max-width: 100%;
+  padding: 15px;
   width: 100%;
-  z-index: 1;
+}
+
+.transDate, .transBalance {
+  color: rgb(122, 122, 122);
+  font-style: italic;
+  font-size: 0.7rem;
 }
 
 #addAccountBtn {
@@ -265,6 +261,9 @@ h1,
 }
 
 @media screen and (min-width: 768px) {
+  :root {
+    --header-height: 50px;
+  }
   nav ul {
     width: auto;
   }
@@ -280,7 +279,21 @@ h1,
     width: auto;
   }
   .modal {
+    border-radius: 15px;
+    margin: 5vh auto;
     width: 50%;
+    max-height: 90vh;
+  }
+  .modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    height: 100%;
+    left: 0;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
   }
   #app > header {
     align-items: center;
