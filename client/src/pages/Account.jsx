@@ -14,12 +14,12 @@ import DeleteTransactionForm from '../components/DeleteTransactionForm';
 export default function Account({ accountFormData, setAccountFormData }) {
   const { id } = useParams();
   const [transactionFormData, setTransactionFormData] = useState({
-    description: '',
-    recurrence: 'none',
     amount: 0.00,
-    type: 'expense',
+    description: '',
+    displayOrder: 0,
+    recurrence: 'none',
     startDate: '',
-    displayOrder: 0
+    type: 'expense'
   });
 
   const navigate = useNavigate();
@@ -44,16 +44,17 @@ export default function Account({ accountFormData, setAccountFormData }) {
     <>
       <AccountHeading
         _id={id}
-        name={name}
         balance={balance}
+        name={name}
         setAccountFormData={setAccountFormData}
       />
       <TransactionList
-        transactionsProp={transactions}
         accountId={id}
-        setTransactionFormData={setTransactionFormData}
         accountName={name}
         balance={balance}
+        setAccountFormData={setAccountFormData}
+        setTransactionFormData={setTransactionFormData}
+        transactionsProp={transactions}
       />
       <div className='btnGroup'>
         <button
@@ -75,14 +76,18 @@ export default function Account({ accountFormData, setAccountFormData }) {
         transactions={transactions}
       />
       <NewTransactionForm
+        accountId={id}
+        accountName={name}
         formData={transactionFormData}
         setFormData={setTransactionFormData}
-        accountId={id}
         transactionCount={transactions.length}
-        accountName={name}
       />
       <DeleteAccountForm _id={id} />
-      <DeleteTransactionForm formData={transactionFormData} setFormData={setTransactionFormData} accountId={id} />
+      <DeleteTransactionForm
+        accountId={id}
+        formData={transactionFormData}
+        setFormData={setTransactionFormData}
+      />
     </>
   );
 }
