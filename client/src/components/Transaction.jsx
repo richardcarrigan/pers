@@ -2,12 +2,14 @@ import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { Draggable } from 'react-beautiful-dnd';
 
 export default function Transaction({
+  accountId,
+  accountName,
+  balance,
   index,
-  transaction,
   setTransactionFormData,
-  balance
+  transaction
 }) {
-  const { _id, description, amount, type, startDate } = transaction;
+  const { _id, amount, description, startDate, type } = transaction;
 
   const options = {
     timeZone: 'UTC',
@@ -22,51 +24,78 @@ export default function Transaction({
   );
 
   return (
-    <Draggable draggableId={_id} index={index}>
-      {provided => (
-        <tr
-          className='transactionCard'
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
+    type !== 'initial'
+      ? <Draggable draggableId={_id} index={index}>
+          {provided => (
+            <tr
+              className='transactionCard'
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
+              <td>
+                <div className="transDescription">{description}</div>
+                <div className="transDate">{startDateFormatted}</div>
+              </td>
+              <td>
+                <div className="transAmount" style={{ color: type === 'income' ? 'green' : 'inherit', textAlign: 'right' }}>
+                  {Intl.NumberFormat('en-us', {
+                    style: 'currency',
+                    currency: 'USD'
+                  }).format(type === 'income' ? amount : amount * -1)}
+                </div>
+                <div className="transBalance" style={{ color: balance < 0 && 'red', textAlign: 'right' }}>
+                  {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
+                </div>
+              </td>
+              <td style={{textAlign: 'right'}}>
+                <FaPencilAlt
+                  className='btn'
+                  onClick={() => {
+                    if (description !== 'Initial balance') {
+                      setTransactionFormData(transaction);
+                      transactionModal.showModal();
+                    }
+                  }}
+                />
+                <FaTrashAlt
+                  className='btn'
+                  onClick={() => {
+                    if (description !== 'Initial balance') {
+                      setTransactionFormData(transaction);
+                      deleteTransactionModal.showModal();
+                    }
+                  }}
+                />
+              </td>
+            </tr>
+          )}
+        </Draggable>
+      : <tr className='transactionCard'>
           <td>
             <div className="transDescription">{description}</div>
-            <div className="transDate">{startDateFormatted}</div>
           </td>
           <td>
-            <div className="transAmount" style={{ color: type === 'income' ? 'green' : 'inherit', textAlign: 'right' }}>
+            <div className="transAmount" style={{ textAlign: 'right' }}>
               {Intl.NumberFormat('en-us', {
                 style: 'currency',
                 currency: 'USD'
-              }).format(type === 'income' ? amount : amount * -1)}
-            </div>
-            <div className="transBalance" style={{ color: balance < 0 && 'red', textAlign: 'right' }}>
-              {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
+              }).format(amount)}
             </div>
           </td>
-          <td style={{textAlign: 'right'}}>
+          <td style={{ textAlign: 'right' }}>
             <FaPencilAlt
               className='btn'
               onClick={() => {
-                if (description !== 'Initial balance') {
-                  setTransactionFormData(transaction);
-                  transactionModal.showModal();
-                }
-              }}
-            />
-            <FaTrashAlt
-              className='btn'
-              onClick={() => {
-                if (description !== 'Initial balance') {
-                  setTransactionFormData(transaction);
-                  deleteTransactionModal.showModal();
-                }
+                setTransactionFormData({
+                  _id: accountId,
+                  name: accountName,
+                  balance
+                });
+                accountModal.showModal();
               }}
             />
           </td>
         </tr>
-      )}
-    </Draggable>
   );
 }

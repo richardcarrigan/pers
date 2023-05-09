@@ -7,11 +7,12 @@ import { UPDATE_TRANSACTION } from '../graphQL/mutations';
 import { GET_ACCOUNT } from '../graphQL/queries';
 
 const TransactionList = ({
-  transactionsProp,
   accountId,
-  setTransactionFormData,
   accountName,
-  balance
+  balance,
+  setAccountFormData,
+  setTransactionFormData,
+  transactionsProp
 }) => {
   const { user } = useAuth0();
   const userId = user.sub;
@@ -56,35 +57,35 @@ const TransactionList = ({
     transactions.forEach(transaction => {
       const {
         _id,
-        description,
-        recurrence,
         amount,
-        type,
+        description,
+        displayOrder,
+        recurrence,
         startDate,
-        displayOrder
+        type
       } = transaction;
 
       if (_id === draggableId) {
         updateTransaction({
           variables: {
-            transactionId: draggableId,
-            description,
-            recurrence,
             amount,
-            type,
+            description,
+            displayOrder: destination.index,
+            recurrence,
             startDate,
-            displayOrder: destination.index
+            transactionId: draggableId,
+            type
           },
           optimisticResponse: {
             updateTransaction: {
               _id,
               __typename: 'Transaction',
-              description,
-              recurrence,
               amount,
-              type,
-              startDate,
+              description,
               displayOrder: destination.index,
+              recurrence,
+              startDate,
+              type,
               account: {
                 _id: accountId,
                 __typename: 'Account',
@@ -97,24 +98,24 @@ const TransactionList = ({
         if (displayOrder > source.index && displayOrder <= destination.index) {
           updateTransaction({
             variables: {
-              transactionId: _id,
-              description,
-              recurrence,
               amount,
-              type,
+              description,
+              displayOrder: displayOrder - 1,
+              recurrence,
               startDate,
-              displayOrder: displayOrder - 1
+              transactionId: _id,
+              type
             },
             optimisticResponse: {
               updateTransaction: {
                 _id,
                 __typename: 'Transaction',
-                description,
-                recurrence,
                 amount,
-                type,
-                startDate,
+                description,
                 displayOrder: displayOrder - 1,
+                recurrence,
+                startDate,
+                type,
                 account: {
                   _id: accountId,
                   __typename: 'Account',
@@ -128,24 +129,24 @@ const TransactionList = ({
         if (displayOrder >= destination.index && displayOrder < source.index) {
           updateTransaction({
             variables: {
-              transactionId: _id,
-              description,
-              recurrence,
               amount,
-              type,
+              description,
+              displayOrder: displayOrder + 1,
+              recurrence,
               startDate,
-              displayOrder: displayOrder + 1
+              transactionId: _id,
+              type
             },
             optimisticResponse: {
               updateTransaction: {
                 _id,
                 __typename: 'Transaction',
-                description,
-                recurrence,
                 amount,
-                type,
-                startDate,
+                description,
                 displayOrder: displayOrder + 1,
+                recurrence,
+                startDate,
+                type,
                 account: {
                   _id: accountId,
                   __typename: 'Account',
@@ -179,6 +180,20 @@ const TransactionList = ({
                 </tr>
               </thead>
               <tbody>
+                <Transaction
+                  accountId={accountId}
+                  accountName={accountName}
+                  balance={balance}
+                  index='-1'
+                  setTransactionFormData={setAccountFormData}
+                  transaction={{
+                    _id: 'null',
+                    amount: balance,
+                    description: 'Initial balance',
+                    startDate: Date.now(),
+                    type: 'initial'
+                  }}
+                />
                 {sortedTransactions.map((transaction, index) => {
                   // This fixes calculation issues when a transaction is either dropped in its starting location or outside the droppable area
                   if (index === 0) {
@@ -191,12 +206,12 @@ const TransactionList = ({
                   }
                   return (
                     <Transaction
-                      key={transaction._id}
-                      index={index}
-                      transaction={transaction}
-                      setTransactionFormData={setTransactionFormData}
                       accountId={accountId}
                       balance={runningBalance}
+                      index={index}
+                      key={transaction._id}
+                      setTransactionFormData={setTransactionFormData}
+                      transaction={transaction}
                     />
                   );
                 })}
