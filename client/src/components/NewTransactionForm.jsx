@@ -1,8 +1,11 @@
 import { FaDollarSign } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
-import Modal from './Modal';
+import DatePicker from 'react-datepicker';
 
+import 'react-datepicker/dist/react-datepicker.css';
+
+import Modal from './Modal';
 import { GET_ACCOUNT } from '../graphQL/queries';
 import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../graphQL/mutations';
 
@@ -10,8 +13,7 @@ const NewTransactionForm = ({
   formData,
   setFormData,
   accountId,
-  transactionCount,
-  accountName
+  transactionCount
 }) => {
   const {
     _id,
@@ -22,23 +24,6 @@ const NewTransactionForm = ({
     startDate,
     displayOrder
   } = formData;
-
-  let startDateFormatted;
-  if (startDate) {
-    startDateFormatted = new Date(Number(startDate));
-
-    startDateFormatted = `${startDateFormatted.getUTCFullYear()}-${
-      startDateFormatted.getUTCMonth() + 1 < 10
-        ? `0${startDateFormatted.getUTCMonth() + 1}`
-        : startDateFormatted.getUTCMonth() + 1
-    }-${
-      startDateFormatted.getUTCDate() < 10
-        ? `0${startDateFormatted.getUTCDate()}`
-        : startDateFormatted.getUTCDate()
-    }`;
-  } else {
-    startDateFormatted = startDate;
-  }
 
   const { user } = useAuth0();
   const userId = user.sub;
@@ -223,12 +208,12 @@ const NewTransactionForm = ({
         <option value='expense'>expense</option>
       </select>
       <label htmlFor='startDate'>Start Date</label>
-      <input
-        type='date'
-        value={startDateFormatted}
+      <DatePicker
         id='startDate'
-        required
-        onChange={handleFormChange}
+        selected={startDate && new Date(Number(startDate))}
+        onChange={date => {
+          handleFormChange({ target: { id: 'startDate', value: date } })
+        }}
       />
     </Modal>
   );
