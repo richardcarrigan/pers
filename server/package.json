@@ -20,7 +20,7 @@
   "dependencies": {
     "apollo-datasource-mongodb": "^0.5.4",
     "apollo-server": "^3.12.0",
-    "graphql": "^16.6.0",
+    "graphql": "^16.8.1",
     "mongodb": "^4.15.0"
   },
   "devDependencies": {
