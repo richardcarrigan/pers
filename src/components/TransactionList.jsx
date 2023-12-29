@@ -60,7 +60,6 @@ const TransactionList = ({
         amount,
         description,
         displayOrder,
-        recurrence,
         startDate,
         type
       } = transaction;
@@ -71,7 +70,6 @@ const TransactionList = ({
             amount,
             description,
             displayOrder: destination.index,
-            recurrence,
             startDate,
             transactionId: draggableId,
             type
@@ -83,7 +81,6 @@ const TransactionList = ({
               amount,
               description,
               displayOrder: destination.index,
-              recurrence,
               startDate,
               type,
               account: {
@@ -101,7 +98,6 @@ const TransactionList = ({
               amount,
               description,
               displayOrder: displayOrder - 1,
-              recurrence,
               startDate,
               transactionId: _id,
               type
@@ -113,7 +109,6 @@ const TransactionList = ({
                 amount,
                 description,
                 displayOrder: displayOrder - 1,
-                recurrence,
                 startDate,
                 type,
                 account: {
@@ -132,7 +127,6 @@ const TransactionList = ({
               amount,
               description,
               displayOrder: displayOrder + 1,
-              recurrence,
               startDate,
               transactionId: _id,
               type
@@ -144,7 +138,6 @@ const TransactionList = ({
                 amount,
                 description,
                 displayOrder: displayOrder + 1,
-                recurrence,
                 startDate,
                 type,
                 account: {

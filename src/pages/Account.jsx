@@ -17,7 +17,6 @@ export default function Account({ accountFormData, setAccountFormData }) {
     amount: 0.00,
     description: '',
     displayOrder: 0,
-    recurrence: 'none',
     startDate: '',
     type: 'expense'
   });

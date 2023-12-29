@@ -22,7 +22,6 @@ export const GET_ACCOUNT = gql`
         description
         amount
         type
-        recurrence
         displayOrder
       }
     }

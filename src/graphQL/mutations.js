@@ -32,7 +32,6 @@ export const DELETE_ACCOUNT = gql`
 export const ADD_TRANSACTION = gql`
   mutation AddTransaction(
     $description: String!
-    $recurrence: RecurrenceOptions!
     $amount: Float!
     $type: TransactionTypes!
     $startDate: String!
@@ -41,7 +40,6 @@ export const ADD_TRANSACTION = gql`
   ) {
     addTransaction(
       description: $description
-      recurrence: $recurrence
       amount: $amount
       type: $type
       startDate: $startDate
@@ -50,7 +48,6 @@ export const ADD_TRANSACTION = gql`
     ) {
       _id
       description
-      recurrence
       amount
       type
       startDate
@@ -63,7 +60,6 @@ export const UPDATE_TRANSACTION = gql`
   mutation updateTransaction(
     $transactionId: ID!
     $description: String!
-    $recurrence: RecurrenceOptions!
     $amount: Float!
     $type: TransactionTypes!
     $startDate: String!
@@ -72,7 +68,6 @@ export const UPDATE_TRANSACTION = gql`
     updateTransaction(
       transactionId: $transactionId
       description: $description
-      recurrence: $recurrence
       amount: $amount
       type: $type
       startDate: $startDate
@@ -80,7 +75,6 @@ export const UPDATE_TRANSACTION = gql`
     ) {
       _id
       description
-      recurrence
       amount
       type
       startDate

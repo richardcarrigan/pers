@@ -50,7 +50,6 @@ const DeleteTransactionForm = ({ formData, setFormData, accountId }) => {
         });
         setFormData({
           description: '',
-          recurrence: 'none',
           amount: 0.00,
           type: 'expense',
           startDate: '',
@@ -60,7 +59,6 @@ const DeleteTransactionForm = ({ formData, setFormData, accountId }) => {
       cancelHandler={() => {
         setFormData({
           description: '',
-          recurrence: 'none',
           amount: 0.00,
           type: 'expense',
           startDate: '',

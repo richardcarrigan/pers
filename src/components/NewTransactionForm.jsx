@@ -18,7 +18,6 @@ const NewTransactionForm = ({
   const {
     _id,
     description,
-    recurrence,
     amount,
     type,
     startDate,
@@ -86,7 +85,6 @@ const NewTransactionForm = ({
         variables: {
           transactionId: _id,
           description,
-          recurrence,
           amount,
           type,
           startDate,
@@ -97,7 +95,6 @@ const NewTransactionForm = ({
             _id,
             __typename: 'Transaction',
             description,
-            recurrence,
             amount,
             type,
             startDate,
@@ -117,7 +114,6 @@ const NewTransactionForm = ({
             _id: 'temp-id',
             __typename: 'Transaction',
             description,
-            recurrence,
             amount,
             type,
             startDate,
@@ -128,7 +124,6 @@ const NewTransactionForm = ({
     }
     setFormData({
       description: '',
-      recurrence: 'none',
       amount: 0.00,
       type: 'expense',
       startDate: '',
@@ -139,7 +134,6 @@ const NewTransactionForm = ({
   function handleCancel() {
     setFormData({
       description: '',
-      recurrence: 'none',
       amount: 0.00,
       type: 'expense',
       startDate: '',
@@ -170,19 +164,6 @@ const NewTransactionForm = ({
         required
         placeholder='Description'
       />
-      <label htmlFor='recurrence'>Recurrence</label>
-      <select
-        id='recurrence'
-        selected
-        value={recurrence}
-        onChange={handleFormChange}
-        required
-      >
-        <option value='none'>none</option>
-        <option value='daily'>daily</option>
-        <option value='weekly'>weekly</option>
-        <option value='monthly'>monthly</option>
-      </select>
       <label htmlFor='amount'>Amount</label>
       <div className='amountInputWithIcon'>
         <FaDollarSign />
