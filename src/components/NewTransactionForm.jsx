@@ -71,7 +71,7 @@ const NewTransactionForm = ({
 
   function handleFormChange(e) {
     if (e.target.id === 'amount') {
-      setFormData({ ...formData, amount: Number(e.target.value) });
+      setFormData({ ...formData, amount: parseFloat(e.target.value) });
     } else if (e.target.id === 'startDate') {
       setFormData({ ...formData, startDate: Date.parse(e.target.value).toString() });
     } else {
@@ -124,7 +124,7 @@ const NewTransactionForm = ({
     }
     setFormData({
       description: '',
-      amount: 0.00,
+      amount: 0,
       type: 'expense',
       startDate: '',
       displayOrder: 0
@@ -134,7 +134,7 @@ const NewTransactionForm = ({
   function handleCancel() {
     setFormData({
       description: '',
-      amount: 0.00,
+      amount: 0,
       type: 'expense',
       startDate: '',
       displayOrder: 0
@@ -169,7 +169,7 @@ const NewTransactionForm = ({
         <FaDollarSign />
         <input
           type='number'
-          min='0.00'
+          min='0'
           step='0.01'
           id='amount'
           required

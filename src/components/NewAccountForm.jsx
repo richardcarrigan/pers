@@ -44,7 +44,7 @@ const NewAccountForm = ({
 
   function handleFormChange(e) {
     if (e.target.id === 'balance') {
-      setFormData({ ...formData, balance: Number(e.target.value) });
+      setFormData({ ...formData, [e.target.id]: parseFloat(e.target.value) });
     } else {
       setFormData({ ...formData, [e.target.id]: e.target.value });
     }
@@ -82,14 +82,14 @@ const NewAccountForm = ({
     }
     setFormData({
       name: '',
-      balance: 0.00
+      balance: 0
     });
   }
 
   function handleCancel() {
     setFormData({
       name: '',
-      balance: 0.00
+      balance: 0
     });
   }
 
@@ -122,7 +122,7 @@ const NewAccountForm = ({
         <input
           id='balance'
           type='number'
-          min='0.00'
+          min='0'
           step='0.01'
           required
           placeholder='Account balance'

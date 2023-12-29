@@ -14,7 +14,7 @@ import DeleteTransactionForm from '../components/DeleteTransactionForm';
 export default function Account({ accountFormData, setAccountFormData }) {
   const { id } = useParams();
   const [transactionFormData, setTransactionFormData] = useState({
-    amount: 0.00,
+    amount: '',
     description: '',
     displayOrder: 0,
     startDate: '',
