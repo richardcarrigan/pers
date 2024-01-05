@@ -55,6 +55,7 @@ form {
 
 form label, form input, form select {
   margin-top: 15px;
+  width: 100%;
 }
 
 input,
@@ -78,12 +79,17 @@ header > div {
   align-items: baseline;
 }
 
+header h3 {
+  margin: 0 auto;
+}
+
 #app > header {
   background-color: rgba(var(--primary), 0.7);
   backdrop-filter: blur(3px);
   box-shadow: 0 0 5px var(--dark-bg);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   min-height: 50px;
   padding-block-end: 10px;
   width: 100%;
@@ -133,7 +139,7 @@ th {
 
 h1,
 .accountNameUpdateInput {
-  margin: 0;
+  /* margin: 0; */
   padding: 0;
   font-size: 2em;
   font-weight: bold;
@@ -143,6 +149,11 @@ h1,
   display: flex;
   flex-wrap: wrap;
   margin-top: 25px;
+  gap: 25px;
+}
+
+.accounts > a, .accounts > button {
+  margin: 0 auto;
 }
 
 .amountInputWithIcon {
@@ -181,7 +192,6 @@ h1,
   border: 1px solid rgb(var(--primary));
   border-radius: 15px;
   height: 250px;
-  margin: 0 25px 25px 0;
   transition: all 0.2s;
   width: 250px;
 }
@@ -245,7 +255,6 @@ h1,
   color: var(--dark-bg);
   font-size: 2em;
   height: 250px;
-  margin: 0 25px 25px 0;
   padding: 15px;
   width: 250px;
 }
@@ -266,9 +275,18 @@ h1,
   margin-right: 15px;
 }
 
+@media screen and (min-width: 568px) {
+  .accounts > a, .accounts > button {
+    margin: 0;
+  }
+}
+
 @media screen and (min-width: 768px) {
   :root {
     --header-height: 50px;
+  }
+  header h3 {
+    margin: 0;
   }
   nav ul {
     width: auto;
@@ -305,6 +323,9 @@ h1,
     align-items: center;
     flex-direction: row;
     padding-block-end: 0;
+  }
+  #brand {
+    margin: 0;
   }
 }
 

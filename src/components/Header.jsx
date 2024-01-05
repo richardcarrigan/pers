@@ -10,7 +10,7 @@ function Header() {
   return (
     <header>
       <div className="header-item">
-      <Link to='/'><h3 id='brand'>Pers</h3></Link>
+      <h3 id='brand'><Link to='/'>Pers</Link></h3>
       </div>
       {isAuthenticated && (
         <nav className='header-item'>
