@@ -70,7 +70,7 @@ const NewTransactionForm = ({
     });
 
   function handleFormChange(e) {
-    if (e.target.id === 'amount') {
+    if (e.target.id === 'amount' && !isNaN(parseFloat(e.target.value))) {
       setFormData({ ...formData, amount: parseFloat(e.target.value) });
     } else if (e.target.id === 'startDate') {
       setFormData({ ...formData, startDate: Date.parse(e.target.value).toString() });
@@ -124,7 +124,7 @@ const NewTransactionForm = ({
     }
     setFormData({
       description: '',
-      amount: 0,
+      amount: '',
       type: 'expense',
       startDate: '',
       displayOrder: 0
@@ -134,7 +134,7 @@ const NewTransactionForm = ({
   function handleCancel() {
     setFormData({
       description: '',
-      amount: 0,
+      amount: '',
       type: 'expense',
       startDate: '',
       displayOrder: 0
@@ -175,6 +175,7 @@ const NewTransactionForm = ({
           required
           value={amount}
           onChange={handleFormChange}
+          placeholder='Transaction amount'
         />
       </div>
       <label htmlFor='type'>Transaction Type</label>
@@ -188,13 +189,14 @@ const NewTransactionForm = ({
         <option value='income'>income</option>
         <option value='expense'>expense</option>
       </select>
-      <label htmlFor='startDate'>Start Date</label>
+      <label htmlFor='startDate'>Date</label>
       <DatePicker
         id='startDate'
         selected={startDate && new Date(Number(startDate))}
         onChange={date => {
           handleFormChange({ target: { id: 'startDate', value: date } })
         }}
+        placeholderText='Transaction date'
       />
     </Modal>
   );

@@ -43,7 +43,7 @@ const NewAccountForm = ({
     });
 
   function handleFormChange(e) {
-    if (e.target.id === 'balance') {
+    if (e.target.id === 'balance' && !isNaN(parseFloat(e.target.value))) {
       setFormData({ ...formData, [e.target.id]: parseFloat(e.target.value) });
     } else {
       setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -82,14 +82,14 @@ const NewAccountForm = ({
     }
     setFormData({
       name: '',
-      balance: 0
+      balance: ''
     });
   }
 
   function handleCancel() {
     setFormData({
       name: '',
-      balance: 0
+      balance: ''
     });
   }
 

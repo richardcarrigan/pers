@@ -13,7 +13,7 @@ import Footer from './components/Footer';
 function App() {
   const [accountFormData, setAccountFormData] = useState({
     name: '',
-    balance: 0
+    balance: ''
   });
 
   return (
