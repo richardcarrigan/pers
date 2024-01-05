@@ -25,7 +25,8 @@ body, dialog {
   color: var(--dark-bg);
 }
 
-button {
+button,
+button:focus {
   background-color: rgb(var(--primary));
   border: none;
   border-radius: 5px;
@@ -35,8 +36,7 @@ button {
 }
 
 button:hover,
-button:active,
-button:focus {
+button:active {
   background-color: #4a1284;
   cursor: pointer;
 }
@@ -215,6 +215,9 @@ h1,
 .header-item a:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
+.header-item a:focus {
+  background-color: initial;
+}
 
 .hidden {
   display: none;
@@ -249,11 +252,13 @@ h1,
 
 .card:hover,
 .card:active,
-.card:focus,
 #addAccountBtn:hover,
-#addAccountBtn:active,
-#addAccountBtn:focus {
+#addAccountBtn:active {
   background-color: rgba(0, 0, 0, 0.2);
+}
+.card:focus,
+#addAccountBtn:focus {
+  background-color: initial;
 }
 
 #greeting {
@@ -317,12 +322,15 @@ h1,
   }
   .card:hover,
   .card:active,
-  .card:focus,
   #addAccountBtn:hover,
-  #addAccountBtn:active,
-  #addAccountBtn:focus {
+  #addAccountBtn:active {
     background-color: rgba(255, 255, 255, 0.2);
   }
+  .card:focus,
+  #addAccountBtn:focus {
+    background-color: initial;
+  }
+
   .modal::backdrop {
     background-color: rgba(255, 255, 255, 0.5);
   }
