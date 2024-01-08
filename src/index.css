@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Hind:wght@300;400;500;600;700&display=swap');
+
 /* Theme colors */
 :root {
   --dark-accent: #85618f;
@@ -10,7 +12,7 @@
 
 * {
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Hind', sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -58,6 +60,10 @@ form label, form input, form select {
   width: 100%;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cardo', serif;
+}
+
 input,
 select {
   padding: 15px;
@@ -69,29 +75,21 @@ header {
   top: 0;
   z-index: 9999;
 }
-header a:has(h3) {
-  display: inline-block;
-  width: 100%;
-}
 
 header > div {
   display: flex;
   align-items: baseline;
 }
 
-header h3 {
-  margin: 0 auto;
-}
-
 #app > header {
-  background-color: rgba(var(--primary), 0.7);
+  background-color: transparent;
   backdrop-filter: blur(3px);
   box-shadow: 0 0 5px var(--dark-bg);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 50px;
-  padding-block-end: 10px;
+  padding: 10px 25px;
   width: 100%;
 }
 
@@ -219,9 +217,6 @@ h1,
   text-align: center;
   width: 100%;
 }
-.header-item a {
-  padding: 10px;
-}
 .header-item a:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -275,6 +270,18 @@ h1,
   margin-right: 15px;
 }
 
+#nav-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#nav-header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
 @media screen and (min-width: 568px) {
   .accounts > a, .accounts > button {
     margin: 0;
@@ -322,10 +329,12 @@ h1,
   #app > header {
     align-items: center;
     flex-direction: row;
-    padding-block-end: 0;
   }
   #brand {
     margin: 0;
+  }
+  #nav-header-logo {
+    justify-content: left;
   }
 }
 

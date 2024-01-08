@@ -1,8 +1,8 @@
 export default function Home() {
   return (
     <>
-      <h1>Welcome to Pers</h1>
-      <h2>The easiest financial app you'll ever use</h2>
+      <h1>Pers</h1>
+      <h2>Track your money how you want</h2>
     </>
   );
 }
