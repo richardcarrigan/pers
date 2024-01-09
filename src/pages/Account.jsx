@@ -57,6 +57,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
       />
       <div className='btnGroup'>
         <button
+          className='btn btn-primary'
           id='addTransactionBtn'
           type='button'
           onClick={() => {
@@ -65,7 +66,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
         >
           Add new transaction
         </button>
-        <button type='button' onClick={() => navigate('/dashboard')}>
+        <button className='btn btn-secondary' type='button' onClick={() => navigate('/accounts')}>
           Back
         </button>
       </div>

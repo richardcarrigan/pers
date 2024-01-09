@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
+import Accounts from './pages/Accounts';
 import Account from './pages/Account';
 import Profile from './pages/Profile';
 
@@ -24,10 +24,10 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route
-              path='/dashboard'
+              path='/accounts'
               element={
                 <PrivateRoute>
-                  <Dashboard
+                  <Accounts
                     accountFormData={accountFormData}
                     setAccountFormData={setAccountFormData}
                   />

@@ -7,9 +7,9 @@ const Modal = ({ id, heading, submitHandler, cancelHandler, children }) => {
       >
         {children}
         <div className='btnGroup'>
-          <button type='submit' value='default'>Submit</button>
+          <button className="btn btn-primary" type='submit' value='default'>Submit</button>
           <button
-            type='button' value='cancel'
+            className='btn btn-secondary' type='button' value='cancel'
             onClick={() => {
               if (cancelHandler) {
                 cancelHandler();

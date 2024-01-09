@@ -5,7 +5,7 @@
   --dark-accent: #85618f;
   --dark-bg: #0e142b;
   --footer-height: 50px;
-  --header-height: 130px;
+  --header-height: 206.4px;
   --light-bg: #f5f4ee;
   --primary: 135, 34, 237;
 }
@@ -25,22 +25,6 @@ a {
 body, dialog {
   background-color: var(--light-bg);
   color: var(--dark-bg);
-}
-
-button,
-button:focus {
-  background-color: rgb(var(--primary));
-  border: none;
-  border-radius: 5px;
-  color: var(--light-bg);
-  padding: 12px 32px;
-  transition: all 0.2s;
-}
-
-button:hover,
-button:active {
-  background-color: #4a1284;
-  cursor: pointer;
 }
 
 footer {
@@ -84,7 +68,7 @@ header > div {
 #app > header {
   background-color: transparent;
   backdrop-filter: blur(3px);
-  box-shadow: 0 0 5px var(--dark-bg);
+  border-bottom: 1px solid rgb(var(--primary));
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -171,8 +155,26 @@ h1,
 }
 
 .btn {
+  border-radius: 5px;
+  color: var(--light-bg);
   cursor: pointer;
   margin: 0 10px;
+  padding: 12px 32px;
+  transition: all 0.2s;
+}
+.btn:hover,
+.btn:focus {
+  background-color: #4a1284;
+}
+
+.btn-primary {
+  background-color: rgb(var(--primary));
+  border: none;
+}
+
+.btn-secondary {
+  background-color: rgb(var(--dark-bg));
+  border: 1px solid rgb(var(--primary));
 }
 
 .btnGroup {
@@ -213,7 +215,14 @@ h1,
   font-weight: normal;
 }
 
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
 .header-item {
+  padding-block: 0.75rem;
   text-align: center;
   width: 100%;
 }
@@ -290,7 +299,7 @@ h1,
 
 @media screen and (min-width: 768px) {
   :root {
-    --header-height: 50px;
+    --header-height: 67.27px;
   }
   header h3 {
     margin: 0;
@@ -304,6 +313,9 @@ h1,
   .auth-container {
     justify-content: flex-end;
     padding-inline-end: 10px;
+  }
+  .header-item {
+    padding-block: 0;
   }
   .header-item a:has(h3) {
     display: inline;

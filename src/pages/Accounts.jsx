@@ -10,7 +10,7 @@ import Account from './Account';
 
 import { GET_ACCOUNTS } from '../graphQL/queries';
 
-const Dashboard = ({ accountFormData, setAccountFormData }) => {
+const Accounts = ({ accountFormData, setAccountFormData }) => {
   const [isAccountFormVisible, setIsAccountFormVisible] = useState(false);
   const { user, isAuthenticated } = useAuth0();
 
@@ -61,4 +61,4 @@ const Dashboard = ({ accountFormData, setAccountFormData }) => {
   );
 };
 
-export default Dashboard;
+export default Accounts;

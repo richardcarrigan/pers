@@ -21,7 +21,7 @@ function Header() {
       {isAuthenticated && (
         <nav className='header-item'>
           <ul>
-            <li><Link to='/dashboard'>Dashboard</Link></li>
+            <li><Link to='/accounts'>Accounts</Link></li>
           </ul>
         </nav>
       )}

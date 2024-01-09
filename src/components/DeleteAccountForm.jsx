@@ -41,7 +41,7 @@ const DeleteAccountForm = ({ _id }) => {
               }
             }
           });
-          navigate('/dashboard');
+          navigate('/accounts');
     }}>
       <p>Are you sure you want to delete this account? This action cannot be undone.</p>
         </Modal>
