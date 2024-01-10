@@ -167,6 +167,10 @@ h1,
   background-color: #4a1284;
 }
 
+.btn-icon {
+  padding: 0;
+}
+
 .btn-primary {
   background-color: rgb(var(--primary));
   border: none;

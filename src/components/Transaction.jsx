@@ -50,7 +50,7 @@ export default function Transaction({
               </td>
               <td style={{textAlign: 'right'}}>
                 <FaPencilAlt
-                  className='btn'
+                  className='btn btn-icon'
                   onClick={() => {
                     if (description !== 'Initial balance') {
                       setTransactionFormData(transaction);
@@ -59,7 +59,7 @@ export default function Transaction({
                   }}
                 />
                 <FaTrashAlt
-                  className='btn'
+                  className='btn btn-icon'
                   onClick={() => {
                     if (description !== 'Initial balance') {
                       setTransactionFormData(transaction);
@@ -85,7 +85,7 @@ export default function Transaction({
           </td>
           <td style={{ textAlign: 'right' }}>
             <FaPencilAlt
-              className='btn'
+              className='btn btn-icon'
               onClick={() => {
                 setTransactionFormData({
                   _id: accountId,

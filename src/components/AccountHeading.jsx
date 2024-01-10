@@ -10,7 +10,7 @@ const AccountHeading = ({
     <div className='accountHeading'>
       <h1>{name}</h1>
       <FaPencilAlt
-        className='btn'
+        className='btn btn-icon'
         onClick={() => {
           setAccountFormData({
             _id,
@@ -21,7 +21,7 @@ const AccountHeading = ({
         }}
       />
       <FaTrashAlt
-        className='btn'
+        className='btn btn-icon'
         onClick={() => {
           deleteAccountModal.showModal()
         }}
