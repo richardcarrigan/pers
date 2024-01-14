@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import { MdAdd } from "react-icons/md";
 
 import Card from '../components/Card';
 import NewAccountForm from '../components/NewAccountForm';
@@ -43,12 +44,13 @@ const Accounts = ({ accountFormData, setAccountFormData }) => {
         })}
         <button
           id='addAccountBtn'
+          className='btn btn-primary'
           type='button'
           onClick={() => {
             accountModal.showModal();
           }}
         >
-          Add new account
+          <MdAdd />
         </button>
       </div>
       <NewAccountForm

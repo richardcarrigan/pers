@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
-import { GET_ACCOUNT } from '../graphQL/queries';
+import { MdAdd } from "react-icons/md";
 
+import { GET_ACCOUNT } from '../graphQL/queries';
 import AccountHeading from '../components/AccountHeading';
 import TransactionList from '../components/TransactionList';
 import NewAccountForm from '../components/NewAccountForm';
@@ -64,7 +65,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
             transactionModal.showModal();
           }}
         >
-          Add new transaction
+          <MdAdd />
         </button>
         <button className='btn btn-secondary' type='button' onClick={() => navigate('/accounts')}>
           Back

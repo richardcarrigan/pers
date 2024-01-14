@@ -46,6 +46,7 @@ form label, form input, form select {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Cardo', serif;
+  text-align: center;
 }
 
 input,
@@ -129,13 +130,10 @@ h1,
 
 .accounts {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  margin-top: 25px;
-  gap: 25px;
-}
-
-.accounts > a, .accounts > button {
-  margin: 0 auto;
+  margin-top: 15px;
+  gap: 15px;
 }
 
 .amountInputWithIcon {
@@ -156,7 +154,6 @@ h1,
 
 .btn {
   border-radius: 5px;
-  color: var(--light-bg);
   cursor: pointer;
   margin: 0 10px;
   padding: 12px 32px;
@@ -174,11 +171,15 @@ h1,
 .btn-primary {
   background-color: rgb(var(--primary));
   border: none;
+  color: var(--light-bg);
 }
 
 .btn-secondary {
   background-color: rgb(var(--dark-bg));
   border: 1px solid rgb(var(--primary));
+}
+.btn-secondary:hover {
+  color: var(--light-bg);
 }
 
 .btnGroup {
@@ -194,10 +195,10 @@ h1,
 
 .card {
   border: 1px solid rgb(var(--primary));
-  border-radius: 15px;
-  height: 250px;
+  border-radius: 5px;
+  padding: 15px;
   transition: all 0.2s;
-  width: 250px;
+  width: 100%;
 }
 
 .card main {
@@ -256,25 +257,29 @@ h1,
   font-size: 0.7rem;
 }
 
-#addAccountBtn {
-  background-color: transparent;
-  border: 5px dashed rgb(var(--primary));
-  border-radius: 15px;
-  color: var(--dark-bg);
-  font-size: 2em;
-  height: 250px;
-  padding: 15px;
-  width: 250px;
+#addAccountBtn,
+#addTransactionBtn {
+  border-radius: 50%;
+  bottom: 15px;
+  box-shadow: 5px 5px black;
+  font-size: 3em;
+  height: 64px;
+  padding: 0;
+  position: fixed;
+  right: 15px;
+  width: 64px;
+}
+#addAccountBtn:hover,
+#addTransactionBtn:hover {
+  transform: translate(5px, 5px);
+  box-shadow: none;
 }
 
 .card:hover,
-.card:active,
-#addAccountBtn:hover,
-#addAccountBtn:active {
+.card:active {
   background-color: rgba(0, 0, 0, 0.2);
 }
-.card:focus,
-#addAccountBtn:focus {
+.card:focus {
   background-color: initial;
 }
 
@@ -295,12 +300,6 @@ h1,
   gap: 10px;
 }
 
-@media screen and (min-width: 568px) {
-  .accounts > a, .accounts > button {
-    margin: 0;
-  }
-}
-
 @media screen and (min-width: 768px) {
   :root {
     --header-height: 67.27px;
@@ -313,6 +312,9 @@ h1,
   }
   nav a {
     display: inline;
+  }
+  .accounts {
+    flex-direction: row;
   }
   .auth-container {
     justify-content: flex-end;
@@ -355,6 +357,16 @@ h1,
 }
 
 @media (prefers-color-scheme: dark) {
+  /* Theme colors */
+  :root {
+    --dark-accent: #85618f;
+    --dark-bg: #0e142b;
+    --footer-height: 50px;
+    --header-height: 206.4px;
+    --light-bg: #f5f4ee;
+    --primary: 135, 34, 237;
+  }
+
   body, dialog {
     background-color: var(--dark-bg);
     color: var(--light-bg);
@@ -362,22 +374,25 @@ h1,
   thead {
     border-bottom-color: var(--dark-accent);
   }
-  .card,
-  #addAccountBtn {
+  .btn-secondary {
+    color: var(--light-bg);
+  }
+  .card {
     color: var(--light-bg);
   }
   .card:hover,
-  .card:active,
-  #addAccountBtn:hover,
-  #addAccountBtn:active {
+  .card:active {
     background-color: rgba(255, 255, 255, 0.2);
   }
-  .card:focus,
-  #addAccountBtn:focus {
+  .card:focus {
     background-color: initial;
   }
 
   .modal::backdrop {
     background-color: rgba(255, 255, 255, 0.5);
+  }
+  #addAccountBtn,
+  #addTransactionBtn {
+    color: var(--light-bg);
   }
 }
