@@ -44,7 +44,7 @@ const Accounts = ({ accountFormData, setAccountFormData }) => {
         })}
         <button
           id='addAccountBtn'
-          className='btn btn-primary'
+          className='btn btn-primary btn-fab'
           type='button'
           onClick={() => {
             accountModal.showModal();

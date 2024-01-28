@@ -2,12 +2,11 @@
 
 /* Theme colors */
 :root {
-  --dark-accent: #85618f;
-  --dark-bg: #0e142b;
+  --black: #0e142b;
   --footer-height: 50px;
   --header-height: 206.4px;
-  --light-bg: #f5f4ee;
-  --primary: 135, 34, 237;
+  --white: #f5f4ee;
+  --purple: #8722ED;
 }
 
 * {
@@ -23,8 +22,8 @@ a {
 }
 
 body, dialog {
-  background-color: var(--light-bg);
-  color: var(--dark-bg);
+  background-color: var(--white);
+  color: var(--black);
 }
 
 footer {
@@ -69,7 +68,7 @@ header > div {
 #app > header {
   background-color: transparent;
   backdrop-filter: blur(3px);
-  border-bottom: 1px solid rgb(var(--primary));
+  border-bottom: 1px solid var(--purple);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -100,7 +99,7 @@ table {
 }
 
 thead {
-  border-bottom: 2px solid var(--dark-accent);
+  border-bottom: 2px solid var(--purple);
 }
 
 td,
@@ -122,7 +121,6 @@ th {
 
 h1,
 .accountNameUpdateInput {
-  /* margin: 0; */
   padding: 0;
   font-size: 2em;
   font-weight: bold;
@@ -161,7 +159,13 @@ h1,
 }
 .btn:hover,
 .btn:focus {
-  background-color: #4a1284;
+  background-color: var(--purple);
+}
+
+.btn-fab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn-icon {
@@ -169,17 +173,17 @@ h1,
 }
 
 .btn-primary {
-  background-color: rgb(var(--primary));
+  background-color: var(--purple);
   border: none;
-  color: var(--light-bg);
+  color: var(--white);
 }
 
 .btn-secondary {
-  background-color: rgb(var(--dark-bg));
-  border: 1px solid rgb(var(--primary));
+  background-color: var(--black);
+  border: 1px solid var(--purple);
 }
 .btn-secondary:hover {
-  color: var(--light-bg);
+  color: var(--white);
 }
 
 .btnGroup {
@@ -194,7 +198,7 @@ h1,
 }
 
 .card {
-  border: 1px solid rgb(var(--primary));
+  border: 1px solid var(--purple);
   border-radius: 5px;
   padding: 15px;
   transition: all 0.2s;
@@ -261,7 +265,7 @@ h1,
 #addTransactionBtn {
   border-radius: 50%;
   bottom: 15px;
-  box-shadow: 5px 5px black;
+  box-shadow: 5px 5px 10px black;
   font-size: 3em;
   height: 64px;
   padding: 0;
@@ -359,26 +363,25 @@ h1,
 @media (prefers-color-scheme: dark) {
   /* Theme colors */
   :root {
-    --dark-accent: #85618f;
-    --dark-bg: #0e142b;
+    --black: #0e142b;
     --footer-height: 50px;
     --header-height: 206.4px;
-    --light-bg: #f5f4ee;
-    --primary: 135, 34, 237;
+    --white: #f5f4ee;
+    --purple: #8722ED;
   }
 
   body, dialog {
-    background-color: var(--dark-bg);
-    color: var(--light-bg);
+    background-color: var(--black);
+    color: var(--white);
   }
   thead {
-    border-bottom-color: var(--dark-accent);
+    border-bottom-color: var(--purple);
   }
   .btn-secondary {
-    color: var(--light-bg);
+    color: var(--white);
   }
   .card {
-    color: var(--light-bg);
+    color: var(--white);
   }
   .card:hover,
   .card:active {
@@ -393,6 +396,6 @@ h1,
   }
   #addAccountBtn,
   #addTransactionBtn {
-    color: var(--light-bg);
+    color: var(--white);
   }
 }

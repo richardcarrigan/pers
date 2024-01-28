@@ -58,7 +58,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
       />
       <div className='btnGroup'>
         <button
-          className='btn btn-primary'
+          className='btn btn-primary btn-fab'
           id='addTransactionBtn'
           type='button'
           onClick={() => {
