@@ -4,7 +4,7 @@
 :root {
   --black: #0e142b;
   --footer-height: 50px;
-  --header-height: 206.4px;
+  /* --header-height: 206.4px; */
   --white: #f5f4ee;
   --purple: #8722ED;
 }
@@ -54,10 +54,10 @@ select {
 }
 
 header {
-  min-height: var(--header-height);
+  /* min-height: var(--header-height); */
   position: sticky;
   top: 0;
-  z-index: 9999;
+  /* z-index: 9999; */
 }
 
 header > div {
@@ -396,6 +396,11 @@ h1,
   }
   #addAccountBtn,
   #addTransactionBtn {
+    color: var(--white);
+  }
+
+  #menu-appbar .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+    background-color: var(--black);
     color: var(--white);
   }
 }
