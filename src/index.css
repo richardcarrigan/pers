@@ -4,7 +4,6 @@
 :root {
   --black: #0e142b;
   --footer-height: 50px;
-  /* --header-height: 206.4px; */
   --white: #f5f4ee;
   --purple: #8722ED;
 }
@@ -53,42 +52,15 @@ select {
   padding: 15px;
 }
 
-header {
-  /* min-height: var(--header-height); */
-  position: sticky;
-  top: 0;
-  /* z-index: 9999; */
-}
-
-header > div {
-  display: flex;
-  align-items: baseline;
-}
-
 #app > header {
   background-color: transparent;
   backdrop-filter: blur(3px);
   border-bottom: 1px solid var(--purple);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 50px;
-  padding: 10px 25px;
-  width: 100%;
 }
 
 main {
-  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+  min-height: calc(85vh - var(--footer-height));
   padding: 15px;
-}
-
-nav ul {
-  list-style: none;
-}
-
-nav a {
-  display: inline-block;
-  width: 100%;
 }
 
 table {
@@ -144,10 +116,6 @@ h1,
 }
 .amountInputWithIcon input {
   flex-grow: 1;
-}
-
-.auth-container {
-  justify-content: center;
 }
 
 .btn {
@@ -230,18 +198,6 @@ h1,
   flex-direction: column;
 }
 
-.header-item {
-  padding-block: 0.75rem;
-  text-align: center;
-  width: 100%;
-}
-.header-item a:hover {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-.header-item a:focus {
-  background-color: initial;
-}
-
 .hidden {
   display: none;
 }
@@ -292,44 +248,12 @@ h1,
   margin-right: 15px;
 }
 
-#nav-header {
-  display: flex;
-  justify-content: space-between;
-}
-
-#nav-header-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
 @media screen and (min-width: 768px) {
-  :root {
-    --header-height: 67.27px;
-  }
   header h3 {
     margin: 0;
   }
-  nav ul {
-    width: auto;
-  }
-  nav a {
-    display: inline;
-  }
   .accounts {
     flex-direction: row;
-  }
-  .auth-container {
-    justify-content: flex-end;
-    padding-inline-end: 10px;
-  }
-  .header-item {
-    padding-block: 0;
-  }
-  .header-item a:has(h3) {
-    display: inline;
-    width: auto;
   }
   .modal {
     border-radius: 15px;
@@ -348,24 +272,12 @@ h1,
     width: 100%;
     z-index: 1;
   }
-  #app > header {
-    align-items: center;
-    flex-direction: row;
-  }
-  #brand {
-    margin: 0;
-  }
-  #nav-header-logo {
-    justify-content: left;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
   /* Theme colors */
   :root {
     --black: #0e142b;
-    --footer-height: 50px;
-    --header-height: 206.4px;
     --white: #f5f4ee;
     --purple: #8722ED;
   }
