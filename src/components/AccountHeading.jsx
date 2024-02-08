@@ -1,4 +1,6 @@
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { IconButton, Stack } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 const AccountHeading = ({
   _id,
@@ -7,26 +9,24 @@ const AccountHeading = ({
   setAccountFormData
 }) => {
   return (
-    <div className='accountHeading'>
+    <Stack direction='row' spacing={1}>
       <h1>{name}</h1>
-      <FaPencilAlt
-        className='btn btn-icon'
-        onClick={() => {
-          setAccountFormData({
-            _id,
-            name,
-            balance
-          });
-          accountModal.showModal();
-        }}
-      />
-      <FaTrashAlt
-        className='btn btn-icon'
-        onClick={() => {
-          deleteAccountModal.showModal()
-        }}
-      />
-    </div>
+      <IconButton onClick={() => {
+        setAccountFormData({
+          _id,
+          name,
+          balance
+        });
+        accountModal.showModal();
+      }}>
+        <EditIcon />
+      </IconButton>
+      <IconButton onClick={() => {
+        deleteAccountModal.showModal()
+      }}>
+        <DeleteIcon />
+      </IconButton>
+    </Stack>
   );
 };
 

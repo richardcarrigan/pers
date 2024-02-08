@@ -1,4 +1,7 @@
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { IconButton, Stack } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { Draggable } from 'react-beautiful-dnd';
 
 export default function Transaction({
@@ -48,25 +51,25 @@ export default function Transaction({
                   {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
                 </div>
               </td>
-              <td style={{textAlign: 'right'}}>
-                <FaPencilAlt
-                  className='btn btn-icon'
-                  onClick={() => {
-                    if (description !== 'Initial balance') {
-                      setTransactionFormData(transaction);
-                      transactionModal.showModal();
-                    }
-                  }}
-                />
-                <FaTrashAlt
-                  className='btn btn-icon'
-                  onClick={() => {
-                    if (description !== 'Initial balance') {
-                      setTransactionFormData(transaction);
-                      deleteTransactionModal.showModal();
-                    }
-                  }}
-                />
+            <td>
+              <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
+                <IconButton onClick={() => {
+                  if (description !== 'Initial balance') {
+                    setTransactionFormData(transaction);
+                    transactionModal.showModal();
+                  }
+                }}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton onClick={() => {
+                  if (description !== 'Initial balance') {
+                    setTransactionFormData(transaction);
+                    deleteTransactionModal.showModal();
+                  }
+                }}>
+                  <DeleteIcon />
+                </IconButton>
+              </Stack>
               </td>
             </tr>
           )}
@@ -83,18 +86,19 @@ export default function Transaction({
               }).format(amount)}
             </div>
           </td>
-          <td style={{ textAlign: 'right' }}>
-            <FaPencilAlt
-              className='btn btn-icon'
-              onClick={() => {
-                setTransactionFormData({
-                  _id: accountId,
-                  name: accountName,
-                  balance
-                });
-                accountModal.showModal();
-              }}
-            />
+        <td style={{ textAlign: 'right' }}>
+          <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
+            <IconButton onClick={() => {
+              setTransactionFormData({
+                _id: accountId,
+                name: accountName,
+                balance
+              });
+              accountModal.showModal();
+            }}>
+              <EditIcon />
+            </IconButton>
+          </Stack>
           </td>
         </tr>
   );

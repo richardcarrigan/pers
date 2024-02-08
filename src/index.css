@@ -79,11 +79,6 @@ th {
   text-align: left;
 }  
 
-.accountHeading {
-  align-items: center;
-  display: flex;
-}  
-
 .accounts {
   display: flex;
   flex-direction: column;
@@ -102,22 +97,6 @@ th {
 }
 .amountInputWithIcon input {
   flex-grow: 1;
-}
-
-.btn {
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 0 10px;
-  padding: 12px 32px;
-  transition: all 0.2s;
-}
-.btn:hover,
-.btn:focus {
-  background-color: var(--purple);
-}
-
-.btn-icon {
-  padding: 0;
 }
 
 .btnGroup {
