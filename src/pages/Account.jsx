@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
-import { MdAdd } from "react-icons/md";
-import { Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { Button, Fab } from '@mui/material';
 
 import { GET_ACCOUNT } from '../graphQL/queries';
 import AccountHeading from '../components/AccountHeading';
@@ -57,17 +57,8 @@ export default function Account({ accountFormData, setAccountFormData }) {
         setTransactionFormData={setTransactionFormData}
         transactionsProp={transactions}
       />
+      <Fab color='secondary' aria-label='add' sx={{ position: 'fixed', bottom: '15px', right: '15px' }} onClick={() => transactionModal.showModal()}><AddIcon /></Fab>
       <div className='btnGroup'>
-        <button
-          className='btn btn-primary btn-fab'
-          id='addTransactionBtn'
-          type='button'
-          onClick={() => {
-            transactionModal.showModal();
-          }}
-        >
-          <MdAdd />
-        </button>
         <Button variant='outlined' type='button' onClick={() => navigate('/accounts')}>
           Back
         </Button>

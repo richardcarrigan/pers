@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { MdAdd } from "react-icons/md";
+import AddIcon from '@mui/icons-material/Add';
 import {
   Button,
   Card,
   CardActions,
   CardContent,
+  Fab,
   Typography
 } from '@mui/material';
 
@@ -52,16 +53,7 @@ const Accounts = ({ accountFormData, setAccountFormData }) => {
             </Card>
           );
         })}
-        <button
-          id='addAccountBtn'
-          className='btn btn-primary btn-fab'
-          type='button'
-          onClick={() => {
-            accountModal.showModal();
-          }}
-        >
-          <MdAdd />
-        </button>
+        <Fab color='secondary' aria-label='add' sx={{ position: 'fixed', bottom: '15px', right: '15px' }} onClick={() => accountModal.showModal()}><AddIcon /></Fab>
       </div>
       <NewAccountForm
         isVisible={isAccountFormVisible}

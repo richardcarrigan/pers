@@ -119,20 +119,8 @@ h1,
   background-color: var(--purple);
 }
 
-.btn-fab {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .btn-icon {
   padding: 0;
-}
-
-.btn-primary {
-  background-color: var(--purple);
-  border: none;
-  color: var(--white);
 }
 
 .btnGroup {
@@ -169,24 +157,6 @@ h1,
   color: rgb(122, 122, 122);
   font-style: italic;
   font-size: 0.7rem;
-}
-
-#addAccountBtn,
-#addTransactionBtn {
-  border-radius: 50%;
-  bottom: 15px;
-  box-shadow: 5px 5px 10px black;
-  font-size: 3em;
-  height: 64px;
-  padding: 0;
-  position: fixed;
-  right: 15px;
-  width: 64px;
-}
-#addAccountBtn:hover,
-#addTransactionBtn:hover {
-  transform: translate(5px, 5px);
-  box-shadow: none;
 }
 
 #greeting {
@@ -234,9 +204,5 @@ h1,
 
   .modal::backdrop {
     background-color: rgba(255, 255, 255, 0.5);
-  }
-  #addAccountBtn,
-  #addTransactionBtn {
-    color: var(--white);
   }
 }
