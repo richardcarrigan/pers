@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useAuth0 } from '@auth0/auth0-react';
+import { List } from '@mui/material';
 
 import Transaction from '../components/Transaction';
 import { UPDATE_TRANSACTION } from '../graphQL/mutations';
@@ -156,65 +157,53 @@ const TransactionList = ({
   let runningBalance = balance;
 
   return (
-    <>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={accountId}>
-          {provided => (
-            <table
-              className='transactions'
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              <thead className='transactionListHeader'>
-                <tr>
-                  <th>Description</th>
-                  <th style={{textAlign: 'center'}}>Amount</th>
-                  <th style={{textAlign: 'right'}}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId={accountId}>
+        {provided => (
+          <List
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            <Transaction
+              accountId={accountId}
+              accountName={accountName}
+              balance={balance}
+              index='-1'
+              setTransactionFormData={setAccountFormData}
+              transaction={{
+                _id: 'null',
+                amount: balance,
+                description: 'Initial balance',
+                startDate: Date.now(),
+                type: 'initial'
+              }}
+            />
+            {sortedTransactions.map((transaction, index) => {
+              // This fixes calculation issues when a transaction is either dropped in its starting location or outside the droppable area
+              if (index === 0) {
+                runningBalance = balance;
+              }
+              if (transaction.type === 'income') {
+                runningBalance += transaction.amount
+              } else {
+                runningBalance -= transaction.amount;
+              }
+              return (
                 <Transaction
                   accountId={accountId}
-                  accountName={accountName}
-                  balance={balance}
-                  index='-1'
-                  setTransactionFormData={setAccountFormData}
-                  transaction={{
-                    _id: 'null',
-                    amount: balance,
-                    description: 'Initial balance',
-                    startDate: Date.now(),
-                    type: 'initial'
-                  }}
+                  balance={runningBalance}
+                  index={index}
+                  key={transaction._id}
+                  setTransactionFormData={setTransactionFormData}
+                  transaction={transaction}
                 />
-                {sortedTransactions.map((transaction, index) => {
-                  // This fixes calculation issues when a transaction is either dropped in its starting location or outside the droppable area
-                  if (index === 0) {
-                    runningBalance = balance;
-                  }
-                  if (transaction.type === 'income') {
-                    runningBalance += transaction.amount
-                  } else {
-                    runningBalance -= transaction.amount;
-                  }
-                  return (
-                    <Transaction
-                      accountId={accountId}
-                      balance={runningBalance}
-                      index={index}
-                      key={transaction._id}
-                      setTransactionFormData={setTransactionFormData}
-                      transaction={transaction}
-                    />
-                  );
-                })}
-                {provided.placeholder}
-              </tbody>
-            </table>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </>
+              );
+            })}
+            {provided.placeholder}
+          </List>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 

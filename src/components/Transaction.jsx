@@ -1,5 +1,4 @@
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
-import { IconButton, Stack } from '@mui/material';
+import { IconButton, List, ListItem, ListItemText, Stack } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Draggable } from 'react-beautiful-dnd';
@@ -27,33 +26,13 @@ export default function Transaction({
   );
 
   return (
-    type !== 'initial'
-      ? <Draggable draggableId={_id} index={index}>
-          {provided => (
-            <tr
-              className='transactionCard'
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            >
-              <td>
-                <div className="transDescription">{description}</div>
-                <div className="transDate">{startDateFormatted}</div>
-              </td>
-              <td>
-                <div className="transAmount" style={{ color: type === 'income' ? 'green' : 'inherit', textAlign: 'right' }}>
-                  {Intl.NumberFormat('en-us', {
-                    style: 'currency',
-                    currency: 'USD'
-                  }).format(type === 'income' ? amount : amount * -1)}
-                </div>
-                <div className="transBalance" style={{ color: balance < 0 && 'red', textAlign: 'right' }}>
-                  {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
-                </div>
-              </td>
-            <td>
+    type !== 'initial' ? (
+      <Draggable draggableId={_id} index={index}>
+        {provided => (
+          <ListItem
+            secondaryAction={
               <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
-                <IconButton onClick={() => {
+                <IconButton aria-label='edit' onClick={() => {
                   if (description !== 'Initial balance') {
                     setTransactionFormData(transaction);
                     transactionModal.showModal();
@@ -61,7 +40,7 @@ export default function Transaction({
                 }}>
                   <EditIcon />
                 </IconButton>
-                <IconButton onClick={() => {
+                <IconButton aria-label='delete' onClick={() => {
                   if (description !== 'Initial balance') {
                     setTransactionFormData(transaction);
                     deleteTransactionModal.showModal();
@@ -70,36 +49,82 @@ export default function Transaction({
                   <DeleteIcon />
                 </IconButton>
               </Stack>
-              </td>
-            </tr>
-          )}
-        </Draggable>
-      : <tr className='transactionCard'>
-          <td>
-            <div className="transDescription">{description}</div>
-          </td>
-          <td>
-            <div className="transAmount" style={{ textAlign: 'right' }}>
-              {Intl.NumberFormat('en-us', {
-                style: 'currency',
-                currency: 'USD'
-              }).format(amount)}
-            </div>
-          </td>
-        <td style={{ textAlign: 'right' }}>
-          <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
-            <IconButton onClick={() => {
-              setTransactionFormData({
-                _id: accountId,
-                name: accountName,
-                balance
-              });
-              accountModal.showModal();
-            }}>
-              <EditIcon />
-            </IconButton>
-          </Stack>
-          </td>
-        </tr>
+            }
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+              <ListItemText
+                primary={
+                  <span className='transDescription'>
+                    {description}
+                  </span>
+                }
+                secondary={
+                  <span className='transDate'>
+                    {startDateFormatted}
+                  </span>
+                }
+              />
+              <ListItemText
+                primary={
+                  <span className="transAmount" style={{ color: type === 'income' ? 'green' : 'inherit' }}>
+                    {
+                      Intl.NumberFormat('en-us', {
+                        style: 'currency',
+                        currency: 'USD'
+                      }).format(type === 'income' ? amount : amount * -1)
+                    }
+                  </span>
+                }
+                secondary={
+                  <span className="transBalance" style={{ color: balance < 0 && 'red' }}>
+                    {
+                      Intl.NumberFormat('en-us', {
+                        style: 'currency', currency: 'USD'
+                      }).format(balance)
+                    }
+                  </span>
+                }
+              />
+            </ListItem>
+        )}
+      </Draggable>
+    ) : (
+      <ListItem secondaryAction={
+        <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
+          <IconButton aria-label='edit' onClick={() => {
+            setTransactionFormData({
+              _id: accountId,
+              name: accountName,
+              balance
+            });
+            accountModal.showModal();
+          }}>
+            <EditIcon />
+          </IconButton>
+        </Stack>
+      }>
+          <ListItemText
+            primary={
+              <span className='transDescription'>
+                {description}
+              </span>
+            }
+          />
+        <ListItemText
+            primary={
+              <span className='transAmount'>
+                {
+                  Intl.NumberFormat('en-us', {
+                    style: 'currency',
+                    currency: 'USD'
+                  }).format(amount)
+                }
+              </span>
+          }
+        />
+      </ListItem>
+    )
   );
 }
