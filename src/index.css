@@ -2,9 +2,7 @@
 
 /* Theme colors */
 :root {
-  --black: #0e142b;
   --footer-height: 50px;
-  --white: #f5f4ee;
   --purple: #8722ED;
 }
 
@@ -35,57 +33,56 @@ form {
 form label, form input, form select {
   margin-top: 15px;
   width: 100%;
+}  
+
+h1 {
+  padding: 0;
+  font-size: 2em;
+  font-weight: bold;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Cardo', serif;
   text-align: center;
-}
+}  
 
 input,
 select {
   padding: 15px;
-}
+}  
 
 main {
   min-height: calc(85vh - var(--footer-height));
   padding: 15px;
-}
+}  
 
 table {
   border-collapse: collapse;
   margin-top: 15px;
   margin-bottom: 15px;
   width: 100%;
-}
+}  
 
 thead {
   border-bottom: 2px solid var(--purple);
-}
+}  
 
 td,
 th {
   border: none;
   padding: 8px;
-}
+}  
 
 th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-}
+}  
 
 .accountHeading {
   align-items: center;
   display: flex;
-}
-
-h1,
-.accountNameUpdateInput {
-  padding: 0;
-  font-size: 2em;
-  font-weight: bold;
-}
+}  
 
 .accounts {
   display: flex;
@@ -140,10 +137,6 @@ h1,
   flex-direction: column;
 }
 
-.hidden {
-  display: none;
-}
-
 .modal {
   border: none;
   height: 100%;
@@ -157,11 +150,6 @@ h1,
   color: rgb(122, 122, 122);
   font-style: italic;
   font-size: 0.7rem;
-}
-
-#greeting {
-  display: inline-block;
-  margin-right: 15px;
 }
 
 @media screen and (min-width: 768px) {
@@ -191,17 +179,6 @@ h1,
 }
 
 @media (prefers-color-scheme: dark) {
-  /* Theme colors */
-  :root {
-    --black: #0e142b;
-    --white: #f5f4ee;
-    --purple: #8722ED;
-  }
-
-  thead {
-    border-bottom-color: var(--purple);
-  }
-
   .modal::backdrop {
     background-color: rgba(255, 255, 255, 0.5);
   }
