@@ -20,11 +20,6 @@ a {
   text-decoration: none;
 }
 
-body, dialog {
-  background-color: var(--white);
-  color: var(--black);
-}
-
 footer {
   height: var(--footer-height);
   padding: 15px;
@@ -50,12 +45,6 @@ h1, h2, h3, h4, h5, h6 {
 input,
 select {
   padding: 15px;
-}
-
-#app > header {
-  background-color: transparent;
-  backdrop-filter: blur(3px);
-  border-bottom: 1px solid var(--purple);
 }
 
 main {
@@ -165,33 +154,6 @@ h1,
   width: 47.5%;
 }
 
-.card {
-  border: 1px solid var(--purple);
-  border-radius: 5px;
-  padding: 15px;
-  transition: all 0.2s;
-  width: 100%;
-}
-
-.card main {
-  margin-bottom: 0;
-  min-height: 75%;
-  padding: 15px;
-}
-
-.card header {
-  border-radius: 15px 15px 0 0;
-  min-height: 25%;
-  padding: 15px 0;
-  position: relative;
-  text-align: center;
-  z-index: 0;
-}
-
-.card header h2 {
-  font-weight: normal;
-}
-
 .container {
   align-items: center;
   display: flex;
@@ -235,14 +197,6 @@ h1,
   box-shadow: none;
 }
 
-.card:hover,
-.card:active {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-.card:focus {
-  background-color: initial;
-}
-
 #greeting {
   display: inline-block;
   margin-right: 15px;
@@ -282,25 +236,11 @@ h1,
     --purple: #8722ED;
   }
 
-  body, dialog {
-    background-color: var(--black);
-    color: var(--white);
-  }
   thead {
     border-bottom-color: var(--purple);
   }
   .btn-secondary {
     color: var(--white);
-  }
-  .card {
-    color: var(--white);
-  }
-  .card:hover,
-  .card:active {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-  .card:focus {
-    background-color: initial;
   }
 
   .modal::backdrop {
@@ -308,11 +248,6 @@ h1,
   }
   #addAccountBtn,
   #addTransactionBtn {
-    color: var(--white);
-  }
-
-  #menu-appbar .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
-    background-color: var(--black);
     color: var(--white);
   }
 }

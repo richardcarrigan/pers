@@ -1,19 +1,24 @@
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MdAdd } from "react-icons/md";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Typography
+} from '@mui/material';
 
-import Card from '../components/Card';
 import NewAccountForm from '../components/NewAccountForm';
-
 import Account from './Account';
-
 import { GET_ACCOUNTS } from '../graphQL/queries';
 
 const Accounts = ({ accountFormData, setAccountFormData }) => {
   const [isAccountFormVisible, setIsAccountFormVisible] = useState(false);
-  const { user, isAuthenticated } = useAuth0();
+  const { user } = useAuth0();
+  const navigate = useNavigate();
 
   const userId = user.sub;
 
@@ -28,18 +33,24 @@ const Accounts = ({ accountFormData, setAccountFormData }) => {
       <div className='accounts'>
         {data.accounts.map(account => {
           return (
-            <Link
-              key={account._id}
-              to={`/accounts/${account._id}`}
-              element={<Account />}
-            >
-              <Card heading={account.name}>
-                <h3>{`Balance: ${Intl.NumberFormat('en-us', {
-              style: 'currency',
-              currency: 'USD'
-            }).format(account.balance)}`}</h3>
-              </Card>
-            </Link>
+            <Card raised={true} sx={{ minWidth: 275 }}>
+              <CardContent>
+                <Typography variant="h5" component="div">
+                  {account.name}
+                </Typography>
+                <Typography>
+                  {
+                    `Balance: ${Intl.NumberFormat('en-us', {
+                      style: 'currency',
+                      currency: 'USD'
+                    }).format(account.balance)}`
+                  }
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" onClick={() => navigate(`/accounts/${account._id}`)}>View Transactions</Button>
+              </CardActions>
+            </Card>
           );
         })}
         <button
