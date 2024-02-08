@@ -135,14 +135,6 @@ h1,
   color: var(--white);
 }
 
-.btn-secondary {
-  background-color: var(--black);
-  border: 1px solid var(--purple);
-}
-.btn-secondary:hover {
-  color: var(--white);
-}
-
 .btnGroup {
   display: flex;
   justify-content: space-between;
@@ -238,9 +230,6 @@ h1,
 
   thead {
     border-bottom-color: var(--purple);
-  }
-  .btn-secondary {
-    color: var(--white);
   }
 
   .modal::backdrop {

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MdAdd } from "react-icons/md";
+import { Button } from '@mui/material';
 
 import { GET_ACCOUNT } from '../graphQL/queries';
 import AccountHeading from '../components/AccountHeading';
@@ -67,9 +68,9 @@ export default function Account({ accountFormData, setAccountFormData }) {
         >
           <MdAdd />
         </button>
-        <button className='btn btn-secondary' type='button' onClick={() => navigate('/accounts')}>
+        <Button variant='outlined' type='button' onClick={() => navigate('/accounts')}>
           Back
-        </button>
+        </Button>
       </div>
       <NewAccountForm
         formData={accountFormData}

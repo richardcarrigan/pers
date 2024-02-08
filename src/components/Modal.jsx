@@ -1,3 +1,5 @@
+import { Button } from '@mui/material';
+
 const Modal = ({ id, heading, submitHandler, cancelHandler, children }) => {
   return (
     <dialog id={id} className='modal'>
@@ -7,9 +9,9 @@ const Modal = ({ id, heading, submitHandler, cancelHandler, children }) => {
       >
         {children}
         <div className='btnGroup'>
-          <button className="btn btn-primary" type='submit' value='default'>Submit</button>
-          <button
-            className='btn btn-secondary' type='button' value='cancel'
+          <Button variant='contained' type='submit' value='default'>Submit</Button>
+          <Button
+            variant='outlined' value='cancel'
             onClick={() => {
               if (cancelHandler) {
                 cancelHandler();
@@ -18,7 +20,7 @@ const Modal = ({ id, heading, submitHandler, cancelHandler, children }) => {
             }}
           >
             Cancel
-          </button>
+          </Button>
         </div>
       </form>
     </dialog>

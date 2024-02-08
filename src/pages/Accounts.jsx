@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { MdAdd } from "react-icons/md";
 import {
@@ -12,7 +12,6 @@ import {
 } from '@mui/material';
 
 import NewAccountForm from '../components/NewAccountForm';
-import Account from './Account';
 import { GET_ACCOUNTS } from '../graphQL/queries';
 
 const Accounts = ({ accountFormData, setAccountFormData }) => {

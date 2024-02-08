@@ -20,18 +20,18 @@ function App() {
       createTheme({
         palette: {
           mode: prefersDarkMode ? 'dark' : 'light',
-        },
-        primary: {
-          light: '#af72f5',
-          main: '#8722ED',
-          dark: '#5e00d8',
-          contrastText: '#fff',
-        },
-        secondary: {
-          light: '#f8b4f6',
-          main: '#ed22ed',
-          dark: '#c500d8',
-          contrastText: '#000',
+          primary: {
+            light: '#af72f5',
+            main: '#8722ED',
+            dark: '#5e00d8',
+            contrastText: '#fff',
+          },
+          secondary: {
+            light: '#f8b4f6',
+            main: '#ed22ed',
+            dark: '#c500d8',
+            contrastText: '#000',
+          },
         },
       }),
     [prefersDarkMode],
