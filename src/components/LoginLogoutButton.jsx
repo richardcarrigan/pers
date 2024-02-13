@@ -13,12 +13,12 @@ const LoginLogoutButton = () => {
     <>
       {/* If the user is logged in */}
       {(isAuthenticated && !isLoading) && (
-        <Button variant='outlined' onClick={() => logout({ logoutParams: { returnTo: window.location.origin }})}>Log Out</Button>
+        <Button color='inherit' onClick={() => logout({ logoutParams: { returnTo: window.location.origin }})}>Log Out</Button>
       )}
 
       {/* If the user is not logged in */}
       {(!isAuthenticated && !isLoading) && (
-        <Button variant='contained' onClick={loginWithRedirect}>Log In</Button>
+        <Button color='inherit' onClick={loginWithRedirect}>Log In</Button>
       )}
     </>
   )
