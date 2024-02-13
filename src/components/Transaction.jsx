@@ -1,14 +1,10 @@
 import { useState } from 'react';
-import { Button, Collapse, IconButton, Stack, TableCell, TableRow } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { Button, Collapse, IconButton, TableCell, TableRow } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Draggable } from 'react-beautiful-dnd';
 
 export default function Transaction({
-  accountId,
-  accountName,
   balance,
   index,
   setTransactionFormData,
