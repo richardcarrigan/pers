@@ -168,9 +168,9 @@ const TransactionList = ({
               >
                 <TableHead>
                   <TableRow>
+                    <TableCell />
                     <TableCell>Description</TableCell>
                     <TableCell sx={{textAlign: 'right'}}>Amount</TableCell>
-                    <TableCell sx={{textAlign: 'right'}}>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

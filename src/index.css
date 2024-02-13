@@ -83,7 +83,7 @@ thead {
 .btnGroup {
   display: flex;
   justify-content: space-between;
-  padding-block-start: 15px;
+  padding-block: 15px;
 }
 
 .btnGroup button,
