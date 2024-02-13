@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <footer>
-      &copy;{new Date().getFullYear()} Richard Carrigan. All rights reserved.
+      &copy; {new Date().getFullYear()}. All rights reserved.
     </footer>
   );
 }
