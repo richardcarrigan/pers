@@ -58,11 +58,6 @@ export default function Account({ accountFormData, setAccountFormData }) {
         transactionsProp={transactions}
       />
       <Fab color='secondary' aria-label='add' sx={{ position: 'fixed', bottom: '15px', right: '15px' }} onClick={() => transactionModal.showModal()}><AddIcon /></Fab>
-      <div className='btnGroup'>
-        <Button variant='outlined' type='button' onClick={() => navigate('/accounts')}>
-          Back
-        </Button>
-      </div>
       <NewAccountForm
         formData={accountFormData}
         setFormData={setAccountFormData}

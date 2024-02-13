@@ -1,7 +1,9 @@
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
-import { IconButton, Stack } from '@mui/material';
+import { useState } from 'react';
+import { Button, Collapse, IconButton, Stack, TableCell, TableRow } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Draggable } from 'react-beautiful-dnd';
 
 export default function Transaction({
@@ -13,6 +15,8 @@ export default function Transaction({
   transaction
 }) {
   const { _id, amount, description, startDate, type } = transaction;
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const options = {
     timeZone: 'UTC',
@@ -29,19 +33,40 @@ export default function Transaction({
   return (
     type !== 'initial'
       ? <Draggable draggableId={_id} index={index}>
-          {provided => (
-            <tr
-              className='transactionCard'
+        {provided => (
+          <>
+          <TableRow
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
+              sx={{ '& > *': { borderBottom: 'unset'}}}
             >
-              <td>
-                <div className="transDescription">{description}</div>
-                <div className="transDate">{startDateFormatted}</div>
-              </td>
-              <td>
-                <div className="transAmount" style={{ color: type === 'income' ? 'green' : 'inherit', textAlign: 'right' }}>
+            <TableCell>
+              <IconButton
+                aria-label='expand row'
+                size='small'
+                onClick={() => setIsOpen(!isOpen)}
+                >
+                {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+            </TableCell>
+              <TableCell>
+              <div
+                // className="transDescription"
+                >{description}</div>
+              <div
+                className="transDate"
+                >{startDateFormatted}</div>
+              </TableCell>
+              <TableCell>
+              <div
+                className="transAmount"
+                style={{
+                  color: type === 'income'
+                  ? 'green'
+                  : 'inherit',
+                  textAlign: 'right'
+                }}>
                   {Intl.NumberFormat('en-us', {
                     style: 'currency',
                     currency: 'USD'
@@ -50,56 +75,73 @@ export default function Transaction({
                 <div className="transBalance" style={{ color: balance < 0 && 'red', textAlign: 'right' }}>
                   {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
                 </div>
-              </td>
-            <td>
-              <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
-                <IconButton onClick={() => {
+              </TableCell>
+          </TableRow>
+          <TableRow>
+              <TableCell sx={{ paddingBlock: 0 }} colSpan={3}>
+                <Collapse in={isOpen} timeout='auto' unmountOnExit>
+                  <div className="btnGroup">
+                <Button variant='contained' onClick={() => {
                   if (description !== 'Initial balance') {
                     setTransactionFormData(transaction);
                     transactionModal.showModal();
                   }
                 }}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={() => {
+                  Edit
+                </Button>
+                <Button variant='outlined' onClick={() => {
                   if (description !== 'Initial balance') {
                     setTransactionFormData(transaction);
                     deleteTransactionModal.showModal();
                   }
                 }}>
-                  <DeleteIcon />
-                </IconButton>
-              </Stack>
-              </td>
-            </tr>
+                  Delete
+                </Button>
+                  </div>
+                </Collapse>
+              </TableCell>
+          </TableRow>
+                  </>
           )}
         </Draggable>
-      : <tr className='transactionCard'>
-          <td>
-            <div className="transDescription">{description}</div>
-          </td>
-          <td>
-            <div className="transAmount" style={{ textAlign: 'right' }}>
-              {Intl.NumberFormat('en-us', {
-                style: 'currency',
-                currency: 'USD'
-              }).format(amount)}
-            </div>
-          </td>
-        <td style={{ textAlign: 'right' }}>
-          <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
-            <IconButton onClick={() => {
-              setTransactionFormData({
-                _id: accountId,
-                name: accountName,
-                balance
-              });
-              accountModal.showModal();
-            }}>
-              <EditIcon />
-            </IconButton>
-          </Stack>
-          </td>
-        </tr>
+      : <>
+        <TableRow sx={{ '& > *': { borderBottom: 'unset'}}}>
+            <TableCell>
+              <IconButton
+                aria-label='expand row'
+                size='small'
+                onClick={() => setIsOpen(!isOpen)}
+                >
+                {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+            </TableCell>
+          <TableCell>
+            {description}
+          </TableCell>
+          <TableCell align='right'>
+            {Intl.NumberFormat('en-us', {
+              style: 'currency',
+              currency: 'USD'
+            }).format(amount)}
+          </TableCell>
+        </TableRow>
+          <TableRow>
+              <TableCell colSpan={3} sx={{ paddingBlock: 0}}>
+            <Collapse in={isOpen} timeout='auto' unmountOnExit>
+              <div className="btnGroup">
+                <Button variant='contained' onClick={() => {
+                  if (description !== 'Initial balance') {
+                    setTransactionFormData(transaction);
+                    transactionModal.showModal();
+                  }
+                }}>
+                  Edit
+                </Button>
+              </div>
+                </Collapse>
+              </TableCell>
+          </TableRow>
+
+        </>
   );
 }
