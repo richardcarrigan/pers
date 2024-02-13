@@ -106,6 +106,10 @@ thead {
   width: 100%;
 }
 
+.MuiTableRow-root {
+  background-color: white;
+}
+
 .transDate, .transBalance {
   color: rgb(122, 122, 122);
   font-style: italic;
@@ -142,4 +146,7 @@ thead {
   .modal::backdrop {
     background-color: rgba(255, 255, 255, 0.5);
   }
+    .MuiTableRow-root {
+      background-color: #1e1e1e;
+    }
 }
