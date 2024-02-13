@@ -85,20 +85,15 @@ export default function Transaction({
         </Draggable>
       : <TableRow>
           <TableCell>
-          <div>{description}</div>
+            {description}
           </TableCell>
-          <TableCell>
-          <div
-            className="transAmount"
-            style={{ textAlign: 'right' }}>
-              {Intl.NumberFormat('en-us', {
-                style: 'currency',
-                currency: 'USD'
-              }).format(amount)}
-            </div>
+          <TableCell align='right'>
+            {Intl.NumberFormat('en-us', {
+              style: 'currency',
+              currency: 'USD'
+            }).format(amount)}
           </TableCell>
-        <TableCell sx={{ textAlign: 'right' }}>
-          <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
+        <TableCell align='right'>
             <IconButton onClick={() => {
               setTransactionFormData({
                 _id: accountId,
@@ -109,7 +104,6 @@ export default function Transaction({
             }}>
               <EditIcon />
             </IconButton>
-          </Stack>
           </TableCell>
         </TableRow>
   );
