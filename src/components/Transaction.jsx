@@ -62,7 +62,7 @@ export default function Transaction({
               </TableCell>
             <TableCell>
               <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
-                <IconButton onClick={() => {
+                <IconButton aria-label='edit' onClick={() => {
                   if (description !== 'Initial balance') {
                     setTransactionFormData(transaction);
                     transactionModal.showModal();
@@ -70,7 +70,7 @@ export default function Transaction({
                 }}>
                   <EditIcon />
                 </IconButton>
-                <IconButton onClick={() => {
+                <IconButton aria-label='delete' onClick={() => {
                   if (description !== 'Initial balance') {
                     setTransactionFormData(transaction);
                     deleteTransactionModal.showModal();

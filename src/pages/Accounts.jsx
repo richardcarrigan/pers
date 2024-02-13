@@ -33,7 +33,7 @@ const Accounts = ({ accountFormData, setAccountFormData }) => {
       <div className='accounts'>
         {data.accounts.map(account => {
           return (
-            <Card raised={true} sx={{ minWidth: 275 }}>
+            <Card raised={true} sx={{ minWidth: 275 }} key={account._id}>
               <CardContent>
                 <Typography variant="h5" component="div">
                   {account.name}
