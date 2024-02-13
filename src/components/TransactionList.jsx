@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 import Transaction from '../components/Transaction';
 import { UPDATE_TRANSACTION } from '../graphQL/mutations';
@@ -160,57 +161,58 @@ const TransactionList = ({
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={accountId}>
           {provided => (
-            <table
-              className='transactions'
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              <thead className='transactionListHeader'>
-                <tr>
-                  <th>Description</th>
-                  <th style={{textAlign: 'center'}}>Amount</th>
-                  <th style={{textAlign: 'right'}}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <Transaction
-                  accountId={accountId}
-                  accountName={accountName}
-                  balance={balance}
-                  index='-1'
-                  setTransactionFormData={setAccountFormData}
-                  transaction={{
-                    _id: 'null',
-                    amount: balance,
-                    description: 'Initial balance',
-                    startDate: Date.now(),
-                    type: 'initial'
-                  }}
-                />
-                {sortedTransactions.map((transaction, index) => {
-                  // This fixes calculation issues when a transaction is either dropped in its starting location or outside the droppable area
-                  if (index === 0) {
-                    runningBalance = balance;
-                  }
-                  if (transaction.type === 'income') {
-                    runningBalance += transaction.amount
-                  } else {
-                    runningBalance -= transaction.amount;
-                  }
-                  return (
-                    <Transaction
-                      accountId={accountId}
-                      balance={runningBalance}
-                      index={index}
-                      key={transaction._id}
-                      setTransactionFormData={setTransactionFormData}
-                      transaction={transaction}
-                    />
-                  );
-                })}
-                {provided.placeholder}
-              </tbody>
-            </table>
+            <TableContainer component={Paper} sx={{marginBlock: '15px'}}>
+              <Table
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Description</TableCell>
+                    <TableCell sx={{textAlign: 'right'}}>Amount</TableCell>
+                    <TableCell sx={{textAlign: 'right'}}>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <Transaction
+                    accountId={accountId}
+                    accountName={accountName}
+                    balance={balance}
+                    index='-1'
+                    setTransactionFormData={setAccountFormData}
+                    transaction={{
+                      _id: 'null',
+                      amount: balance,
+                      description: 'Initial balance',
+                      startDate: Date.now(),
+                      type: 'initial'
+                    }}
+                  />
+                  {sortedTransactions.map((transaction, index) => {
+                    // This fixes calculation issues when a transaction is either dropped in its starting location or outside the droppable area
+                    if (index === 0) {
+                      runningBalance = balance;
+                    }
+                    if (transaction.type === 'income') {
+                      runningBalance += transaction.amount
+                    } else {
+                      runningBalance -= transaction.amount;
+                    }
+                    return (
+                      <Transaction
+                        accountId={accountId}
+                        balance={runningBalance}
+                        index={index}
+                        key={transaction._id}
+                        setTransactionFormData={setTransactionFormData}
+                        transaction={transaction}
+                      />
+                    );
+                  })}
+                  {provided.placeholder}
+                </TableBody>
+              </Table>
+            </TableContainer>
           )}
         </Droppable>
       </DragDropContext>

@@ -1,5 +1,4 @@
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
-import { IconButton, Stack } from '@mui/material';
+import { IconButton, Stack, TableCell, TableRow } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Draggable } from 'react-beautiful-dnd';
@@ -30,18 +29,28 @@ export default function Transaction({
     type !== 'initial'
       ? <Draggable draggableId={_id} index={index}>
           {provided => (
-            <tr
-              className='transactionCard'
+            <TableRow
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
             >
-              <td>
-                <div className="transDescription">{description}</div>
-                <div className="transDate">{startDateFormatted}</div>
-              </td>
-              <td>
-                <div className="transAmount" style={{ color: type === 'income' ? 'green' : 'inherit', textAlign: 'right' }}>
+              <TableCell>
+              <div
+                // className="transDescription"
+              >{description}</div>
+              <div
+                className="transDate"
+              >{startDateFormatted}</div>
+              </TableCell>
+              <TableCell>
+              <div
+                className="transAmount"
+                style={{
+                  color: type === 'income'
+                    ? 'green'
+                    : 'inherit',
+                  textAlign: 'right'
+                }}>
                   {Intl.NumberFormat('en-us', {
                     style: 'currency',
                     currency: 'USD'
@@ -50,8 +59,8 @@ export default function Transaction({
                 <div className="transBalance" style={{ color: balance < 0 && 'red', textAlign: 'right' }}>
                   {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
                 </div>
-              </td>
-            <td>
+              </TableCell>
+            <TableCell>
               <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
                 <IconButton onClick={() => {
                   if (description !== 'Initial balance') {
@@ -70,23 +79,25 @@ export default function Transaction({
                   <DeleteIcon />
                 </IconButton>
               </Stack>
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           )}
         </Draggable>
-      : <tr className='transactionCard'>
-          <td>
-            <div className="transDescription">{description}</div>
-          </td>
-          <td>
-            <div className="transAmount" style={{ textAlign: 'right' }}>
+      : <TableRow>
+          <TableCell>
+          <div>{description}</div>
+          </TableCell>
+          <TableCell>
+          <div
+            className="transAmount"
+            style={{ textAlign: 'right' }}>
               {Intl.NumberFormat('en-us', {
                 style: 'currency',
                 currency: 'USD'
               }).format(amount)}
             </div>
-          </td>
-        <td style={{ textAlign: 'right' }}>
+          </TableCell>
+        <TableCell sx={{ textAlign: 'right' }}>
           <Stack direction='row' spacing={1} sx={{ justifyContent: 'end' }}>
             <IconButton onClick={() => {
               setTransactionFormData({
@@ -99,7 +110,7 @@ export default function Transaction({
               <EditIcon />
             </IconButton>
           </Stack>
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
   );
 }

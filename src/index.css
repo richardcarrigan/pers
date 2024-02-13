@@ -56,27 +56,8 @@ main {
   padding: 15px;
 }  
 
-table {
-  border-collapse: collapse;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  width: 100%;
-}  
-
 thead {
   border-bottom: 2px solid var(--purple);
-}  
-
-td,
-th {
-  border: none;
-  padding: 8px;
-}  
-
-th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
 }  
 
 .accounts {
