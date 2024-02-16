@@ -1,42 +1,13 @@
 import { useMutation } from '@apollo/client';
-import { useAuth0 } from '@auth0/auth0-react';
 
 import { UPDATE_ACCOUNT } from '../graphQL/mutations';
-import { GET_ACCOUNT } from '../graphQL/queries';
 
 import Modal from './Modal';
 
 const DeleteTransactionForm = ({ account, formData, setFormData }) => {
   const { index } = formData;
-  const { user } = useAuth0();
-  const userId = user.sub;
 
   const [updateAccount] = useMutation(UPDATE_ACCOUNT);
-
-  // const [updateAccount] = useMutation(
-  //   UPDATE_ACCOUNT,
-  //   {
-  //     update(cache, { data: { updateAccount } }) {
-  //       const data = {
-  //         ...cache.readQuery({
-  //           query: GET_ACCOUNT,
-  //           variables: { id: accountId, userId }
-  //         })
-  //       };
-  //       const updatedTransactions = data.account.transactions.filter(
-  //         transaction => {
-  //           return transaction._id !== updateAccount._id;
-  //         }
-  //       );
-  //       data.account = { ...data.account, transactions: updatedTransactions };
-  //       cache.writeQuery({
-  //         query: GET_ACCOUNT,
-  //         variables: { id: accountId, userId },
-  //         data
-  //       });
-  //     }
-  //   }
-  // );
 
   return (
     <Modal id='deleteTransactionModal' heading='Delete Transaction?'
