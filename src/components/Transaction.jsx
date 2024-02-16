@@ -27,8 +27,8 @@ export default function Transaction({
   );
 
   return (
-    type !== 'initial'
-      ? <Draggable draggableId={index} index={index}>
+    index >= 0 // Means the transaction is the initial balance
+      ? <Draggable draggableId={index.toString()} index={index}>
         {provided => (
           <>
           <TableRow

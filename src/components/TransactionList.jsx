@@ -151,7 +151,7 @@ const TransactionList = ({
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={id}>
+        <Droppable droppableId={_id}>
           {provided => (
             <TableContainer component={Paper} sx={{marginBlock: '15px'}}>
               <Table
@@ -167,10 +167,8 @@ const TransactionList = ({
                 </TableHead>
                 <TableBody>
                   <Transaction
-                    accountId={id}
-                    accountName={name}
                     balance={balance}
-                    index='-1'
+                    index={-1}
                     setTransactionFormData={setAccountFormData}
                     transaction={{
                       amount: balance,
@@ -191,7 +189,6 @@ const TransactionList = ({
                     }
                     return (
                       <Transaction
-                        accountId={id}
                         balance={runningBalance}
                         index={index}
                         key={index}
