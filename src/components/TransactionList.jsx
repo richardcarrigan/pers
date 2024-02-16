@@ -15,7 +15,7 @@ const TransactionList = ({
   const { user } = useAuth0();
   const userId = user.sub;
 
-  const { id, name, balance, transactions } = account;
+  const { _id, name, balance, transactions } = account;
 
   const [updateAccount] = useMutation(UPDATE_ACCOUNT, {
     update(cache, { data: { updateAccount } }) {
