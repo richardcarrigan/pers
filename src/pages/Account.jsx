@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Fab } from '@mui/material';
+import { Fab } from '@mui/material';
 
 import { GET_ACCOUNT } from '../graphQL/queries';
 import AccountHeading from '../components/AccountHeading';
@@ -16,30 +16,29 @@ import DeleteTransactionForm from '../components/DeleteTransactionForm';
 export default function Account({ accountFormData, setAccountFormData }) {
   const { id } = useParams();
   const [transactionFormData, setTransactionFormData] = useState({
+    index: null,
     amount: '',
     description: '',
-    displayOrder: 0,
     startDate: '',
     type: 'expense'
   });
-
-  const navigate = useNavigate();
 
   const { user } = useAuth0();
   const userId = user.sub;
 
   const {
-    loading: queryLoading,
-    error: queryError,
-    data: queryData
+    loading,
+    error,
+    data
   } = useQuery(GET_ACCOUNT, {
     variables: { id, userId }
   });
 
-  if (queryLoading) return <p>Loading...</p>;
-  if (queryError) return <p>Error 😢</p>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error 😢</p>;
 
-  const { name, balance, transactions } = queryData.account;
+  const { account } = data;
+  const { name, balance } = account;
 
   return (
     <>
@@ -50,29 +49,23 @@ export default function Account({ accountFormData, setAccountFormData }) {
         setAccountFormData={setAccountFormData}
       />
       <TransactionList
-        accountId={id}
-        accountName={name}
-        balance={balance}
+        account={account}
         setAccountFormData={setAccountFormData}
         setTransactionFormData={setTransactionFormData}
-        transactionsProp={transactions}
       />
       <Fab color='secondary' aria-label='add' sx={{ position: 'fixed', bottom: '15px', right: '15px' }} onClick={() => transactionModal.showModal()}><AddIcon /></Fab>
       <NewAccountForm
         formData={accountFormData}
         setFormData={setAccountFormData}
-        transactions={transactions}
       />
       <NewTransactionForm
-        accountId={id}
-        accountName={name}
+        account={account}
         formData={transactionFormData}
         setFormData={setTransactionFormData}
-        transactionCount={transactions.length}
       />
       <DeleteAccountForm _id={id} />
       <DeleteTransactionForm
-        accountId={id}
+        account={account}
         formData={transactionFormData}
         setFormData={setTransactionFormData}
       />

@@ -7,28 +7,26 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import Modal from './Modal';
 import { GET_ACCOUNT } from '../graphQL/queries';
-import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../graphQL/mutations';
+import { UPDATE_ACCOUNT } from '../graphQL/mutations';
 
 const NewTransactionForm = ({
   formData,
   setFormData,
-  accountId,
-  transactionCount
+  accountId
 }) => {
   const {
-    _id,
+    index,
     description,
     amount,
     type,
-    startDate,
-    displayOrder
+    startDate
   } = formData;
 
   const { user } = useAuth0();
   const userId = user.sub;
 
   const [addTransaction, { addMutationLoading, addMutationError }] =
-    useMutation(ADD_TRANSACTION, {
+    useMutation(UPDATE_ACCOUNT, {
       update(cache, { data: { addTransaction } }) {
         const data = {
           ...cache.readQuery({
@@ -45,7 +43,7 @@ const NewTransactionForm = ({
     });
 
   const [updateTransaction, { updateMutationLoading, updateMutationError }] =
-    useMutation(UPDATE_TRANSACTION, {
+    useMutation(UPDATE_ACCOUNT, {
       update(cache, { data: { updateTransaction } }) {
         const data = {
           ...cache.readQuery({
@@ -56,9 +54,6 @@ const NewTransactionForm = ({
         const updatedTransaction = { ...updateTransaction };
         delete updatedTransaction.account;
         const updatedTransactions = [...data.account.transactions];
-        const index = updatedTransactions.findIndex(transaction => {
-          return transaction._id === _id;
-        });
         updatedTransactions.splice(index, 1, updatedTransaction);
         data.account = { ...data.account, transactions: updatedTransactions };
         cache.writeQuery({
@@ -80,25 +75,21 @@ const NewTransactionForm = ({
   };
 
   function handleSubmit() {
-    if (_id) {
+    if (index) {
       updateTransaction({
         variables: {
-          transactionId: _id,
           description,
           amount,
           type,
-          startDate,
-          displayOrder
+          startDate
         },
         optimisticResponse: {
           updateTransaction: {
-            _id,
             __typename: 'Transaction',
             description,
             amount,
             type,
-            startDate,
-            displayOrder
+            startDate
           }
         }
       });
@@ -106,38 +97,35 @@ const NewTransactionForm = ({
       addTransaction({
         variables: {
           ...formData,
-          accountId,
-          displayOrder: transactionCount
+          accountId
         },
         optimisticResponse: {
           addTransaction: {
-            _id: 'temp-id',
             __typename: 'Transaction',
             description,
             amount,
             type,
-            startDate,
-            displayOrder
+            startDate
           }
         }
       });
     }
     setFormData({
+      index: null,
       description: '',
       amount: '',
       type: 'expense',
-      startDate: '',
-      displayOrder: 0
+      startDate: ''
     });
   }
 
   function handleCancel() {
     setFormData({
+      index: null,
       description: '',
       amount: '',
       type: 'expense',
-      startDate: '',
-      displayOrder: 0
+      startDate: ''
     });
   }
 
@@ -151,7 +139,7 @@ const NewTransactionForm = ({
   return (
     <Modal
       id='transactionModal'
-      heading={`${_id ? 'Update' : 'Add a new'} transaction`}
+      heading={`${index ? 'Update' : 'Add a new'} transaction`}
       submitHandler={handleSubmit}
       cancelHandler={handleCancel}
     >

@@ -10,7 +10,7 @@ export default function Transaction({
   setTransactionFormData,
   transaction
 }) {
-  const { _id, amount, description, startDate, type } = transaction;
+  const { amount, description, startDate, type } = transaction;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,7 +28,7 @@ export default function Transaction({
 
   return (
     type !== 'initial'
-      ? <Draggable draggableId={_id} index={index}>
+      ? <Draggable draggableId={index} index={index}>
         {provided => (
           <>
           <TableRow
@@ -47,12 +47,8 @@ export default function Transaction({
               </IconButton>
             </TableCell>
               <TableCell>
-              <div
-                // className="transDescription"
-                >{description}</div>
-              <div
-                className="transDate"
-                >{startDateFormatted}</div>
+              <div>{description}</div>
+              <div className="transDate">{startDateFormatted}</div>
               </TableCell>
               <TableCell>
               <div
@@ -79,7 +75,7 @@ export default function Transaction({
                   <div className="btnGroup">
                 <Button variant='contained' onClick={() => {
                   if (description !== 'Initial balance') {
-                    setTransactionFormData(transaction);
+                    setTransactionFormData({ index, ...transaction });
                     transactionModal.showModal();
                   }
                 }}>
@@ -87,7 +83,7 @@ export default function Transaction({
                 </Button>
                 <Button variant='outlined' onClick={() => {
                   if (description !== 'Initial balance') {
-                    setTransactionFormData(transaction);
+                    setTransactionFormData({ index, ...transaction });
                     deleteTransactionModal.showModal();
                   }
                 }}>
@@ -127,7 +123,7 @@ export default function Transaction({
               <div className="btnGroup">
                 <Button variant='contained' onClick={() => {
                   if (description !== 'Initial balance') {
-                    setTransactionFormData(transaction);
+                    setTransactionFormData({ index, ...transaction });
                     transactionModal.showModal();
                   }
                 }}>
