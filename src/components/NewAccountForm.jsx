@@ -7,16 +7,16 @@ import { GET_ACCOUNT, GET_ACCOUNTS } from '../graphQL/queries';
 import { ADD_ACCOUNT, UPDATE_ACCOUNT } from '../graphQL/mutations';
 
 const NewAccountForm = ({
+  account,
   formData,
-  setFormData,
-  transactions
+  setFormData
 }) => {
   const { _id, name, balance } = formData;
-
+  
   const { user } = useAuth0();
-
+  
   const userId = user.sub;
-
+  
   const [addAccount, { addMutationLoading, addMutationError }] = useMutation(
     ADD_ACCOUNT,
     {
@@ -26,8 +26,8 @@ const NewAccountForm = ({
         cache.writeQuery({ query: GET_ACCOUNTS, variables: { userId }, data });
       }
     }
-  );
-
+    );
+    
   const [updateAccount, { updateMutationLoading, updateMutationError }] =
     useMutation(UPDATE_ACCOUNT, {
       update(cache, { data: { updateAccount } }) {
@@ -37,12 +37,12 @@ const NewAccountForm = ({
             variables: { id: _id, userId }
           })
         };
-        data.account = { ...updateAccount, transactions };
+        data.account = { ...updateAccount };
         cache.writeQuery({ query: GET_ACCOUNT, variables: { userId }, data });
       }
     });
-
-  function handleFormChange(e) {
+    
+    function handleFormChange(e) {
     if (e.target.id === 'balance' && !isNaN(parseFloat(e.target.value))) {
       setFormData({ ...formData, [e.target.id]: parseFloat(e.target.value) });
     } else {
@@ -52,18 +52,22 @@ const NewAccountForm = ({
 
   function handleSubmit() {
     if (_id) {
+      const { transactions } = account;
+
       updateAccount({
         variables: {
           accountId: _id,
           name,
-          balance
+          balance,
+          transactions
         },
         optimisticResponse: {
           updateAccount: {
             _id,
             __typename: 'Account',
             name,
-            balance
+            balance,
+            transactions
           }
         }
       });
@@ -75,7 +79,8 @@ const NewAccountForm = ({
             _id: 'temp-id',
             __typename: 'Account',
             ...formData,
-            userId
+            userId,
+            transactions: []
           }
         }
       });

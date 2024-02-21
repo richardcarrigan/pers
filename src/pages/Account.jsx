@@ -55,6 +55,7 @@ export default function Account({ accountFormData, setAccountFormData }) {
       />
       <Fab color='secondary' aria-label='add' sx={{ position: 'fixed', bottom: '15px', right: '15px' }} onClick={() => transactionModal.showModal()}><AddIcon /></Fab>
       <NewAccountForm
+        account={account}
         formData={accountFormData}
         setFormData={setAccountFormData}
       />

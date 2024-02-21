@@ -25,6 +25,15 @@ const client = new ApolloClient({
             }
           }
         }
+      },
+      Query: {
+        fields: {
+          accounts: {
+            merge(_, incoming) {
+              return incoming;
+            }
+          }
+        }
       }
     }
   })
