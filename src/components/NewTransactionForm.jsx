@@ -55,8 +55,6 @@ const NewTransactionForm = ({
 
     const updatedAccount = { accountId, name, balance, transactions };
 
-    console.log(updatedAccount);
-
     const optimisticResponse = {
       updateAccount: {
         _id: accountId,
