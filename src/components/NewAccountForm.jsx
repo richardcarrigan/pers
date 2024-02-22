@@ -98,13 +98,6 @@ const NewAccountForm = ({
     });
   }
 
-  if (addMutationLoading || updateMutationLoading) {
-    return <p>Loading...</p>;
-  }
-  if (addMutationError || updateMutationError) {
-    return <p>{error.message}</p>;
-  }
-
   return (
     <Modal
       id='accountModal'
