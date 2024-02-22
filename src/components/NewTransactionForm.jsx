@@ -1,73 +1,27 @@
 import { FaDollarSign } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
-import { useAuth0 } from '@auth0/auth0-react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 import Modal from './Modal';
-import { GET_ACCOUNT } from '../graphQL/queries';
-import { ADD_TRANSACTION, UPDATE_TRANSACTION } from '../graphQL/mutations';
+import { UPDATE_ACCOUNT } from '../graphQL/mutations';
 
 const NewTransactionForm = ({
+  account,
   formData,
-  setFormData,
-  accountId,
-  transactionCount
+  setFormData
 }) => {
   const {
-    _id,
+    index,
     description,
     amount,
     type,
-    startDate,
-    displayOrder
+    startDate
   } = formData;
 
-  const { user } = useAuth0();
-  const userId = user.sub;
-
-  const [addTransaction, { addMutationLoading, addMutationError }] =
-    useMutation(ADD_TRANSACTION, {
-      update(cache, { data: { addTransaction } }) {
-        const data = {
-          ...cache.readQuery({
-            query: GET_ACCOUNT,
-            variables: { id: accountId, userId }
-          })
-        };
-        data.account = {
-          ...data.account,
-          transactions: [...data.account.transactions, addTransaction]
-        };
-        cache.writeQuery({ query: GET_ACCOUNT, data });
-      }
-    });
-
-  const [updateTransaction, { updateMutationLoading, updateMutationError }] =
-    useMutation(UPDATE_TRANSACTION, {
-      update(cache, { data: { updateTransaction } }) {
-        const data = {
-          ...cache.readQuery({
-            query: GET_ACCOUNT,
-            variables: { id: accountId, userId }
-          })
-        };
-        const updatedTransaction = { ...updateTransaction };
-        delete updatedTransaction.account;
-        const updatedTransactions = [...data.account.transactions];
-        const index = updatedTransactions.findIndex(transaction => {
-          return transaction._id === _id;
-        });
-        updatedTransactions.splice(index, 1, updatedTransaction);
-        data.account = { ...data.account, transactions: updatedTransactions };
-        cache.writeQuery({
-          query: GET_ACCOUNT,
-          variables: { id: accountId, userId },
-          data
-        });
-      }
-    });
+  const [updateAccount, { loading, error }] =
+    useMutation(UPDATE_ACCOUNT);
 
   function handleFormChange(e) {
     if (e.target.id === 'amount' && !isNaN(parseFloat(e.target.value))) {
@@ -79,79 +33,67 @@ const NewTransactionForm = ({
     }
   };
 
-  function handleSubmit() {
-    if (_id) {
-      updateTransaction({
-        variables: {
-          transactionId: _id,
-          description,
-          amount,
-          type,
-          startDate,
-          displayOrder
-        },
-        optimisticResponse: {
-          updateTransaction: {
-            _id,
-            __typename: 'Transaction',
-            description,
-            amount,
-            type,
-            startDate,
-            displayOrder
-          }
-        }
-      });
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const { index, ...reducedFormData } = formData;
+    const { _id: accountId, name, balance } = account;
+    let transactions = [...account.transactions];
+    
+    if (index === null) {
+      // Add new transaction to end of array
+      transactions.push(reducedFormData);
     } else {
-      addTransaction({
-        variables: {
-          ...formData,
-          accountId,
-          displayOrder: transactionCount
-        },
-        optimisticResponse: {
-          addTransaction: {
-            _id: 'temp-id',
-            __typename: 'Transaction',
-            description,
-            amount,
-            type,
-            startDate,
-            displayOrder
-          }
-        }
-      });
+      // Update existing transaction within array
+      transactions[index] = reducedFormData;
     }
+
+    transactions = transactions.map(transaction => {
+      const { __typename, ...reducedTransaction } = transaction;
+      return reducedTransaction;
+    });
+
+    const updatedAccount = { accountId, name, balance, transactions };
+
+    const optimisticResponse = {
+      updateAccount: {
+        _id: accountId,
+        __typename: 'Account',
+        balance,
+        name,
+        transactions
+      }
+    }
+
+    updateAccount({ variables: updatedAccount, optimisticResponse });
+
     setFormData({
+      index: null,
       description: '',
       amount: '',
       type: 'expense',
-      startDate: '',
-      displayOrder: 0
+      startDate: ''
     });
   }
 
   function handleCancel() {
     setFormData({
+      index: null,
       description: '',
       amount: '',
       type: 'expense',
-      startDate: '',
-      displayOrder: 0
+      startDate: ''
     });
   }
 
-  if (addMutationLoading || updateMutationLoading) {
-    return <p>Loading...</p>;
-  }
-  if (addMutationError || updateMutationError) {
-    return <p>{error.message}</p>;
+  if (loading || error) {
+    return;
   }
 
   return (
     <Modal
       id='transactionModal'
-      heading={`${_id ? 'Update' : 'Add a new'} transaction`}
+      heading={`${index === null ? 'Add a new' : 'Update'} transaction`}
       submitHandler={handleSubmit}
       cancelHandler={handleCancel}
     >

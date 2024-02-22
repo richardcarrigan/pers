@@ -16,7 +16,6 @@ import NewAccountForm from '../components/NewAccountForm';
 import { GET_ACCOUNTS } from '../graphQL/queries';
 
 const Accounts = ({ accountFormData, setAccountFormData }) => {
-  const [isAccountFormVisible, setIsAccountFormVisible] = useState(false);
   const { user } = useAuth0();
   const navigate = useNavigate();
 
@@ -56,8 +55,6 @@ const Accounts = ({ accountFormData, setAccountFormData }) => {
         <Fab color='secondary' aria-label='add' sx={{ position: 'fixed', bottom: '15px', right: '15px' }} onClick={() => accountModal.showModal()}><AddIcon /></Fab>
       </div>
       <NewAccountForm
-        isVisible={isAccountFormVisible}
-        setIsVisible={setIsAccountFormVisible}
         formData={accountFormData}
         setFormData={setAccountFormData}
       />

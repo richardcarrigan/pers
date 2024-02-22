@@ -1,154 +1,51 @@
 import { useMutation } from '@apollo/client';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { useAuth0 } from '@auth0/auth0-react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 import Transaction from '../components/Transaction';
-import { UPDATE_TRANSACTION } from '../graphQL/mutations';
-import { GET_ACCOUNT } from '../graphQL/queries';
+import { UPDATE_ACCOUNT } from '../graphQL/mutations';
 
 const TransactionList = ({
-  accountId,
-  accountName,
-  balance,
+  account,
   setAccountFormData,
-  setTransactionFormData,
-  transactionsProp
+  setTransactionFormData
 }) => {
-  const { user } = useAuth0();
-  const userId = user.sub;
+  const { _id: accountId, name, balance, transactions } = account;
 
-  const [updateTransaction] = useMutation(UPDATE_TRANSACTION, {
-    update(cache, { data: { updateTransaction } }) {
-      const data = {
-        ...cache.readQuery({
-          query: GET_ACCOUNT,
-          variables: { id: accountId, userId }
-        })
-      };
-      const updatedTransaction = { ...updateTransaction };
-      delete updatedTransaction.account;
-      const updatedTransactions = [...data.account.transactions];
-      const index = updatedTransactions.findIndex(transaction => {
-        return transaction._id === updatedTransaction._id;
-      });
-      updatedTransactions.splice(index, 1, updatedTransaction);
-      data.account = { ...data.account, transactions: updatedTransactions };
-      cache.writeQuery({
-        query: GET_ACCOUNT,
-        variables: { id: accountId, userId },
-        data
-      });
-    }
-  });
-
-  const sortedTransactions = [...transactionsProp].sort(
-    (a, b) => a.displayOrder - b.displayOrder
-  );
+  const [updateAccount] = useMutation(UPDATE_ACCOUNT);
 
   const onDragEnd = result => {
-    const { source, destination, draggableId } = result;
-    const transactions = [...transactionsProp];
+    const { source, destination } = result;
+    let updatedTransactions = [...transactions];
 
     if (!destination || source.index === destination.index) {
-      console.log('nothing should happen');
       return;
     }
 
-    transactions.forEach(transaction => {
-      const {
-        _id,
-        amount,
-        description,
-        displayOrder,
-        startDate,
-        type
-      } = transaction;
+    const droppedTransaction = updatedTransactions.splice(source.index, 1);
+    updatedTransactions.splice(destination.index, 0, ...droppedTransaction);
 
-      if (_id === draggableId) {
-        updateTransaction({
-          variables: {
-            amount,
-            description,
-            displayOrder: destination.index,
-            startDate,
-            transactionId: draggableId,
-            type
-          },
-          optimisticResponse: {
-            updateTransaction: {
-              _id,
-              __typename: 'Transaction',
-              amount,
-              description,
-              displayOrder: destination.index,
-              startDate,
-              type,
-              account: {
-                _id: accountId,
-                __typename: 'Account',
-                name: accountName
-              }
-            }
-          }
-        });
-      } else if (source.index < destination.index) {
-        if (displayOrder > source.index && displayOrder <= destination.index) {
-          updateTransaction({
-            variables: {
-              amount,
-              description,
-              displayOrder: displayOrder - 1,
-              startDate,
-              transactionId: _id,
-              type
-            },
-            optimisticResponse: {
-              updateTransaction: {
-                _id,
-                __typename: 'Transaction',
-                amount,
-                description,
-                displayOrder: displayOrder - 1,
-                startDate,
-                type,
-                account: {
-                  _id: accountId,
-                  __typename: 'Account',
-                  name: accountName
-                }
-              }
-            }
-          });
-        }
-      } else if (destination.index < source.index) {
-        if (displayOrder >= destination.index && displayOrder < source.index) {
-          updateTransaction({
-            variables: {
-              amount,
-              description,
-              displayOrder: displayOrder + 1,
-              startDate,
-              transactionId: _id,
-              type
-            },
-            optimisticResponse: {
-              updateTransaction: {
-                _id,
-                __typename: 'Transaction',
-                amount,
-                description,
-                displayOrder: displayOrder + 1,
-                startDate,
-                type,
-                account: {
-                  _id: accountId,
-                  __typename: 'Account',
-                  name: accountName
-                }
-              }
-            }
-          });
+    updatedTransactions = updatedTransactions.map(transaction => {
+      const { __typename, ...reducedTransaction } = transaction;
+      return reducedTransaction;
+    });
+
+    const updatedAccount = {
+      accountId,
+      name,
+      balance,
+      transactions: updatedTransactions
+    }
+
+    updateAccount({
+      variables: updatedAccount,
+      optimisticResponse: {
+        updateAccount: {
+          _id: accountId,
+          __typename: 'Account',
+          name,
+          balance,
+          transactions: updatedTransactions
         }
       }
     });
@@ -175,20 +72,17 @@ const TransactionList = ({
                 </TableHead>
                 <TableBody>
                   <Transaction
-                    accountId={accountId}
-                    accountName={accountName}
                     balance={balance}
-                    index='-1'
+                    index={-1}
                     setTransactionFormData={setAccountFormData}
                     transaction={{
-                      _id: 'null',
                       amount: balance,
                       description: 'Initial balance',
                       startDate: Date.now(),
                       type: 'initial'
                     }}
                   />
-                  {sortedTransactions.map((transaction, index) => {
+                  {transactions.map((transaction, index) => {
                     // This fixes calculation issues when a transaction is either dropped in its starting location or outside the droppable area
                     if (index === 0) {
                       runningBalance = balance;
@@ -200,10 +94,9 @@ const TransactionList = ({
                     }
                     return (
                       <Transaction
-                        accountId={accountId}
                         balance={runningBalance}
                         index={index}
-                        key={transaction._id}
+                        key={index}
                         setTransactionFormData={setTransactionFormData}
                         transaction={transaction}
                       />
