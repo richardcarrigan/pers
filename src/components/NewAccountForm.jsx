@@ -52,7 +52,12 @@ const NewAccountForm = ({
 
   function handleSubmit() {
     if (_id) {
-      const { transactions } = account;
+      let { transactions } = account;
+
+      transactions = transactions.map(transaction => {
+        const { __typename, ...reducedTransaction } = transaction;
+        return reducedTransaction;
+      });
 
       updateAccount({
         variables: {
