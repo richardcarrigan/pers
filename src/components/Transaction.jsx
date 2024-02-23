@@ -27,30 +27,20 @@ export default function Transaction({
   );
 
   return (
-    index >= 0 // Means the transaction is the initial balance
-      ? <Draggable draggableId={index.toString()} index={index}>
-        {provided => (
-          <>
+    <Draggable draggableId={index.toString()} index={index}>
+      {provided => (
+        <>
           <TableRow
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              sx={{ '& > *': { borderBottom: 'unset'}}}
-            >
-            <TableCell>
-              <IconButton
-                aria-label='expand row'
-                size='small'
-                onClick={() => setIsOpen(!isOpen)}
-                >
-                {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
-            </TableCell>
-              <TableCell>
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            sx={{ '& > *': { borderBottom: 'unset'}}}
+          >
+            <TableCell width='65%'>
               <div>{description}</div>
               <div className="transDate">{startDateFormatted}</div>
-              </TableCell>
-              <TableCell>
+            </TableCell>
+            <TableCell width='30%'>
               <div
                 className="transAmount"
                 style={{
@@ -58,82 +48,53 @@ export default function Transaction({
                   ? 'green'
                   : 'inherit',
                   textAlign: 'right'
-                }}>
-                  {Intl.NumberFormat('en-us', {
-                    style: 'currency',
-                    currency: 'USD'
-                  }).format(type === 'income' ? amount : amount * -1)}
-                </div>
-                <div className="transBalance" style={{ color: balance < 0 && 'red', textAlign: 'right' }}>
-                  {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
-                </div>
-              </TableCell>
-          </TableRow>
-          <TableRow>
-              <TableCell sx={{ paddingBlock: 0 }} colSpan={3}>
-                <Collapse in={isOpen} timeout='auto' unmountOnExit>
-                  <div className="btnGroup">
-                <Button variant='contained' onClick={() => {
-                  if (description !== 'Initial balance') {
-                    setTransactionFormData({ index, ...transaction });
-                    transactionModal.showModal();
-                  }
-                }}>
-                  Edit
-                </Button>
-                <Button variant='outlined' onClick={() => {
-                  if (description !== 'Initial balance') {
-                    setTransactionFormData({ index, ...transaction });
-                    deleteTransactionModal.showModal();
-                  }
-                }}>
-                  Delete
-                </Button>
-                  </div>
-                </Collapse>
-              </TableCell>
-          </TableRow>
-                  </>
-          )}
-        </Draggable>
-      : <>
-        <TableRow sx={{ '& > *': { borderBottom: 'unset'}}}>
-            <TableCell>
+                }}
+              >
+                {Intl.NumberFormat('en-us', {
+                  style: 'currency',
+                  currency: 'USD'
+                }).format(type === 'income' ? amount : amount * -1)}
+              </div>
+              <div className="transBalance" style={{ color: balance < 0 && 'red', textAlign: 'right' }}>
+                {Intl.NumberFormat('en-us', { style: 'currency', currency: 'USD' }).format(balance)}
+              </div>
+            </TableCell>
+            <TableCell align='right' width='5%'>
               <IconButton
                 aria-label='expand row'
-                size='small'
+                // size='small'
                 onClick={() => setIsOpen(!isOpen)}
-                >
+              >
                 {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </IconButton>
             </TableCell>
-          <TableCell>
-            {description}
-          </TableCell>
-          <TableCell align='right'>
-            {Intl.NumberFormat('en-us', {
-              style: 'currency',
-              currency: 'USD'
-            }).format(amount)}
-          </TableCell>
-        </TableRow>
-          <TableRow>
-              <TableCell colSpan={3} sx={{ paddingBlock: 0}}>
-            <Collapse in={isOpen} timeout='auto' unmountOnExit>
-              <div className="btnGroup">
-                <Button variant='contained' onClick={() => {
-                  if (description !== 'Initial balance') {
-                    setTransactionFormData({ index, ...transaction });
-                    transactionModal.showModal();
-                  }
-                }}>
-                  Edit
-                </Button>
-              </div>
-                </Collapse>
-              </TableCell>
           </TableRow>
-
+          <TableRow>
+            <TableCell sx={{ paddingBlock: 0 }} colSpan={3}>
+              <Collapse in={isOpen} timeout='auto' unmountOnExit>
+                <div className="btnGroup">
+                  <Button variant='contained' onClick={() => {
+                    if (description !== 'Initial balance') {
+                      setTransactionFormData({ index, ...transaction });
+                      transactionModal.showModal();
+                    }
+                  }}>
+                    Edit
+                  </Button>
+                  <Button variant='outlined' onClick={() => {
+                    if (description !== 'Initial balance') {
+                      setTransactionFormData({ index, ...transaction });
+                      deleteTransactionModal.showModal();
+                    }
+                  }}>
+                    Delete
+                  </Button>
+                </div>
+              </Collapse>
+            </TableCell>
+          </TableRow>
         </>
+      )}
+    </Draggable>
   );
 }

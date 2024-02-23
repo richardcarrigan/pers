@@ -65,23 +65,12 @@ const TransactionList = ({
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell />
                     <TableCell>Description</TableCell>
                     <TableCell sx={{textAlign: 'right'}}>Amount</TableCell>
+                    <TableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  <Transaction
-                    balance={balance}
-                    index={-1}
-                    setTransactionFormData={setAccountFormData}
-                    transaction={{
-                      amount: balance,
-                      description: 'Initial balance',
-                      startDate: Date.now(),
-                      type: 'initial'
-                    }}
-                  />
                   {transactions.map((transaction, index) => {
                     // This fixes calculation issues when a transaction is either dropped in its starting location or outside the droppable area
                     if (index === 0) {
